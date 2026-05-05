@@ -44,7 +44,7 @@ export default function StudioArtworkDetail({ artist, product, relatedProducts, 
                     <p className="text-2xl text-neutral-100 font-light">${product.price.toLocaleString()}</p>
                     {product.status === "active" && artistSlug && product.slug && (
                         <a
-                            href={marketplaceArtworkUrl(artistSlug, product.slug)}
+                            href={marketplaceArtworkUrl(product)}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="block w-fit mt-4 px-6 py-2.5 border border-neutral-700 text-neutral-300 text-xs tracking-[0.2em] uppercase hover:border-neutral-400 hover:text-neutral-100 transition-colors"

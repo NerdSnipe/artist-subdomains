@@ -51,7 +51,7 @@ export default function MarketArtworkDetail({ artist, product, relatedProducts, 
                     {/* CTA */}
                     {product.status === "active" && artistSlug && product.slug && (
                         <a
-                            href={marketplaceArtworkUrl(artistSlug, product.slug)}
+                            href={marketplaceArtworkUrl(product)}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex items-center gap-2 w-fit bg-stone-900 text-white px-8 py-3.5 text-sm font-semibold hover:bg-stone-700 transition-colors mb-3"

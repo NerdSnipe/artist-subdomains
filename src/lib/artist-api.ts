@@ -59,6 +59,25 @@ export function getArtistName(artist: ArtistProfile): string {
     return artist.displayName ?? `${artist.firstName} ${artist.lastName}`.trim();
 }
 
-export function marketplaceArtworkUrl(artistSlug: string, productSlug: string): string {
-    return `https://artdistrictusa.com/artist/${artistSlug}/${productSlug}`;
+const MARKETPLACE_URL = 'https://artdistrictusa.com';
+
+function slugify(text: string): string {
+    return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+}
+
+export function marketplaceArtistUrl(artistSlug: string): string {
+    return `${MARKETPLACE_URL}/artist/${artistSlug}`;
+}
+
+export function marketplaceArtworkUrl(product: {
+    slug?: string;
+    title: string;
+    artistSlug?: string;
+    artistName: string;
+    medium?: string;
+}): string {
+    const artistSlug = product.artistSlug ?? slugify(product.artistName);
+    const category = slugify(product.medium ?? 'artwork');
+    const titleSlug = product.slug ?? slugify(product.title);
+    return `${MARKETPLACE_URL}/artist/${artistSlug}/${category}/${titleSlug}`;
 }

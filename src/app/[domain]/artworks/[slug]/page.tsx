@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getDomainConfig } from "@/lib/artist-api";
-import { getArtistData, getArtistName, getProductBySlug } from "@/lib/artist-api";
+import { getDomainConfig, getArtistData, getArtistName, getProductBySlug, marketplaceArtworkUrl } from "@/lib/artist-api";
 import { getThemeModule } from "@/themes/registry";
 
 interface Props {
@@ -29,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
                 description: product.description?.slice(0, 160),
                 images: imgUrl ? [{ url: imgUrl }] : [],
             },
-            alternates: { canonical: `https://${domain}/artworks/${slug}` },
+            alternates: { canonical: marketplaceArtworkUrl(product) },
         };
     } catch {
         return { title: "Artwork" };

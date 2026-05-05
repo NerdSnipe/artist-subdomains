@@ -72,7 +72,7 @@ export default function GalleryArtworkDetail({
 
                     {product.status === "active" && artistSlug && product.slug && (
                         <a
-                            href={marketplaceArtworkUrl(artistSlug, product.slug)}
+                            href={marketplaceArtworkUrl(product)}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-block w-fit px-8 py-3 bg-neutral-900 text-white text-sm tracking-widest uppercase hover:bg-neutral-700 transition-colors"

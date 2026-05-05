@@ -40,7 +40,7 @@ export default function ArtisanArtworkDetail({ artist, product, relatedProducts,
 
                     {product.status === "active" && artistSlug && product.slug && (
                         <a
-                            href={marketplaceArtworkUrl(artistSlug, product.slug)}
+                            href={marketplaceArtworkUrl(product)}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-block bg-stone-800 text-amber-50 px-8 py-3 text-sm hover:bg-stone-700 transition-colors"

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getDomainConfig } from "@/lib/artist-api";
-import { getArtistData, getArtistName } from "@/lib/artist-api";
+import { getDomainConfig, getArtistData, getArtistName, marketplaceArtistUrl } from "@/lib/artist-api";
 import { getThemeModule } from "@/themes/registry";
 
 interface Props {
@@ -20,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
     return {
         title: `Contact — ${name}`,
-        alternates: { canonical: `https://${domain}/contact` },
+        alternates: { canonical: marketplaceArtistUrl(config.artistSlug) },
     };
 }
 
