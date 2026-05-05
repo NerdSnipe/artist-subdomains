@@ -59,7 +59,7 @@ export function getArtistName(artist: ArtistProfile): string {
     return artist.displayName ?? `${artist.firstName} ${artist.lastName}`.trim();
 }
 
-const MARKETPLACE_URL = 'https://artdistrictusa.com';
+const MARKETPLACE_URL = 'https://www.artsdistrictusa.com';
 
 function slugify(text: string): string {
     return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
