@@ -24,7 +24,7 @@ export default function GalleryArtworks({ artworks, domain }: ThemePageProps) {
                         return (
                             <Link
                                 key={artwork.id}
-                                href={`/${domain}/artworks/${artwork.slug ?? artwork.id}`}
+                                href={`/artworks/${artwork.slug ?? artwork.id}`}
                                 className="group block"
                             >
                                 <div className="relative aspect-square bg-neutral-100 overflow-hidden mb-3">

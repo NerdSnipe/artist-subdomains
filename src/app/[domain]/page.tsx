@@ -7,7 +7,7 @@ interface Props {
     params: Promise<{ domain: string }>;
 }
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { domain } = await params;
@@ -15,16 +15,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     if (!config) return { title: "Artist Portfolio" };
 
     const data = await getArtistData(config.artistSlug);
-    const { profile } = data;
-    const name = getArtistName(profile);
+    const name = getArtistName(data.profile);
 
     return {
         title: `${name} — Artist`,
-        description: profile.bio?.slice(0, 160) ?? `Original artwork by ${name}`,
+        description: data.profile.bio?.slice(0, 160) ?? `Original artwork by ${name}`,
         openGraph: {
             title: name,
-            description: profile.bio?.slice(0, 160) ?? `Original artwork by ${name}`,
-            images: profile.profilePhoto ? [{ url: profile.profilePhoto }] : [],
+            description: data.profile.bio?.slice(0, 160) ?? `Original artwork by ${name}`,
+            images: data.profile.profilePhoto ? [{ url: data.profile.profilePhoto }] : [],
             type: "profile",
         },
         alternates: { canonical: `https://${domain}` },
@@ -39,7 +38,5 @@ export default async function DomainHomePage({ params }: Props) {
     const data = await getArtistData(config.artistSlug);
     const { HomePage } = getThemeModule(config.themeKey);
 
-    return (
-        <HomePage artist={data.profile} artworks={data.products} domain={domain} />
-    );
+    return <HomePage artist={data.profile} artworks={data.products} domain={domain} />;
 }

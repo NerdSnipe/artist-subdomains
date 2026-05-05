@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getDomainConfig, getArtistData, getProductBySlug, getArtistName } from "@/lib/artist-api";
+import { getDomainConfig } from "@/lib/artist-api";
+import { getArtistData, getArtistName, getProductBySlug } from "@/lib/artist-api";
 import { getThemeModule } from "@/themes/registry";
 
 interface Props {
     params: Promise<{ domain: string; slug: string }>;
 }
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { domain, slug } = await params;
@@ -50,7 +51,6 @@ export default async function ArtworkDetailPage({ params }: Props) {
     const data = await getArtistData(config.artistSlug);
     const { ArtworkDetailPage: ThemeArtworkDetailPage } = getThemeModule(config.themeKey);
 
-    // Related works: other active products excluding this one
     const relatedProducts = data.products
         .filter((p) => p.status === "active" && p.slug !== slug && p.id !== productData.product.id)
         .slice(0, 4);

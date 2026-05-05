@@ -27,13 +27,13 @@ export default function ArtisanHome({ artist, artworks, domain }: ThemePageProps
                         )}
                         <div className="flex flex-wrap gap-4">
                             <Link
-                                href={`/${domain}/artworks`}
+                                href="/artworks"
                                 className="inline-block bg-stone-800 text-amber-50 px-7 py-3 text-sm hover:bg-stone-700 transition-colors"
                             >
                                 Explore Gallery
                             </Link>
                             <Link
-                                href={`/${domain}/about`}
+                                href="/about"
                                 className="inline-block border border-stone-400 text-stone-600 px-7 py-3 text-sm hover:border-stone-700 transition-colors"
                             >
                                 My Story
@@ -65,7 +65,7 @@ export default function ArtisanHome({ artist, artworks, domain }: ThemePageProps
                             return (
                                 <Link
                                     key={artwork.id}
-                                    href={`/${domain}/artworks/${artwork.slug ?? artwork.id}`}
+                                    href={`/artworks/${artwork.slug ?? artwork.id}`}
                                     className="group block"
                                 >
                                     <div className="relative aspect-[4/5] bg-amber-100 overflow-hidden mb-3 border border-amber-200">
@@ -87,7 +87,7 @@ export default function ArtisanHome({ artist, artworks, domain }: ThemePageProps
                     {artworks.filter((a) => a.status === "active").length > 6 && (
                         <div className="mt-10 text-center">
                             <Link
-                                href={`/${domain}/artworks`}
+                                href="/artworks"
                                 className="text-sm text-amber-700 hover:text-stone-800 underline"
                             >
                                 See the full gallery →
@@ -104,7 +104,7 @@ export default function ArtisanHome({ artist, artworks, domain }: ThemePageProps
                         <p className="text-stone-600 leading-relaxed text-lg italic">
                             &ldquo;{artist.bio.slice(0, 280)}{artist.bio.length > 280 ? "…" : ""}&rdquo;
                         </p>
-                        <Link href={`/${domain}/about`} className="inline-block mt-6 text-sm text-amber-700 hover:text-stone-800 underline">
+                        <Link href="/about" className="inline-block mt-6 text-sm text-amber-700 hover:text-stone-800 underline">
                             Read my story →
                         </Link>
                     </div>

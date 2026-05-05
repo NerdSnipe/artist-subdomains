@@ -25,7 +25,7 @@ export default function MarketArtworks({ artworks, domain }: ThemePageProps) {
                         return (
                             <Link
                                 key={artwork.id}
-                                href={`/${domain}/artworks/${artwork.slug ?? artwork.id}`}
+                                href={`/artworks/${artwork.slug ?? artwork.id}`}
                                 className="group bg-white border border-stone-100 hover:border-stone-300 transition-colors block"
                             >
                                 <div className="relative aspect-square bg-stone-50 overflow-hidden">

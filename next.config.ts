@@ -1,6 +1,25 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async rewrites() {
+    return {
+      afterFiles: [
+        {
+          source: "/:path*",
+          has: [{ type: "host", value: "(?<domain>.+)" }],
+          destination: "/:domain/:path*",
+        },
+      ],
+    };
+  },
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [{ key: "Cache-Control", value: "no-store" }],
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "**.s3.*.amazonaws.com" },

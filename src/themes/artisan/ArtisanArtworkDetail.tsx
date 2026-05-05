@@ -9,7 +9,7 @@ export default function ArtisanArtworkDetail({ artist, product, relatedProducts,
 
     return (
         <div className="max-w-5xl mx-auto px-6 py-12" style={{ fontFamily: "'Georgia', serif" }}>
-            <Link href={`/${domain}/artworks`} className="text-sm text-amber-700 hover:text-stone-800 mb-8 inline-block">
+            <Link href="/artworks" className="text-sm text-amber-700 hover:text-stone-800 mb-8 inline-block">
                 ← Back to Gallery
             </Link>
 
@@ -61,7 +61,7 @@ export default function ArtisanArtworkDetail({ artist, product, relatedProducts,
                         {relatedProducts.slice(0, 3).map((r) => {
                             const rImg = getProductImageUrl(r);
                             return (
-                                <Link key={r.id} href={`/${domain}/artworks/${r.slug ?? r.id}`} className="group block">
+                                <Link key={r.id} href={`/artworks/${r.slug ?? r.id}`} className="group block">
                                     <div className="relative aspect-[4/5] bg-amber-100 overflow-hidden mb-2 border border-amber-200">
                                         {rImg && <Image src={rImg} alt={r.title} fill className="object-cover group-hover:scale-103 transition-transform" />}
                                     </div>

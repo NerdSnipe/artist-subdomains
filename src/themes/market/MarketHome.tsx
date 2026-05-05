@@ -24,7 +24,7 @@ export default function MarketHome({ artist, artworks, domain }: ThemePageProps)
                             </p>
                         )}
                         <Link
-                            href={`/${domain}/artworks`}
+                            href="/artworks"
                             className="inline-block bg-stone-900 text-white px-8 py-3 text-sm font-semibold hover:bg-stone-700 transition-colors"
                         >
                             Shop All Works
@@ -43,7 +43,7 @@ export default function MarketHome({ artist, artworks, domain }: ThemePageProps)
                 <section className="max-w-6xl mx-auto px-6 py-12">
                     <div className="flex items-center justify-between mb-8">
                         <h2 className="text-lg font-bold text-stone-900">Available Works</h2>
-                        <Link href={`/${domain}/artworks`} className="text-sm text-stone-500 hover:text-stone-900 underline">
+                        <Link href="/artworks" className="text-sm text-stone-500 hover:text-stone-900 underline">
                             View all →
                         </Link>
                     </div>
@@ -53,7 +53,7 @@ export default function MarketHome({ artist, artworks, domain }: ThemePageProps)
                             return (
                                 <Link
                                     key={artwork.id}
-                                    href={`/${domain}/artworks/${artwork.slug ?? artwork.id}`}
+                                    href={`/artworks/${artwork.slug ?? artwork.id}`}
                                     className="group bg-white border border-stone-100 hover:border-stone-300 transition-colors block"
                                 >
                                     <div className="relative aspect-square bg-stone-50 overflow-hidden">

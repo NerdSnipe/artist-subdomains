@@ -9,20 +9,18 @@ import { getArtistName } from "@/lib/artist-api";
 export default function StudioLayout({ children, artist, domain }: ThemeLayoutProps) {
     const [menuOpen, setMenuOpen] = useState(false);
     const name = getArtistName(artist);
-    const base = `/${domain}`;
-
     const links = [
-        { href: `${base}`, label: "Studio" },
-        { href: `${base}/artworks`, label: "Works" },
-        { href: `${base}/about`, label: "Artist" },
-        { href: `${base}/contact`, label: "Contact" },
+        { href: "/", label: "Studio" },
+        { href: "/artworks", label: "Works" },
+        { href: "/about", label: "Artist" },
+        { href: "/contact", label: "Contact" },
     ];
 
     return (
         <div className="min-h-screen bg-neutral-950 text-neutral-100 flex flex-col">
             <header className="border-b border-neutral-800 sticky top-0 z-50 bg-neutral-950">
                 <div className="max-w-7xl mx-auto px-8 h-14 flex items-center justify-between">
-                    <Link href={base} className="text-sm font-medium tracking-[0.2em] uppercase text-neutral-100">
+                    <Link href="/" className="text-sm font-medium tracking-[0.2em] uppercase text-neutral-100">
                         {name}
                     </Link>
 

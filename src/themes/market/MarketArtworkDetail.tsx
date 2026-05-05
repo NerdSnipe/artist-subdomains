@@ -11,7 +11,7 @@ export default function MarketArtworkDetail({ artist, product, relatedProducts, 
 
     return (
         <div className="max-w-6xl mx-auto px-6 py-8">
-            <Link href={`/${domain}/artworks`} className="text-xs text-stone-400 hover:text-stone-700 mb-6 inline-block font-medium">
+            <Link href="/artworks" className="text-xs text-stone-400 hover:text-stone-700 mb-6 inline-block font-medium">
                 ← Back to Shop
             </Link>
 
@@ -114,7 +114,7 @@ export default function MarketArtworkDetail({ artist, product, relatedProducts, 
                         {relatedProducts.map((r) => {
                             const rImg = getProductImageUrl(r);
                             return (
-                                <Link key={r.id} href={`/${domain}/artworks/${r.slug ?? r.id}`} className="group bg-white border border-stone-100 hover:border-stone-300 transition-colors block">
+                                <Link key={r.id} href={`/artworks/${r.slug ?? r.id}`} className="group bg-white border border-stone-100 hover:border-stone-300 transition-colors block">
                                     <div className="relative aspect-square bg-stone-50 overflow-hidden">
                                         {rImg && <Image src={rImg} alt={r.title} fill className="object-cover group-hover:scale-103 transition-transform" />}
                                     </div>

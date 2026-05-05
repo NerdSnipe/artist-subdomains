@@ -16,7 +16,7 @@ export default function GalleryArtworkDetail({
         <div className="max-w-6xl mx-auto px-6 py-12">
             {/* Back link */}
             <Link
-                href={`/${domain}/artworks`}
+                href="/artworks"
                 className="text-xs tracking-widest uppercase text-neutral-400 hover:text-neutral-900 mb-8 inline-block"
             >
                 ← All Works
@@ -107,7 +107,7 @@ export default function GalleryArtworkDetail({
                             return (
                                 <Link
                                     key={r.id}
-                                    href={`/${domain}/artworks/${r.slug ?? r.id}`}
+                                    href={`/artworks/${r.slug ?? r.id}`}
                                     className="group block"
                                 >
                                     <div className="relative aspect-square bg-neutral-100 overflow-hidden mb-2">

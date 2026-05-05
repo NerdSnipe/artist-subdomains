@@ -9,12 +9,10 @@ import { getArtistName } from "@/lib/artist-api";
 export default function MarketLayout({ children, artist, domain }: ThemeLayoutProps) {
     const [menuOpen, setMenuOpen] = useState(false);
     const name = getArtistName(artist);
-    const base = `/${domain}`;
-
     const links = [
-        { href: `${base}/artworks`, label: "Shop" },
-        { href: `${base}/about`, label: "About" },
-        { href: `${base}/contact`, label: "Contact" },
+        { href: "/artworks", label: "Shop" },
+        { href: "/about", label: "About" },
+        { href: "/contact", label: "Contact" },
     ];
 
     return (
@@ -26,7 +24,7 @@ export default function MarketLayout({ children, artist, domain }: ThemeLayoutPr
 
             <header className="border-b border-stone-200 bg-white sticky top-0 z-50">
                 <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-                    <Link href={base} className="flex items-center gap-2">
+                    <Link href="/" className="flex items-center gap-2">
                         <ShoppingBag size={16} className="text-stone-500" />
                         <span className="font-semibold tracking-tight text-stone-900">{name}</span>
                     </Link>
@@ -58,7 +56,7 @@ export default function MarketLayout({ children, artist, domain }: ThemeLayoutPr
 
                 {menuOpen && (
                     <nav className="md:hidden border-t border-stone-200 bg-white px-6 py-4 flex flex-col gap-4">
-                        <Link href={base} className="text-sm text-stone-600 font-medium" onClick={() => setMenuOpen(false)}>Home</Link>
+                        <Link href="/" className="text-sm text-stone-600 font-medium" onClick={() => setMenuOpen(false)}>Home</Link>
                         {links.map((l) => (
                             <Link key={l.href} href={l.href} className="text-sm text-stone-600 font-medium" onClick={() => setMenuOpen(false)}>{l.label}</Link>
                         ))}

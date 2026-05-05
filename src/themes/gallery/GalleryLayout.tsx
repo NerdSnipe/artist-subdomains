@@ -9,20 +9,18 @@ import { getArtistName } from "@/lib/artist-api";
 export default function GalleryLayout({ children, artist, domain }: ThemeLayoutProps) {
     const [menuOpen, setMenuOpen] = useState(false);
     const name = getArtistName(artist);
-    const base = `/${domain}`;
-
     const links = [
-        { href: `${base}`, label: "Home" },
-        { href: `${base}/artworks`, label: "Artworks" },
-        { href: `${base}/about`, label: "About" },
-        { href: `${base}/contact`, label: "Contact" },
+        { href: "/", label: "Home" },
+        { href: "/artworks", label: "Artworks" },
+        { href: "/about", label: "About" },
+        { href: "/contact", label: "Contact" },
     ];
 
     return (
         <div className="min-h-screen bg-white text-neutral-900 flex flex-col">
             <header className="border-b border-neutral-100 sticky top-0 z-50 bg-white">
                 <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-                    <Link href={`${base}`} className="text-lg font-light tracking-widest uppercase">
+                    <Link href="/" className="text-lg font-light tracking-widest uppercase">
                         {name}
                     </Link>
 

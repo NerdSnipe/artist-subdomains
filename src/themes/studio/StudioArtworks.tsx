@@ -22,7 +22,7 @@ export default function StudioArtworks({ artworks, domain }: ThemePageProps) {
                         return (
                             <Link
                                 key={artwork.id}
-                                href={`/${domain}/artworks/${artwork.slug ?? artwork.id}`}
+                                href={`/artworks/${artwork.slug ?? artwork.id}`}
                                 className="group relative aspect-square bg-neutral-900 overflow-hidden block"
                             >
                                 {img && (

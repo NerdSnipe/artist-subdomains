@@ -35,7 +35,7 @@ export default function MarketAbout({ artist, domain }: ThemePageProps) {
 
             <div className="flex flex-wrap gap-4">
                 <Link
-                    href={`/${domain}/artworks`}
+                    href="/artworks"
                     className="inline-block bg-stone-900 text-white px-6 py-2.5 text-sm font-semibold hover:bg-stone-700 transition-colors"
                 >
                     Shop All Works

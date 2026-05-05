@@ -9,20 +9,18 @@ import { getArtistName } from "@/lib/artist-api";
 export default function ArtisanLayout({ children, artist, domain }: ThemeLayoutProps) {
     const [menuOpen, setMenuOpen] = useState(false);
     const name = getArtistName(artist);
-    const base = `/${domain}`;
-
     const links = [
-        { href: base, label: "Home" },
-        { href: `${base}/artworks`, label: "Gallery" },
-        { href: `${base}/about`, label: "My Story" },
-        { href: `${base}/contact`, label: "Connect" },
+        { href: "/", label: "Home" },
+        { href: "/artworks", label: "Gallery" },
+        { href: "/about", label: "My Story" },
+        { href: "/contact", label: "Connect" },
     ];
 
     return (
         <div className="min-h-screen bg-amber-50 text-stone-800 flex flex-col" style={{ fontFamily: "'Georgia', serif" }}>
             <header className="bg-amber-50 border-b border-amber-200 sticky top-0 z-50">
                 <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
-                    <Link href={base} className="text-lg text-stone-700" style={{ fontFamily: "'Georgia', serif" }}>
+                    <Link href="/" className="text-lg text-stone-700" style={{ fontFamily: "'Georgia', serif" }}>
                         <em>{name}</em>
                     </Link>
 

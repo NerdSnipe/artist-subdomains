@@ -24,7 +24,7 @@ export default function StudioArtworkDetail({ artist, product, relatedProducts, 
             {/* Details */}
             <div className="max-w-7xl mx-auto px-8 py-12 grid grid-cols-1 md:grid-cols-3 gap-12">
                 <div className="md:col-span-2">
-                    <Link href={`/${domain}/artworks`} className="text-xs tracking-[0.3em] uppercase text-neutral-700 hover:text-neutral-400 mb-6 inline-block">
+                    <Link href="/artworks" className="text-xs tracking-[0.3em] uppercase text-neutral-700 hover:text-neutral-400 mb-6 inline-block">
                         ← Works
                     </Link>
                     <h1 className="text-3xl md:text-5xl font-extralight tracking-tight text-neutral-100 mb-4">{product.title}</h1>
@@ -65,7 +65,7 @@ export default function StudioArtworkDetail({ artist, product, relatedProducts, 
                         {relatedProducts.map((r) => {
                             const rImg = getProductImageUrl(r);
                             return (
-                                <Link key={r.id} href={`/${domain}/artworks/${r.slug ?? r.id}`} className="group relative aspect-square bg-neutral-900 block overflow-hidden">
+                                <Link key={r.id} href={`/artworks/${r.slug ?? r.id}`} className="group relative aspect-square bg-neutral-900 block overflow-hidden">
                                     {rImg && <Image src={rImg} alt={r.title} fill className="object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-500" />}
                                 </Link>
                             );

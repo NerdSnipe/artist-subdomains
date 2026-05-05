@@ -39,7 +39,7 @@ export default function GalleryHome({ artist, artworks, domain }: ThemePageProps
                         </p>
                     )}
                     <Link
-                        href={`/${domain}/artworks`}
+                        href="/artworks"
                         className="mt-8 px-8 py-3 border border-white text-white text-sm tracking-widest uppercase hover:bg-white hover:text-neutral-900 transition-colors"
                     >
                         View Works
@@ -59,7 +59,7 @@ export default function GalleryHome({ artist, artworks, domain }: ThemePageProps
                             return (
                                 <Link
                                     key={artwork.id}
-                                    href={`/${domain}/artworks/${artwork.slug ?? artwork.id}`}
+                                    href={`/artworks/${artwork.slug ?? artwork.id}`}
                                     className="group block"
                                 >
                                     <div className="relative aspect-square bg-neutral-100 overflow-hidden mb-3">
@@ -83,7 +83,7 @@ export default function GalleryHome({ artist, artworks, domain }: ThemePageProps
                     {artworks.filter((a) => a.status === "active").length > 9 && (
                         <div className="mt-10 text-center">
                             <Link
-                                href={`/${domain}/artworks`}
+                                href="/artworks"
                                 className="text-sm tracking-widest uppercase text-neutral-500 hover:text-neutral-900 underline"
                             >
                                 View All Works
@@ -101,7 +101,7 @@ export default function GalleryHome({ artist, artworks, domain }: ThemePageProps
                             {artist.bio.slice(0, 300)}{artist.bio.length > 300 ? "…" : ""}
                         </p>
                         <Link
-                            href={`/${domain}/about`}
+                            href="/about"
                             className="inline-block mt-6 text-sm tracking-widest uppercase text-neutral-400 hover:text-neutral-900 underline"
                         >
                             Read More

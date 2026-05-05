@@ -1,4 +1,5 @@
 import type { ArtistProfile, Product, LocalArtistResponse, ProductDetailResponse } from "@/types";
+import { cache } from "react";
 
 const API_BASE = process.env.ARTIST_API_URL ?? "https://api.artdistrictusa.com/api";
 
@@ -8,19 +9,19 @@ export interface DomainConfig {
     isActive: boolean;
 }
 
-export async function getDomainConfig(domain: string): Promise<DomainConfig | null> {
+export const getDomainConfig = cache(async (domain: string): Promise<DomainConfig | null> => {
     try {
         const res = await fetch(
             `${API_BASE}/artist-domain/${encodeURIComponent(domain)}`,
-            { next: { revalidate: 300 } }
+            { cache: 'no-store' }
         );
         if (!res.ok) return null;
         const json = await res.json();
-        return json.data as DomainConfig;
+        return json.data?.isActive ? (json.data as DomainConfig) : null;
     } catch {
         return null;
     }
-}
+});
 
 export async function getArtistData(slug: string): Promise<LocalArtistResponse> {
     const res = await fetch(`${API_BASE}/local-artist/${encodeURIComponent(slug)}`, {

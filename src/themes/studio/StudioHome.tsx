@@ -34,13 +34,13 @@ export default function StudioHome({ artist, artworks, domain }: ThemePageProps)
                     )}
                     <div className="flex gap-6">
                         <Link
-                            href={`/${domain}/artworks`}
+                            href="/artworks"
                             className="text-xs tracking-[0.3em] uppercase text-neutral-100 border-b border-neutral-100 pb-0.5 hover:border-neutral-400 hover:text-neutral-400 transition-colors"
                         >
                             View Works
                         </Link>
                         <Link
-                            href={`/${domain}/about`}
+                            href="/about"
                             className="text-xs tracking-[0.3em] uppercase text-neutral-500 border-b border-neutral-700 pb-0.5 hover:border-neutral-400 hover:text-neutral-400 transition-colors"
                         >
                             About
@@ -55,7 +55,7 @@ export default function StudioHome({ artist, artworks, domain }: ThemePageProps)
                     <div className="flex items-center justify-between mb-10">
                         <p className="text-xs tracking-[0.3em] uppercase text-neutral-600">Selected Works</p>
                         <Link
-                            href={`/${domain}/artworks`}
+                            href="/artworks"
                             className="text-xs tracking-[0.3em] uppercase text-neutral-600 hover:text-neutral-300"
                         >
                             All Works →
@@ -68,7 +68,7 @@ export default function StudioHome({ artist, artworks, domain }: ThemePageProps)
                             return (
                                 <Link
                                     key={artwork.id}
-                                    href={`/${domain}/artworks/${artwork.slug ?? artwork.id}`}
+                                    href={`/artworks/${artwork.slug ?? artwork.id}`}
                                     className={`group block ${isLarge ? "col-span-12 md:col-span-7" : "col-span-12 md:col-span-5"}`}
                                 >
                                     <div className="relative bg-neutral-900 overflow-hidden"
@@ -101,7 +101,7 @@ export default function StudioHome({ artist, artworks, domain }: ThemePageProps)
                             {artist.bio.slice(0, 400)}{artist.bio.length > 400 ? "…" : ""}
                         </p>
                         <Link
-                            href={`/${domain}/about`}
+                            href="/about"
                             className="inline-block mt-6 text-xs tracking-[0.3em] uppercase text-neutral-600 hover:text-neutral-300 border-b border-neutral-800 pb-0.5"
                         >
                             About the Artist
