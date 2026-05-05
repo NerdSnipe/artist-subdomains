@@ -40,7 +40,7 @@ export default function MarketLayout({ children, artist, domain }: ThemeLayoutPr
                             </Link>
                         ))}
                         <a
-                            href={`https://artdistrictusa.com/artist/${artist.slug}`}
+                            href={`https://www.artsdistrictusa.com/artist/${artist.slug}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-sm bg-stone-900 text-white px-4 py-1.5 hover:bg-stone-700 transition-colors"
@@ -69,8 +69,8 @@ export default function MarketLayout({ children, artist, domain }: ThemeLayoutPr
             <footer className="bg-stone-900 text-stone-400 py-10 mt-16">
                 <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs">
                     <span>© {new Date().getFullYear()} {name}. All artwork rights reserved.</span>
-                    <a href="https://artdistrictusa.com" target="_blank" rel="noopener noreferrer" className="hover:text-stone-200">
-                        Powered by ArtDistrictUSA
+                    <a href="https://www.artsdistrictusa.com" target="_blank" rel="noopener noreferrer" className="hover:text-stone-200">
+                        Powered by ArtsDistrictUSA
                     </a>
                 </div>
             </footer>

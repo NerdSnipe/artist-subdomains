@@ -47,7 +47,7 @@ export default function StudioContact({ artist }: ThemePageProps) {
                 {artist.slug && (
                     <div className="grid grid-cols-[80px_1fr] items-start gap-4">
                         <span className="text-xs tracking-[0.2em] uppercase text-neutral-700 pt-0.5">Profile</span>
-                        <a href={`https://artdistrictusa.com/artist/${artist.slug}`} target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-neutral-100 text-sm underline">artdistrictusa.com</a>
+                        <a href={`https://www.artsdistrictusa.com/artist/${artist.slug}`} target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-neutral-100 text-sm underline">artdistrictusa.com</a>
                     </div>
                 )}
             </div>

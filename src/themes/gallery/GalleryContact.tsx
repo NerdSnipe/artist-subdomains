@@ -91,16 +91,16 @@ export default function GalleryContact({ artist }: ThemePageProps) {
                 </div>
             )}
 
-            {/* ArtDistrictUSA profile link */}
+            {/* ArtsDistrictUSA profile link */}
             {artist.slug && (
                 <div className="mt-10 border-t border-neutral-100 pt-8">
                     <a
-                        href={`https://artdistrictusa.com/artist/${artist.slug}`}
+                        href={`https://www.artsdistrictusa.com/artist/${artist.slug}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-sm text-neutral-400 hover:text-neutral-700 underline"
                     >
-                        View full profile on ArtDistrictUSA →
+                        View full profile on ArtsDistrictUSA →
                     </a>
                 </div>
             )}

@@ -48,7 +48,7 @@ export default function ArtisanArtworkDetail({ artist, product, relatedProducts,
                             Inquire / Purchase
                         </a>
                     )}
-                    <p className="text-xs text-stone-400 mt-3">Handled through ArtDistrictUSA</p>
+                    <p className="text-xs text-stone-400 mt-3">Handled through ArtsDistrictUSA</p>
 
                     {product.isFramed && <p className="text-xs text-amber-700 mt-3">✦ Framed and ready to hang</p>}
                 </div>

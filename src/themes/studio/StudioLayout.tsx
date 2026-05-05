@@ -66,12 +66,12 @@ export default function StudioLayout({ children, artist, domain }: ThemeLayoutPr
                 <div className="max-w-7xl mx-auto px-8 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-neutral-600 tracking-widest uppercase">
                     <span>© {new Date().getFullYear()} {name}</span>
                     <a
-                        href="https://artdistrictusa.com"
+                        href="https://www.artsdistrictusa.com"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="hover:text-neutral-400"
                     >
-                        ArtDistrictUSA
+                        ArtsDistrictUSA
                     </a>
                 </div>
             </footer>

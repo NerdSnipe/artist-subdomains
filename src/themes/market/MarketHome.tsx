@@ -94,7 +94,7 @@ export default function MarketHome({ artist, artworks, domain }: ThemePageProps)
                     </div>
                     <div>
                         <p className="text-sm font-semibold text-stone-900">Secure Purchase</p>
-                        <p className="text-xs text-stone-400 mt-1">Handled through ArtDistrictUSA</p>
+                        <p className="text-xs text-stone-400 mt-1">Handled through ArtsDistrictUSA</p>
                     </div>
                     <div>
                         <p className="text-sm font-semibold text-stone-900">Artist Direct</p>

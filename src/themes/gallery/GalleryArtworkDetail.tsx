@@ -84,12 +84,12 @@ export default function GalleryArtworkDetail({
                     <p className="text-xs text-neutral-400 mt-3">
                         Purchase and inquiries handled through{" "}
                         <a
-                            href="https://artdistrictusa.com"
+                            href="https://www.artsdistrictusa.com"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="underline"
                         >
-                            ArtDistrictUSA
+                            ArtsDistrictUSA
                         </a>
                     </p>
                 </div>

@@ -75,12 +75,12 @@ export default function GalleryLayout({ children, artist, domain }: ThemeLayoutP
                     <span>
                         Powered by{" "}
                         <a
-                            href="https://artdistrictusa.com"
+                            href="https://www.artsdistrictusa.com"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="underline hover:text-neutral-600"
                         >
-                            ArtDistrictUSA
+                            ArtsDistrictUSA
                         </a>
                     </span>
                 </div>

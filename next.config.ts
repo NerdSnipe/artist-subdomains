@@ -26,7 +26,7 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "*.s3.amazonaws.com" },
       { protocol: "https", hostname: "**.r2.dev" },
       { protocol: "https", hostname: "**.railway.app" },
-      { protocol: "https", hostname: "www.artdistrictusa.com" },
+      { protocol: "https", hostname: "www.artsdistrictusa.com" },
       { protocol: "https", hostname: "api.artdistrictusa.com" },
     ],
   },

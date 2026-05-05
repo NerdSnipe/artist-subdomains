@@ -57,8 +57,8 @@ export default function ArtisanLayout({ children, artist, domain }: ThemeLayoutP
             <footer className="bg-stone-800 text-amber-100/60 py-10 mt-16">
                 <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-3 text-sm">
                     <em>© {new Date().getFullYear()} {name}</em>
-                    <a href="https://artdistrictusa.com" target="_blank" rel="noopener noreferrer" className="hover:text-amber-100 text-xs">
-                        ArtDistrictUSA
+                    <a href="https://www.artsdistrictusa.com" target="_blank" rel="noopener noreferrer" className="hover:text-amber-100 text-xs">
+                        ArtsDistrictUSA
                     </a>
                 </div>
             </footer>

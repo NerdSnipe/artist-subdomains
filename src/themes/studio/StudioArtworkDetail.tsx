@@ -53,7 +53,7 @@ export default function StudioArtworkDetail({ artist, product, relatedProducts, 
                         </a>
                     )}
                     <p className="text-xs text-neutral-700 leading-relaxed">
-                        Handled through ArtDistrictUSA
+                        Handled through ArtsDistrictUSA
                     </p>
                 </div>
             </div>

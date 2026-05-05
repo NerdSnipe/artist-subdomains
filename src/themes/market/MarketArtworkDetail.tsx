@@ -56,11 +56,11 @@ export default function MarketArtworkDetail({ artist, product, relatedProducts, 
                             rel="noopener noreferrer"
                             className="flex items-center gap-2 w-fit bg-stone-900 text-white px-8 py-3.5 text-sm font-semibold hover:bg-stone-700 transition-colors mb-3"
                         >
-                            Purchase on ArtDistrictUSA
+                            Purchase on ArtsDistrictUSA
                             <ExternalLink size={14} />
                         </a>
                     )}
-                    <p className="text-xs text-stone-400 mb-8">Secure checkout through ArtDistrictUSA marketplace</p>
+                    <p className="text-xs text-stone-400 mb-8">Secure checkout through ArtsDistrictUSA marketplace</p>
 
                     {/* Details table */}
                     <div className="border-t border-stone-100 pt-6 space-y-3">

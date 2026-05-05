@@ -41,8 +41,8 @@ export default function MarketContact({ artist }: ThemePageProps) {
                 )}
                 {artist.slug && (
                     <div className="pt-2 border-t border-stone-100">
-                        <a href={`https://artdistrictusa.com/artist/${artist.slug}`} target="_blank" rel="noopener noreferrer" className="text-sm text-stone-400 hover:text-stone-700 underline">
-                            View profile on ArtDistrictUSA →
+                        <a href={`https://www.artsdistrictusa.com/artist/${artist.slug}`} target="_blank" rel="noopener noreferrer" className="text-sm text-stone-400 hover:text-stone-700 underline">
+                            View profile on ArtsDistrictUSA →
                         </a>
                     </div>
                 )}

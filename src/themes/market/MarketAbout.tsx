@@ -42,12 +42,12 @@ export default function MarketAbout({ artist, domain }: ThemePageProps) {
                 </Link>
                 {artist.slug && (
                     <a
-                        href={`https://artdistrictusa.com/artist/${artist.slug}`}
+                        href={`https://www.artsdistrictusa.com/artist/${artist.slug}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-block border border-stone-300 text-stone-600 px-6 py-2.5 text-sm font-semibold hover:border-stone-600 transition-colors"
                     >
-                        Full ArtDistrictUSA Profile →
+                        Full ArtsDistrictUSA Profile →
                     </a>
                 )}
             </div>

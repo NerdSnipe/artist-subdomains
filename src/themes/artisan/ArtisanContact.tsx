@@ -42,8 +42,8 @@ export default function ArtisanContact({ artist }: ThemePageProps) {
                 {artist.slug && (
                     <div className="flex gap-5 items-start pt-4 border-t border-amber-200">
                         <span className="text-amber-700 w-20 shrink-0 text-xs uppercase tracking-widest pt-0.5">Profile</span>
-                        <a href={`https://artdistrictusa.com/artist/${artist.slug}`} target="_blank" rel="noopener noreferrer" className="text-stone-500 underline hover:text-amber-700 text-xs">
-                            View on ArtDistrictUSA →
+                        <a href={`https://www.artsdistrictusa.com/artist/${artist.slug}`} target="_blank" rel="noopener noreferrer" className="text-stone-500 underline hover:text-amber-700 text-xs">
+                            View on ArtsDistrictUSA →
                         </a>
                     </div>
                 )}
