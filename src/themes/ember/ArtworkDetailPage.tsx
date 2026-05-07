@@ -18,7 +18,7 @@ export default function EmberArtworkDetail({ artist, product, relatedProducts, d
         <div style={{ backgroundColor: "#f7f3ee", fontFamily: "'Georgia', 'Times New Roman', serif" }}>
             <div className="max-w-6xl mx-auto px-8 pt-10 pb-6">
                 <Link
-                    href={`/${domain}/artworks`}
+                    href={`/artworks`}
                     className="inline-flex items-center gap-2 text-sm transition-all duration-200 hover:opacity-60"
                     style={{ color: "#b5451b" }}
                 >
@@ -217,7 +217,7 @@ export default function EmberArtworkDetail({ artist, product, relatedProducts, d
                             </a>
                         ) : product.status === "active" ? (
                             <Link
-                                href={`/${domain}/contact`}
+                                href={`/contact`}
                                 className="inline-block w-full text-center py-4 font-serif text-base tracking-wide border transition-all duration-300 hover:opacity-70"
                                 style={{ borderColor: "#b5451b", color: "#b5451b" }}
                             >
@@ -248,7 +248,7 @@ export default function EmberArtworkDetail({ artist, product, relatedProducts, d
                                 return (
                                     <Link
                                         key={r.id}
-                                        href={`/${domain}/artworks/${r.slug ?? r.id}`}
+                                        href={`/artworks/${r.slug ?? r.id}`}
                                         className="group block"
                                     >
                                         <div

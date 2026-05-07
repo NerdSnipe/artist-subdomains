@@ -11,10 +11,10 @@ export default function ObsidianLayout({ children, artist, domain }: ThemeLayout
     const name = getArtistName(artist);
 
     const links = [
-        { href: `/${domain}`, label: "Home" },
-        { href: `/${domain}/artworks`, label: "Works" },
-        { href: `/${domain}/about`, label: "About" },
-        { href: `/${domain}/contact`, label: "Contact" },
+        { href: `/`, label: "Home" },
+        { href: `/artworks`, label: "Works" },
+        { href: `/about`, label: "About" },
+        { href: `/contact`, label: "Contact" },
     ];
 
     const socials: { href: string; label: string }[] = [
@@ -53,7 +53,7 @@ export default function ObsidianLayout({ children, artist, domain }: ThemeLayout
 
                     {/* Artist name — centered */}
                     <Link
-                        href={`/${domain}`}
+                        href={`/`}
                         className="absolute left-1/2 -translate-x-1/2 text-sm md:text-base font-thin tracking-[0.35em] uppercase text-[#c9a96e] hover:text-[#f5f0eb] transition-colors whitespace-nowrap"
                     >
                         {name}

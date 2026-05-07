@@ -137,7 +137,7 @@ export default function ArtworksBrowser({ artworks, domain }: Props) {
                         return (
                             <Link
                                 key={artwork.id}
-                                href={`/${domain}/artworks/${artwork.slug ?? artwork.id}`}
+                                href={`/artworks/${artwork.slug ?? artwork.id}`}
                                 className="group block"
                             >
                                 <div className="relative aspect-[4/5] bg-[#111] overflow-hidden mb-4">

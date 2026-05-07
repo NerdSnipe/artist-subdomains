@@ -68,14 +68,14 @@ export default function EmberHome({ artist, artworks, domain }: ThemePageProps) 
                         )}
                         <div className="flex flex-wrap gap-4">
                             <Link
-                                href={`/${domain}/artworks`}
+                                href={`/artworks`}
                                 className="inline-block px-8 py-3 text-sm font-serif tracking-wide transition-all duration-300"
                                 style={{ backgroundColor: "#b5451b", color: "#f7f3ee" }}
                             >
                                 View Works
                             </Link>
                             <Link
-                                href={`/${domain}/about`}
+                                href={`/about`}
                                 className="inline-block px-8 py-3 text-sm font-serif tracking-wide border transition-all duration-300 hover:opacity-70"
                                 style={{ borderColor: "#2c2925", color: "#2c2925" }}
                             >
@@ -103,7 +103,7 @@ export default function EmberHome({ artist, artworks, domain }: ThemePageProps) 
                             return (
                                 <Link
                                     key={artwork.id}
-                                    href={`/${domain}/artworks/${artwork.slug ?? artwork.id}`}
+                                    href={`/artworks/${artwork.slug ?? artwork.id}`}
                                     className="group block"
                                 >
                                     {/* Matted card */}
@@ -152,7 +152,7 @@ export default function EmberHome({ artist, artworks, domain }: ThemePageProps) 
                     {artworks.filter((a) => a.status === "active").length > 6 && (
                         <div className="mt-14 text-center">
                             <Link
-                                href={`/${domain}/artworks`}
+                                href={`/artworks`}
                                 className="inline-block text-sm font-serif border-b pb-0.5 transition-all duration-200 hover:opacity-60"
                                 style={{ color: "#b5451b", borderColor: "#b5451b" }}
                             >
@@ -260,7 +260,7 @@ export default function EmberHome({ artist, artworks, domain }: ThemePageProps) 
                             &ldquo;{artist.bio.slice(0, 300)}{artist.bio.length > 300 ? "…" : ""}&rdquo;
                         </p>
                         <Link
-                            href={`/${domain}/about`}
+                            href={`/about`}
                             className="inline-block text-sm border-b pb-0.5 transition-all duration-200 hover:opacity-60"
                             style={{ color: "#b5451b", borderColor: "#b5451b" }}
                         >

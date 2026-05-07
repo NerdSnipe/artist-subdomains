@@ -147,7 +147,7 @@ export default function LuminaryArtworksPage({ artworks, domain }: ThemePageProp
                             return (
                                 <Link
                                     key={work.id}
-                                    href={`/${domain}/artworks/${work.slug ?? work.id}`}
+                                    href={`/artworks/${work.slug ?? work.id}`}
                                     className={`${colSpan} group block`}
                                 >
                                     <div className={`relative overflow-hidden bg-neutral-100 ${

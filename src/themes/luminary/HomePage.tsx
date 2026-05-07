@@ -65,13 +65,13 @@ export default function LuminaryHomePage({ artist, artworks, domain }: ThemePage
                         {/* CTA links */}
                         <div className="flex items-center gap-6 flex-wrap">
                             <Link
-                                href={`/${domain}/artworks`}
+                                href={`/artworks`}
                                 className="font-sans text-xs tracking-[0.2em] uppercase text-white bg-[#0f2d6b] px-6 py-3 hover:bg-[#1a1a1a] transition-colors"
                             >
                                 View Works
                             </Link>
                             <Link
-                                href={`/${domain}/about`}
+                                href={`/about`}
                                 className="font-sans text-xs tracking-[0.2em] uppercase text-[#0f2d6b] border border-[#0f2d6b] px-6 py-3 hover:bg-[#0f2d6b] hover:text-white transition-colors"
                             >
                                 Artist Profile
@@ -135,7 +135,7 @@ export default function LuminaryHomePage({ artist, artworks, domain }: ThemePage
                             const img = getProductImageUrl(featuredWorks[0]);
                             return (
                                 <Link
-                                    href={`/${domain}/artworks/${featuredWorks[0].slug ?? featuredWorks[0].id}`}
+                                    href={`/artworks/${featuredWorks[0].slug ?? featuredWorks[0].id}`}
                                     className="col-span-12 md:col-span-7 group block"
                                 >
                                     <div className="relative aspect-[4/5] md:aspect-auto md:h-[520px] overflow-hidden bg-neutral-100">
@@ -175,7 +175,7 @@ export default function LuminaryHomePage({ artist, artworks, domain }: ThemePage
                                 return (
                                     <Link
                                         key={work.id}
-                                        href={`/${domain}/artworks/${work.slug ?? work.id}`}
+                                        href={`/artworks/${work.slug ?? work.id}`}
                                         className="group block"
                                     >
                                         <div className="relative aspect-[3/2] overflow-hidden bg-neutral-100">
@@ -214,7 +214,7 @@ export default function LuminaryHomePage({ artist, artworks, domain }: ThemePage
                             return (
                                 <Link
                                     key={work.id}
-                                    href={`/${domain}/artworks/${work.slug ?? work.id}`}
+                                    href={`/artworks/${work.slug ?? work.id}`}
                                     className="col-span-12 sm:col-span-6 md:col-span-4 group block"
                                 >
                                     <div className="relative aspect-square overflow-hidden bg-neutral-100">
@@ -251,7 +251,7 @@ export default function LuminaryHomePage({ artist, artworks, domain }: ThemePage
                         <div className="mt-10 flex items-center gap-4">
                             <div className="flex-1 h-px bg-neutral-200" />
                             <Link
-                                href={`/${domain}/artworks`}
+                                href={`/artworks`}
                                 className="font-sans text-xs tracking-[0.2em] uppercase text-[#0f2d6b] hover:text-[#1a1a1a] transition-colors shrink-0"
                             >
                                 View Full Collection →
@@ -365,7 +365,7 @@ export default function LuminaryHomePage({ artist, artworks, domain }: ThemePage
                                     </p>
                                 )}
                                 <Link
-                                    href={`/${domain}/artworks/${featureWork.slug ?? featureWork.id}`}
+                                    href={`/artworks/${featureWork.slug ?? featureWork.id}`}
                                     className="font-sans text-xs tracking-[0.2em] uppercase text-white border border-white px-5 py-2.5 hover:bg-white hover:text-[#1a1a1a] transition-colors inline-block"
                                 >
                                     View Work

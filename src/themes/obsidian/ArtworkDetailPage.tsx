@@ -27,7 +27,7 @@ export default function ObsidianArtworkDetail({
             {/* Back link */}
             <div className="px-6 md:px-12 py-8">
                 <Link
-                    href={`/${domain}/artworks`}
+                    href={`/artworks`}
                     className="inline-flex items-center gap-3 text-[10px] tracking-[0.3em] uppercase text-[#4a4540] hover:text-[#c9a96e] transition-colors duration-300"
                 >
                     <span className="h-px w-6 bg-current" />
@@ -263,7 +263,7 @@ export default function ObsidianArtworkDetail({
                             return (
                                 <Link
                                     key={r.id}
-                                    href={`/${domain}/artworks/${r.slug ?? r.id}`}
+                                    href={`/artworks/${r.slug ?? r.id}`}
                                     className="group block flex-shrink-0 w-48 md:w-auto"
                                 >
                                     <div className="relative aspect-square bg-[#111] overflow-hidden mb-3">

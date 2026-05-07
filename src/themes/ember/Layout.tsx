@@ -10,10 +10,10 @@ export default function EmberLayout({ children, artist, domain }: ThemeLayoutPro
     const name = getArtistName(artist);
 
     const links = [
-        { href: `/${domain}`, label: "Home" },
-        { href: `/${domain}/artworks`, label: "Works" },
-        { href: `/${domain}/about`, label: "About" },
-        { href: `/${domain}/contact`, label: "Contact" },
+        { href: `/`, label: "Home" },
+        { href: `/artworks`, label: "Works" },
+        { href: `/about`, label: "About" },
+        { href: `/contact`, label: "Contact" },
     ];
 
     return (
@@ -22,7 +22,7 @@ export default function EmberLayout({ children, artist, domain }: ThemeLayoutPro
             <header className="sticky top-0 z-50 border-b" style={{ backgroundColor: "#f7f3ee", borderColor: "#e8e0d6" }}>
                 <div className="max-w-6xl mx-auto px-8 h-18 flex items-center justify-between" style={{ height: "4.5rem" }}>
                     <Link
-                        href={`/${domain}`}
+                        href={`/`}
                         className="font-serif text-lg leading-tight transition-opacity duration-200 hover:opacity-70"
                         style={{ color: "#2c2925" }}
                     >

@@ -29,7 +29,7 @@ export default function LuminaryArtworkDetailPage({
             <div className="border-b border-neutral-200">
                 <div className="max-w-7xl mx-auto px-6 md:px-10 py-3">
                     <Link
-                        href={`/${domain}/artworks`}
+                        href={`/artworks`}
                         className="font-sans text-[10px] tracking-[0.2em] uppercase text-neutral-400 hover:text-[#0f2d6b] transition-colors inline-flex items-center gap-2"
                     >
                         <span>←</span> All Works
@@ -280,7 +280,7 @@ export default function LuminaryArtworkDetailPage({
                                     About the Artist
                                 </p>
                                 <Link
-                                    href={`/${domain}/about`}
+                                    href={`/about`}
                                     className="block group"
                                 >
                                     <p className="font-serif font-black text-lg text-[#1a1a1a] group-hover:text-[#0f2d6b] transition-colors mb-2">
@@ -299,7 +299,7 @@ export default function LuminaryArtworkDetailPage({
                                     </p>
                                 )}
                                 <Link
-                                    href={`/${domain}/about`}
+                                    href={`/about`}
                                     className="font-sans text-[10px] tracking-[0.2em] uppercase text-[#0f2d6b] hover:underline mt-3 inline-block"
                                 >
                                     Full Profile →
@@ -328,7 +328,7 @@ export default function LuminaryArtworkDetailPage({
                                 return (
                                     <Link
                                         key={r.id}
-                                        href={`/${domain}/artworks/${r.slug ?? r.id}`}
+                                        href={`/artworks/${r.slug ?? r.id}`}
                                         className="group block"
                                     >
                                         <div className="relative aspect-[3/4] overflow-hidden bg-neutral-100">

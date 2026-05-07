@@ -134,7 +134,7 @@ export default function EmberArtworks({ artist, artworks, domain }: ThemePagePro
                             return (
                                 <Link
                                     key={artwork.id}
-                                    href={`/${domain}/artworks/${artwork.slug ?? artwork.id}`}
+                                    href={`/artworks/${artwork.slug ?? artwork.id}`}
                                     className="group block"
                                 >
                                     {/* Matted frame */}

@@ -55,7 +55,7 @@ export default function ObsidianHome({ artist, artworks, domain }: ThemePageProp
                     )}
 
                     <Link
-                        href={`/${domain}/artworks`}
+                        href={`/artworks`}
                         className="group inline-flex items-center gap-4 text-[10px] tracking-[0.4em] uppercase text-[#f5f0eb]/70 hover:text-[#c9a96e] transition-colors duration-500 mt-4"
                     >
                         <span className="h-px w-8 bg-[#c9a96e]/50 group-hover:w-16 transition-all duration-500" />
@@ -86,7 +86,7 @@ export default function ObsidianHome({ artist, artworks, domain }: ThemePageProp
                             return (
                                 <Link
                                     key={artwork.id}
-                                    href={`/${domain}/artworks/${artwork.slug ?? artwork.id}`}
+                                    href={`/artworks/${artwork.slug ?? artwork.id}`}
                                     className="group relative aspect-[4/5] bg-[#111] overflow-hidden block"
                                 >
                                     {imgUrl ? (
@@ -130,7 +130,7 @@ export default function ObsidianHome({ artist, artworks, domain }: ThemePageProp
                     {activeWorks.length > 6 && (
                         <div className="text-center mt-16">
                             <Link
-                                href={`/${domain}/artworks`}
+                                href={`/artworks`}
                                 className="inline-block text-[10px] tracking-[0.4em] uppercase text-[#8a8278] hover:text-[#c9a96e] transition-colors duration-300 border-b border-[#8a8278]/30 hover:border-[#c9a96e]/50 pb-1"
                             >
                                 View Complete Works
@@ -157,7 +157,7 @@ export default function ObsidianHome({ artist, artworks, domain }: ThemePageProp
                         </blockquote>
                         <div className="mt-10">
                             <Link
-                                href={`/${domain}/about`}
+                                href={`/about`}
                                 className="text-[10px] tracking-[0.35em] uppercase text-[#6a6460] hover:text-[#c9a96e] transition-colors duration-300"
                             >
                                 About the Artist
@@ -209,7 +209,7 @@ export default function ObsidianHome({ artist, artworks, domain }: ThemePageProp
                     Collect Original Work
                 </h3>
                 <Link
-                    href={`/${domain}/contact`}
+                    href={`/contact`}
                     className="inline-block text-[10px] tracking-[0.4em] uppercase px-10 py-4 border border-[#c9a96e]/50 text-[#c9a96e] hover:bg-[#c9a96e]/10 hover:border-[#c9a96e] transition-all duration-400"
                 >
                     Get in Touch

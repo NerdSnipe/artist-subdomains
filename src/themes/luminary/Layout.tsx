@@ -10,10 +10,10 @@ export default function LuminaryLayout({ children, artist, domain }: ThemeLayout
     const name = getArtistName(artist);
 
     const links = [
-        { href: `/${domain}`, label: "Home" },
-        { href: `/${domain}/artworks`, label: "Works" },
-        { href: `/${domain}/about`, label: "About" },
-        { href: `/${domain}/contact`, label: "Contact" },
+        { href: `/`, label: "Home" },
+        { href: `/artworks`, label: "Works" },
+        { href: `/about`, label: "About" },
+        { href: `/contact`, label: "Contact" },
     ];
 
     const socials: { href: string; label: string }[] = [
@@ -32,7 +32,7 @@ export default function LuminaryLayout({ children, artist, domain }: ThemeLayout
                     <div className="max-w-7xl mx-auto px-6 md:px-10 h-16 flex items-center justify-between">
                         {/* Artist name — bold serif */}
                         <Link
-                            href={`/${domain}`}
+                            href={`/`}
                             className="font-serif font-black text-xl md:text-2xl tracking-tight text-[#1a1a1a] hover:text-[#0f2d6b] transition-colors"
                         >
                             {name}

@@ -196,7 +196,7 @@ export default function LuminaryContactPage({ artist, domain }: ThemePageProps) 
                                     Browse available original works and prints. All purchases and inquiries are handled securely through ArtsDistrictUSA.
                                 </p>
                                 <a
-                                    href={`/${domain}/artworks`}
+                                    href={`/artworks`}
                                     className="inline-block font-sans text-xs tracking-[0.2em] uppercase border-2 border-[#0f2d6b] text-[#0f2d6b] px-8 py-4 hover:bg-[#0f2d6b] hover:text-white transition-colors"
                                 >
                                     View All Works
