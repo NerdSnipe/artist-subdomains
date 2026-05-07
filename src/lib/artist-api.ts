@@ -10,6 +10,7 @@ export interface DomainConfig {
 }
 
 export const getDomainConfig = cache(async (domain: string): Promise<DomainConfig | null> => {
+    if (domain.endsWith('.vercel.app')) return null;
     try {
         const res = await fetch(
             `${API_BASE}/artist-domain/${encodeURIComponent(domain)}`,
