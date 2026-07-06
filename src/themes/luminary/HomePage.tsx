@@ -1,326 +1,245 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import type { ThemePageProps } from "@/themes/types";
 import { getArtistName, getProductImageUrl } from "@/lib/artist-api";
+import GlowBlob from "./GlowBlob";
+import Reveal from "./Reveal";
+import { Kicker, PillButton } from "./ui";
 
-export default function LuminaryHomePage({ artist, artworks, domain }: ThemePageProps) {
+export default function LuminaryHomePage({ artist, artworks }: ThemePageProps) {
     const name = getArtistName(artist);
-    const activeWorks = artworks.filter((a) => a.status !== "inactive");
-    const heroWork = activeWorks.find((a) => a.status === "active") ?? null;
-    const heroImgUrl = heroWork ? getProductImageUrl(heroWork) : null;
-    const coverPhoto = artist.coverPhoto ?? artist.profilePhoto ?? null;
+    const active = artworks.filter((a) => a.status === "active");
+    const heroWork = active[0] ?? null;
+    const heroImg = heroWork ? getProductImageUrl(heroWork) : null;
+    const heroGlow = heroWork?.dominantColors?.[0]?.hex ?? "#f3c6de";
+    const heroGlow2 = heroWork?.dominantColors?.[1]?.hex ?? "#c9d8f7";
 
-    // Editorial featured grid: first 6 active works
-    const featuredWorks = activeWorks.filter((a) => a.status === "active").slice(0, 6);
-    // Full-bleed feature: pick a different work than the hero if possible
-    const featureWork = featuredWorks[2] ?? featuredWorks[0] ?? null;
-    const featureImgUrl = featureWork ? getProductImageUrl(featureWork) : null;
+    const featured = active.slice(1, 7);
+    const bannerWork = active[7] ?? active[3] ?? null;
+    const bannerImg = bannerWork ? getProductImageUrl(bannerWork) : null;
 
-    const year = new Date().getFullYear();
+    const posts = (artist.blogPosts ?? []).slice(0, 3);
+    const events = (artist.events ?? []).slice(0, 3);
     const location = [artist.city, artist.state].filter(Boolean).join(", ");
 
     return (
         <div>
-            {/* ── Editorial Header Strip ─────────────────────────────────────── */}
-            <div className="border-b border-[#1a1a1a]">
-                <div className="max-w-7xl mx-auto px-6 md:px-10 py-2 flex items-center justify-between">
-                    <span className="text-[10px] tracking-[0.25em] uppercase font-sans text-neutral-400">
-                        Contemporary Art
-                    </span>
-                    <span className="text-[10px] tracking-[0.25em] uppercase font-sans text-neutral-400">
-                        {location && `${location} · `}{year}
-                    </span>
-                </div>
-            </div>
-
-            {/* ── Hero: Magazine Cover Composition ──────────────────────────── */}
-            <section className="max-w-7xl mx-auto px-6 md:px-10 pt-10 pb-0">
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-0 md:gap-8 items-start">
-                    {/* Left: Typography column */}
-                    <div className="md:col-span-5 flex flex-col justify-between py-6 md:py-12">
-                        {/* Issue label */}
-                        <div className="mb-8">
-                            <span className="text-[10px] tracking-[0.3em] uppercase font-sans text-[#0f2d6b] border border-[#0f2d6b] px-2 py-1">
-                                Featured Artist
-                            </span>
+            {/* ── Hero ─────────────────────────────────────────────────────── */}
+            <section className="relative mx-auto max-w-7xl px-6 pb-20 pt-14 md:px-10 md:pb-28 md:pt-20">
+                <div className="grid grid-cols-1 items-center gap-14 md:grid-cols-12 md:gap-10">
+                    <Reveal className="md:col-span-6 lg:col-span-6" delay={0}>
+                        <Kicker>{artist.medium ?? artist.artStyle ?? "Original Art"}</Kicker>
+                        <h1 className="mt-6 font-serif text-[3.2rem] italic leading-[1.05] tracking-tight text-[#3a3240] sm:text-6xl lg:text-7xl">
+                            {artist.artistTagline ?? `The art of ${name.split(" ")[0]}`}
+                        </h1>
+                        {(artist.artistTagline ? artist.bio : null) && (
+                            <p className="mt-7 max-w-md font-sans text-[15px] leading-relaxed text-[#6b6470]">
+                                {artist.bio!.slice(0, 190)}
+                                {artist.bio!.length > 190 ? "…" : ""}
+                            </p>
+                        )}
+                        {!artist.artistTagline && artist.bio && (
+                            <p className="mt-7 max-w-md font-sans text-[15px] leading-relaxed text-[#6b6470]">
+                                {artist.bio.slice(0, 190)}
+                                {artist.bio.length > 190 ? "…" : ""}
+                            </p>
+                        )}
+                        <div className="mt-10 flex flex-wrap items-center gap-4">
+                            <PillButton href="/artworks">View the Gallery</PillButton>
+                            <PillButton href="/about" variant="outline">
+                                Meet {name.split(" ")[0]}
+                            </PillButton>
                         </div>
+                        {location && (
+                            <p className="mt-10 font-sans text-xs uppercase tracking-[0.24em] text-[#a9769f]">
+                                Working out of {location}
+                            </p>
+                        )}
+                    </Reveal>
 
-                        {/* Enormous headline */}
-                        <div>
-                            <h1 className="font-serif font-black text-6xl sm:text-7xl md:text-8xl leading-[0.9] tracking-tight text-[#1a1a1a] mb-6">
-                                {name}
-                            </h1>
-                            {artist.artistTagline && (
-                                <p className="font-sans text-base md:text-lg text-neutral-500 leading-relaxed max-w-sm mb-8">
-                                    {artist.artistTagline}
-                                </p>
-                            )}
-                            {!artist.artistTagline && artist.bio && (
-                                <p className="font-sans text-base text-neutral-500 leading-relaxed max-w-sm mb-8">
-                                    {artist.bio.slice(0, 140)}…
-                                </p>
-                            )}
-                        </div>
-
-                        {/* CTA links */}
-                        <div className="flex items-center gap-6 flex-wrap">
-                            <Link
-                                href={`/artworks`}
-                                className="font-sans text-xs tracking-[0.2em] uppercase text-white bg-[#0f2d6b] px-6 py-3 hover:bg-[#1a1a1a] transition-colors"
-                            >
-                                View Works
-                            </Link>
-                            <Link
-                                href={`/about`}
-                                className="font-sans text-xs tracking-[0.2em] uppercase text-[#0f2d6b] border border-[#0f2d6b] px-6 py-3 hover:bg-[#0f2d6b] hover:text-white transition-colors"
-                            >
-                                Artist Profile
-                            </Link>
-                        </div>
-                    </div>
-
-                    {/* Right: Hero image — large, slightly cropped */}
-                    <div className="md:col-span-7 relative">
-                        {heroImgUrl ? (
-                            <div className="relative aspect-[4/5] md:aspect-[3/4] overflow-hidden bg-neutral-100">
-                                <Image
-                                    src={heroImgUrl}
-                                    alt={heroWork?.title ?? name}
-                                    fill
-                                    className="object-cover"
-                                    priority
-                                />
-                                {heroWork && (
-                                    <div className="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/60 to-transparent">
-                                        <p className="font-serif font-black text-white text-lg">
-                                            {heroWork.title}
-                                        </p>
-                                        {heroWork.yearCreated && (
-                                            <p className="font-sans text-xs text-white/70 tracking-widest uppercase mt-1">
-                                                {heroWork.yearCreated}
-                                            </p>
+                    <Reveal className="relative md:col-span-6 lg:col-span-6" delay={150}>
+                        <div className="relative mx-auto max-w-md md:max-w-none">
+                            <GlowBlob
+                                className="-inset-x-10 -inset-y-10 -z-10"
+                                colors={[heroGlow, heroGlow2]}
+                                opacity={0.65}
+                            />
+                            {heroImg ? (
+                                <div className="relative rounded-[2px] bg-white p-3 shadow-[0_30px_60px_-15px_rgba(58,50,64,0.25)] sm:p-4">
+                                    <div className="relative aspect-[4/5] w-full overflow-hidden bg-[#f6f3f1]">
+                                        <Image src={heroImg} alt={heroWork!.title} fill priority className="object-cover" />
+                                    </div>
+                                    <div className="flex items-baseline justify-between px-1 pt-3">
+                                        <p className="font-serif italic text-[#3a3240]">{heroWork!.title}</p>
+                                        {heroWork!.yearCreated && (
+                                            <p className="font-sans text-xs text-[#a39aa0]">{heroWork!.yearCreated}</p>
                                         )}
                                     </div>
-                                )}
-                            </div>
-                        ) : coverPhoto ? (
-                            <div className="relative aspect-[4/5] md:aspect-[3/4] overflow-hidden bg-neutral-100">
-                                <Image src={coverPhoto} alt={name} fill className="object-cover" priority />
-                            </div>
-                        ) : (
-                            <div className="aspect-[4/5] md:aspect-[3/4] bg-neutral-100 flex items-end p-8">
-                                <p className="font-serif font-black text-4xl text-neutral-300">{name}</p>
-                            </div>
-                        )}
-                    </div>
+                                </div>
+                            ) : (
+                                <div className="relative flex aspect-[4/5] w-full items-center justify-center bg-white/60 p-10 text-center shadow-[0_30px_60px_-15px_rgba(58,50,64,0.15)]">
+                                    <p className="font-serif text-3xl italic text-[#c9bdd2]">{name}</p>
+                                </div>
+                            )}
+                        </div>
+                    </Reveal>
                 </div>
             </section>
 
-            {/* ── "In This Issue" Editorial Grid ────────────────────────────── */}
-            {featuredWorks.length > 0 && (
-                <section className="max-w-7xl mx-auto px-6 md:px-10 py-16">
-                    <div className="flex items-baseline gap-6 mb-8 border-t-2 border-[#1a1a1a] pt-6">
-                        <h2 className="font-sans text-[10px] tracking-[0.3em] uppercase text-[#0f2d6b]">
-                            In This Collection
-                        </h2>
-                        <span className="font-sans text-[10px] tracking-[0.2em] uppercase text-neutral-300">
-                            — Selected Works
-                        </span>
-                    </div>
+            {/* ── Featured Works ───────────────────────────────────────────── */}
+            {featured.length > 0 && (
+                <section className="relative mx-auto max-w-7xl px-6 py-16 md:px-10 md:py-24">
+                    <Reveal className="mb-12 flex flex-wrap items-end justify-between gap-6">
+                        <div>
+                            <Kicker>Selected Works</Kicker>
+                            <h2 className="mt-4 font-serif text-4xl italic text-[#3a3240] sm:text-5xl">A gentle collection</h2>
+                        </div>
+                        <Link
+                            href="/artworks"
+                            className="group hidden items-center gap-2 font-sans text-sm font-medium uppercase tracking-[0.14em] text-[#a9769f] transition-colors hover:text-[#3a3240] md:inline-flex"
+                        >
+                            Browse full gallery
+                            <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                        </Link>
+                    </Reveal>
 
-                    {/* Editorial grid with varying proportions */}
-                    <div className="grid grid-cols-12 gap-4 md:gap-6">
-                        {/* Large featured — col 1-7, tall */}
-                        {featuredWorks[0] && (() => {
-                            const img = getProductImageUrl(featuredWorks[0]);
+                    <div className="grid grid-cols-2 gap-5 sm:gap-7 md:grid-cols-3">
+                        {featured.map((work, i) => {
+                            const img = getProductImageUrl(work);
+                            const glow = work.dominantColors?.[0]?.hex ?? "#e9d6ef";
                             return (
-                                <Link
-                                    href={`/artworks/${featuredWorks[0].slug ?? featuredWorks[0].id}`}
-                                    className="col-span-12 md:col-span-7 group block"
-                                >
-                                    <div className="relative aspect-[4/5] md:aspect-auto md:h-[520px] overflow-hidden bg-neutral-100">
-                                        {img ? (
-                                            <Image
-                                                src={img}
-                                                alt={featuredWorks[0].title}
-                                                fill
-                                                className="object-cover group-hover:scale-[1.02] transition-transform duration-700"
+                                <Reveal key={work.id} delay={(i % 3) * 90} className={i % 5 === 0 ? "col-span-2 sm:col-span-1" : ""}>
+                                    <Link href={`/artworks/${work.slug ?? work.id}`} className="group relative block">
+                                        <div className="relative">
+                                            <GlowBlob
+                                                className="-inset-4 -z-10 opacity-0 transition-opacity duration-500 group-hover:opacity-70"
+                                                colors={[glow, "#ffffff"]}
+                                                opacity={0}
                                             />
-                                        ) : (
-                                            <div className="absolute inset-0 bg-neutral-200" />
-                                        )}
-                                    </div>
-                                    <div className="pt-3">
-                                        <p className="font-serif font-black text-xl text-[#1a1a1a] group-hover:text-[#0f2d6b] transition-colors">
-                                            {featuredWorks[0].title}
-                                        </p>
-                                        <div className="flex items-center justify-between mt-1">
-                                            <p className="font-sans text-xs text-neutral-400 tracking-wide">
-                                                {featuredWorks[0].medium ?? featuredWorks[0].mediums?.[0]?.medium?.name ?? ""}
-                                            </p>
-                                            <p className="font-sans text-sm font-medium text-[#1a1a1a]">
-                                                ${featuredWorks[0].price.toLocaleString()}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </Link>
-                            );
-                        })()}
-
-                        {/* Right column: 2 stacked works */}
-                        <div className="col-span-12 md:col-span-5 flex flex-col gap-4 md:gap-6">
-                            {[featuredWorks[1], featuredWorks[2]].filter(Boolean).map((work) => {
-                                if (!work) return null;
-                                const img = getProductImageUrl(work);
-                                return (
-                                    <Link
-                                        key={work.id}
-                                        href={`/artworks/${work.slug ?? work.id}`}
-                                        className="group block"
-                                    >
-                                        <div className="relative aspect-[3/2] overflow-hidden bg-neutral-100">
-                                            {img ? (
-                                                <Image
-                                                    src={img}
-                                                    alt={work.title}
-                                                    fill
-                                                    className="object-cover group-hover:scale-[1.02] transition-transform duration-700"
-                                                />
-                                            ) : (
-                                                <div className="absolute inset-0 bg-neutral-200" />
-                                            )}
-                                            {work.status === "sold" && (
-                                                <div className="absolute top-3 right-3 bg-[#1a1a1a] text-white text-[10px] px-2 py-0.5 tracking-widest uppercase font-sans">
-                                                    Sold
+                                            <div className="relative aspect-[4/5] w-full overflow-hidden bg-white p-2 shadow-[0_18px_36px_-18px_rgba(58,50,64,0.22)] transition-transform duration-500 group-hover:-translate-y-1.5">
+                                                <div className="relative h-full w-full overflow-hidden bg-[#f6f3f1]">
+                                                    {img ? (
+                                                        <Image
+                                                            src={img}
+                                                            alt={work.title}
+                                                            fill
+                                                            className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                                                        />
+                                                    ) : (
+                                                        <div className="absolute inset-0 bg-[#f0ebe9]" />
+                                                    )}
+                                                    {work.status === "sold" && (
+                                                        <span className="absolute right-3 top-3 rounded-full bg-[#3a3240] px-3 py-1 font-sans text-[10px] uppercase tracking-widest text-white">
+                                                            Sold
+                                                        </span>
+                                                    )}
                                                 </div>
-                                            )}
+                                            </div>
                                         </div>
-                                        <div className="pt-2.5">
-                                            <p className="font-serif font-black text-base text-[#1a1a1a] group-hover:text-[#0f2d6b] transition-colors">
+                                        <div className="mt-3.5 flex items-baseline justify-between gap-2">
+                                            <p className="font-serif italic text-[#3a3240] transition-colors group-hover:text-[#a9769f]">
                                                 {work.title}
                                             </p>
-                                            <p className="font-sans text-sm text-neutral-500 mt-0.5">
+                                            <p className="shrink-0 font-sans text-sm text-[#6b6470]">
                                                 ${work.price.toLocaleString()}
                                             </p>
                                         </div>
                                     </Link>
-                                );
-                            })}
-                        </div>
-
-                        {/* Bottom row: 3 equal works */}
-                        {featuredWorks.slice(3, 6).map((work) => {
-                            const img = getProductImageUrl(work);
-                            return (
-                                <Link
-                                    key={work.id}
-                                    href={`/artworks/${work.slug ?? work.id}`}
-                                    className="col-span-12 sm:col-span-6 md:col-span-4 group block"
-                                >
-                                    <div className="relative aspect-square overflow-hidden bg-neutral-100">
-                                        {img ? (
-                                            <Image
-                                                src={img}
-                                                alt={work.title}
-                                                fill
-                                                className="object-cover group-hover:scale-[1.02] transition-transform duration-700"
-                                            />
-                                        ) : (
-                                            <div className="absolute inset-0 bg-neutral-200" />
-                                        )}
-                                        {work.status === "sold" && (
-                                            <div className="absolute top-3 right-3 bg-[#1a1a1a] text-white text-[10px] px-2 py-0.5 tracking-widest uppercase font-sans">
-                                                Sold
-                                            </div>
-                                        )}
-                                    </div>
-                                    <div className="pt-2.5">
-                                        <p className="font-serif font-black text-sm text-[#1a1a1a] group-hover:text-[#0f2d6b] transition-colors">
-                                            {work.title}
-                                        </p>
-                                        <p className="font-sans text-xs text-neutral-400 mt-0.5">
-                                            ${work.price.toLocaleString()}
-                                        </p>
-                                    </div>
-                                </Link>
+                                </Reveal>
                             );
                         })}
                     </div>
 
-                    {activeWorks.filter((a) => a.status === "active").length > 6 && (
-                        <div className="mt-10 flex items-center gap-4">
-                            <div className="flex-1 h-px bg-neutral-200" />
-                            <Link
-                                href={`/artworks`}
-                                className="font-sans text-xs tracking-[0.2em] uppercase text-[#0f2d6b] hover:text-[#1a1a1a] transition-colors shrink-0"
-                            >
-                                View Full Collection →
-                            </Link>
-                        </div>
-                    )}
+                    <Reveal className="mt-12 text-center md:hidden">
+                        <PillButton href="/artworks" variant="outline">
+                            Browse Full Gallery
+                        </PillButton>
+                    </Reveal>
                 </section>
             )}
 
-            {/* ── Artist Statement Pull Quote ────────────────────────────────── */}
+            {/* ── Artist Statement ─────────────────────────────────────────── */}
             {(artist.artistStatement || artist.bio) && (
-                <section className="border-t-2 border-[#1a1a1a] border-b-2">
-                    <div className="max-w-7xl mx-auto px-6 md:px-10 py-16 md:py-20 grid grid-cols-12 gap-6">
-                        <div className="col-span-12 md:col-span-1 flex md:flex-col items-start">
-                            <span
-                                className="font-serif font-black text-8xl md:text-9xl leading-none text-[#0f2d6b] select-none"
-                                aria-hidden="true"
-                            >
-                                &ldquo;
-                            </span>
-                        </div>
-                        <div className="col-span-12 md:col-span-8">
-                            <blockquote className="font-serif text-2xl md:text-3xl lg:text-4xl font-black leading-[1.2] text-[#1a1a1a] italic mb-8">
-                                {artist.artistStatement
-                                    ? artist.artistStatement.slice(0, 280)
-                                    : artist.bio!.slice(0, 280)}
-                                {((artist.artistStatement?.length ?? 0) > 280 || (artist.bio?.length ?? 0) > 280) && "…"}
-                            </blockquote>
-                            <div className="flex items-center gap-4">
-                                <div className="w-8 h-0.5 bg-[#0f2d6b]" />
-                                <p className="font-sans text-xs tracking-[0.2em] uppercase text-neutral-500">
-                                    {name}
-                                    {location ? ` — ${location}` : ""}
-                                </p>
-                            </div>
-                        </div>
+                <section className="relative overflow-hidden py-24 md:py-32">
+                    <GlowBlob className="left-1/2 top-0 h-[30rem] w-[30rem] -translate-x-1/2" colors={["#f6e3fb", "#e3ecff"]} opacity={0.55} />
+                    <Reveal className="relative mx-auto max-w-3xl px-6 text-center md:px-10">
+                        <span aria-hidden="true" className="font-serif text-7xl italic text-[#d9b9d1]">
+                            &ldquo;
+                        </span>
+                        <blockquote className="-mt-6 font-serif text-2xl italic leading-relaxed text-[#3a3240] sm:text-3xl md:text-4xl">
+                            {(artist.artistStatement ?? artist.bio ?? "").slice(0, 280)}
+                            {(artist.artistStatement ?? artist.bio ?? "").length > 280 ? "…" : ""}
+                        </blockquote>
+                        <p className="mt-8 font-sans text-xs uppercase tracking-[0.26em] text-[#a9769f]">
+                            {name}
+                            {location ? ` — ${location}` : ""}
+                        </p>
+                    </Reveal>
+                </section>
+            )}
+
+            {/* ── Journal ──────────────────────────────────────────────────── */}
+            {posts.length > 0 && (
+                <section className="relative mx-auto max-w-7xl px-6 py-16 md:px-10 md:py-24">
+                    <Reveal className="mb-12">
+                        <Kicker>From the Studio</Kicker>
+                        <h2 className="mt-4 font-serif text-4xl italic text-[#3a3240] sm:text-5xl">Notes &amp; Journal</h2>
+                    </Reveal>
+                    <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+                        {posts.map((post, i) => (
+                            <Reveal key={i} delay={i * 100}>
+                                <a
+                                    href={post.externalUrl ?? "#"}
+                                    target={post.externalUrl ? "_blank" : undefined}
+                                    rel={post.externalUrl ? "noopener noreferrer" : undefined}
+                                    className={`group block ${post.externalUrl ? "" : "pointer-events-none"}`}
+                                >
+                                    {post.imageUrl && (
+                                        <div className="relative mb-5 aspect-[4/3] w-full overflow-hidden bg-[#f6f3f1]">
+                                            <Image
+                                                src={post.imageUrl}
+                                                alt={post.title}
+                                                fill
+                                                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                                            />
+                                        </div>
+                                    )}
+                                    <p className="font-sans text-xs uppercase tracking-[0.2em] text-[#a9769f]">{post.date}</p>
+                                    <h3 className="mt-2 font-serif text-xl italic text-[#3a3240] transition-colors group-hover:text-[#a9769f]">
+                                        {post.title}
+                                    </h3>
+                                    <p className="mt-2 font-sans text-sm leading-relaxed text-[#6b6470]">{post.excerpt}</p>
+                                </a>
+                            </Reveal>
+                        ))}
                     </div>
                 </section>
             )}
 
-            {/* ── Events Strip ──────────────────────────────────────────────── */}
-            {artist.events && artist.events.length > 0 && (
-                <section className="max-w-7xl mx-auto px-6 md:px-10 py-14">
-                    <div className="flex items-baseline gap-6 mb-8 border-t-2 border-[#1a1a1a] pt-6">
-                        <h2 className="font-sans text-[10px] tracking-[0.3em] uppercase text-[#0f2d6b]">
-                            Upcoming
-                        </h2>
-                        <span className="font-sans text-[10px] tracking-[0.2em] uppercase text-neutral-300">
-                            — Events & Exhibitions
-                        </span>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {artist.events.slice(0, 3).map((event, i) => (
-                            <div key={i} className="border-l-2 border-[#0f2d6b] pl-5 py-1">
-                                <p className="font-sans text-[10px] tracking-[0.2em] uppercase text-[#0f2d6b] mb-2">
+            {/* ── Events ───────────────────────────────────────────────────── */}
+            {events.length > 0 && (
+                <section className="relative mx-auto max-w-7xl px-6 py-16 md:px-10 md:py-24">
+                    <Reveal className="mb-12">
+                        <Kicker>Upcoming</Kicker>
+                        <h2 className="mt-4 font-serif text-4xl italic text-[#3a3240] sm:text-5xl">Exhibitions &amp; Events</h2>
+                    </Reveal>
+                    <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+                        {events.map((event, i) => (
+                            <Reveal
+                                key={i}
+                                delay={i * 100}
+                                className="border-l border-[#e3c9dd] pl-6"
+                            >
+                                <p className="font-sans text-xs uppercase tracking-[0.2em] text-[#a9769f]">
                                     {event.date ?? event.startDate ?? "Upcoming"}
                                 </p>
-                                <p className="font-serif font-black text-lg text-[#1a1a1a] leading-tight mb-1">
-                                    {event.title}
-                                </p>
-                                {event.location && (
-                                    <p className="font-sans text-xs text-neutral-500 mb-2">
-                                        {event.location}
-                                    </p>
-                                )}
+                                <h3 className="mt-2 font-serif text-xl italic text-[#3a3240]">{event.title}</h3>
+                                {event.location && <p className="mt-1 font-sans text-sm text-[#6b6470]">{event.location}</p>}
                                 {event.description && (
-                                    <p className="font-sans text-xs text-neutral-400 leading-relaxed">
-                                        {event.description.slice(0, 120)}
-                                        {event.description.length > 120 ? "…" : ""}
+                                    <p className="mt-3 font-sans text-sm leading-relaxed text-[#8a8189]">
+                                        {event.description.slice(0, 130)}
+                                        {event.description.length > 130 ? "…" : ""}
                                     </p>
                                 )}
                                 {event.url && (
@@ -328,51 +247,41 @@ export default function LuminaryHomePage({ artist, artworks, domain }: ThemePage
                                         href={event.url}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="font-sans text-[10px] tracking-widest uppercase text-[#0f2d6b] hover:underline mt-2 inline-block"
+                                        className="mt-4 inline-flex items-center gap-1 font-sans text-xs font-medium uppercase tracking-[0.14em] text-[#a9769f] hover:text-[#3a3240]"
                                     >
-                                        Details →
+                                        Details <ArrowUpRight className="h-3.5 w-3.5" />
                                     </a>
                                 )}
-                            </div>
+                            </Reveal>
                         ))}
                     </div>
                 </section>
             )}
 
-            {/* ── Full-Bleed Featured Work ───────────────────────────────────── */}
-            {featureWork && featureImgUrl && (
-                <section className="w-full relative overflow-hidden border-t-2 border-[#1a1a1a]">
-                    <div className="relative h-[60vh] md:h-[70vh] min-h-[420px]">
-                        <Image
-                            src={featureImgUrl}
-                            alt={featureWork.title}
-                            fill
-                            className="object-cover"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent" />
-                        <div className="absolute inset-0 flex items-end p-8 md:p-14">
-                            <div className="max-w-lg">
-                                <p className="font-sans text-[10px] tracking-[0.3em] uppercase text-[#0f2d6b] mb-3">
-                                    Featured Work
-                                </p>
-                                <h3 className="font-serif font-black text-4xl md:text-5xl text-white leading-tight mb-3">
-                                    {featureWork.title}
-                                </h3>
-                                {featureWork.yearCreated && (
-                                    <p className="font-sans text-xs tracking-widest uppercase text-white/60 mb-4">
-                                        {featureWork.yearCreated}
-                                        {featureWork.medium ? ` · ${featureWork.medium}` : ""}
-                                    </p>
-                                )}
-                                <Link
-                                    href={`/artworks/${featureWork.slug ?? featureWork.id}`}
-                                    className="font-sans text-xs tracking-[0.2em] uppercase text-white border border-white px-5 py-2.5 hover:bg-white hover:text-[#1a1a1a] transition-colors inline-block"
-                                >
-                                    View Work
-                                </Link>
+            {/* ── Full-bleed Feature ───────────────────────────────────────── */}
+            {bannerWork && bannerImg && (
+                <section className="relative mx-auto max-w-7xl px-6 py-16 md:px-10 md:py-24">
+                    <Reveal>
+                        <div className="relative overflow-hidden rounded-[2px]">
+                            <div className="relative h-[65vh] min-h-[420px] w-full">
+                                <Image src={bannerImg} alt={bannerWork.title} fill className="object-cover" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-[#3a3240]/70 via-[#3a3240]/10 to-transparent" />
+                                <div className="absolute inset-x-0 bottom-0 p-8 md:p-14">
+                                    <p className="font-sans text-xs uppercase tracking-[0.24em] text-white/70">Featured Piece</p>
+                                    <h3 className="mt-3 max-w-lg font-serif text-4xl italic text-white sm:text-5xl">
+                                        {bannerWork.title}
+                                    </h3>
+                                    <PillButton
+                                        href={`/artworks/${bannerWork.slug ?? bannerWork.id}`}
+                                        variant="outline"
+                                        className="mt-7 !border-white/70 !text-white hover:!border-white hover:!bg-white hover:!text-[#3a3240]"
+                                    >
+                                        View This Piece
+                                    </PillButton>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </Reveal>
                 </section>
             )}
         </div>

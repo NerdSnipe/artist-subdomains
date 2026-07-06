@@ -24,9 +24,27 @@ export const getDomainConfig = cache(async (domain: string): Promise<DomainConfi
     }
 });
 
+export async function getArtistSlugByAccountId(accountId: string): Promise<string | null> {
+    try {
+        const res = await fetch(
+            `${API_BASE}/profile?accountId=${encodeURIComponent(accountId)}`,
+            { cache: 'no-store' }
+        );
+        if (!res.ok) return null;
+        const profile = await res.json();
+        return profile?.slug ?? null;
+    } catch {
+        return null;
+    }
+}
+
+export function artistCacheTag(slug: string): string {
+    return `artist:${slug}`;
+}
+
 export async function getArtistData(slug: string): Promise<LocalArtistResponse> {
     const res = await fetch(`${API_BASE}/local-artist/${encodeURIComponent(slug)}`, {
-        next: { revalidate: 60 },
+        next: { revalidate: 60, tags: [artistCacheTag(slug)] },
     });
     if (!res.ok) {
         throw new Error(`Artist not found: ${slug}`);
@@ -40,7 +58,7 @@ export async function getProductBySlug(
 ): Promise<ProductDetailResponse> {
     const res = await fetch(
         `${API_BASE}/artist/${encodeURIComponent(artistSlug)}/products/${encodeURIComponent(productSlug)}`,
-        { next: { revalidate: 60 } }
+        { next: { revalidate: 60, tags: [artistCacheTag(artistSlug)] } }
     );
     if (!res.ok) {
         throw new Error(`Product not found: ${productSlug}`);

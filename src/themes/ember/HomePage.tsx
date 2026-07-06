@@ -1,83 +1,95 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowRight, Flame, MapPin } from "lucide-react";
 import type { ThemePageProps } from "@/themes/types";
 import { getArtistName, getProductImageUrl } from "@/lib/artist-api";
+import Marquee from "./Marquee";
+import Reveal from "./Reveal";
+import { ink, coal, coalLight, smoke, smokeDark, emberMid, emberDeep, emberGradient, emberGradientSteep } from "./palette";
 
 export default function EmberHome({ artist, artworks, domain }: ThemePageProps) {
     const name = getArtistName(artist);
-    const featured = artworks.filter((a) => a.status === "active").slice(0, 6);
-    const coverImg = artist.coverPhoto ?? artist.profilePhoto ?? null;
+    const active = artworks.filter((a) => a.status === "active");
+    const featured = active.slice(0, 5);
+    const heroImg = artist.coverPhoto ?? getProductImageUrl(active[0] ?? artworks[0]) ?? artist.profilePhoto ?? null;
+
+    const tickerItems = [
+        artist.artStyle,
+        artist.medium,
+        artist.secondaryMedium,
+        artist.secondaryArtStyle,
+        ...(artist.exhibitions?.length ? [`${artist.exhibitions.length}+ Exhibitions`] : []),
+        artist.acceptsCommissions && artist.acceptsCommissions !== "no" ? "Commissions Open" : null,
+    ].filter((v): v is string => !!v);
+
+    const nextEvent = artist.events?.[0];
+    const facts = [
+        artist.exhibitions?.length ? { n: artist.exhibitions.length, label: "Exhibitions" } : null,
+        artist.galleries?.length ? { n: artist.galleries.length, label: "Galleries" } : null,
+        active.length ? { n: active.length, label: "Works Available" } : null,
+        artist.publications?.length ? { n: artist.publications.length, label: "Press Features" } : null,
+    ].filter((f): f is { n: number; label: string } => !!f);
 
     return (
-        <div style={{ backgroundColor: "#f7f3ee", fontFamily: "'Georgia', 'Times New Roman', serif" }}>
-
+        <div style={{ backgroundColor: ink }}>
             {/* ── Hero ─────────────────────────────────────────────────── */}
-            <section className="relative" style={{ minHeight: "88vh" }}>
-                {/* Cover image — right ~70% of viewport */}
-                <div className="absolute inset-0 md:left-[28%] overflow-hidden">
-                    {coverImg ? (
-                        <Image
-                            src={coverImg}
-                            alt={name}
-                            fill
-                            className="object-cover"
-                            priority
-                            sizes="(max-width: 768px) 100vw, 72vw"
-                        />
+            <section className="relative overflow-hidden" style={{ minHeight: "94vh" }}>
+                <div
+                    className="absolute inset-0 md:left-[22%]"
+                    style={{ clipPath: "polygon(12% 0, 100% 0, 100% 100%, 0% 100%)" }}
+                >
+                    {heroImg ? (
+                        <Image src={heroImg} alt={name} fill priority className="object-cover" sizes="100vw" />
                     ) : (
-                        <div className="w-full h-full" style={{ backgroundColor: "#d9cfc5" }} />
+                        <div className="w-full h-full" style={{ background: `linear-gradient(160deg, ${coalLight}, ${ink})` }} />
                     )}
-                    {/* Gradient fade on left side so text reads cleanly */}
-                    <div
-                        className="absolute inset-0"
-                        style={{
-                            background: "linear-gradient(to right, #f7f3ee 0%, #f7f3ee 18%, rgba(247,243,238,0.6) 45%, transparent 70%)",
-                        }}
-                    />
-                    {/* Gradient fade at bottom */}
-                    <div
-                        className="absolute bottom-0 left-0 right-0 h-40"
-                        style={{ background: "linear-gradient(to top, #f7f3ee, transparent)" }}
-                    />
+                    <div className="absolute inset-0" style={{ background: "linear-gradient(0deg, rgba(10,9,8,0.85) 0%, rgba(10,9,8,0.1) 40%)" }} />
+                    <div className="absolute inset-0" style={{ background: `linear-gradient(90deg, ${ink} 0%, rgba(10,9,8,0.15) 30%, transparent 55%)` }} />
                 </div>
 
-                {/* Artist name — lower-left, overlapping into the image */}
-                <div className="relative z-10 flex flex-col justify-end h-full px-8 md:px-16 pb-16 md:pb-24" style={{ minHeight: "88vh" }}>
-                    <div className="max-w-xl">
+                {/* diagonal ember seam */}
+                <div
+                    className="absolute inset-y-0 hidden md:block"
+                    style={{ left: "20%", width: "6px", background: emberGradient, transform: "skewX(-8deg)" }}
+                />
+
+                <div className="relative z-10 flex flex-col justify-end min-h-[94vh] px-6 md:px-16 pb-20 pt-32">
+                    <div className="max-w-3xl">
                         {(artist.city || artist.state) && (
-                            <p
-                                className="text-xs tracking-widest uppercase mb-4"
-                                style={{ color: "#b5451b", letterSpacing: "0.14em" }}
-                            >
-                                {[artist.city, artist.state].filter(Boolean).join(", ")}
-                            </p>
+                            <div className="flex items-center gap-2 mb-5">
+                                <MapPin size={14} color={emberMid} />
+                                <p className="text-xs uppercase font-bold tracking-widest" style={{ color: emberMid, letterSpacing: "0.2em" }}>
+                                    {[artist.city, artist.state].filter(Boolean).join(", ")}
+                                </p>
+                            </div>
                         )}
                         <h1
-                            className="font-serif leading-tight mb-4"
-                            style={{ fontSize: "clamp(2.5rem, 6vw, 5rem)", color: "#2c2925" }}
+                            className="uppercase leading-[0.88] mb-6 break-words"
+                            style={{ fontFamily: "var(--font-display)", fontSize: "clamp(3rem, 10vw, 7.5rem)", color: "#f6f1e8" }}
                         >
                             {name}
                         </h1>
-                        {artist.artistTagline && (
-                            <p
-                                className="text-lg italic leading-relaxed mb-8"
-                                style={{ color: "#6b5f52", maxWidth: "36rem" }}
-                            >
-                                {artist.artistTagline}
+                        {(artist.artistTagline || artist.artStyle) && (
+                            <p className="text-lg md:text-xl leading-relaxed mb-9 max-w-xl" style={{ color: "#d8cfc4" }}>
+                                {artist.artistTagline ?? `${artist.artStyle}${artist.medium ? ` — ${artist.medium}` : ""}`}
                             </p>
                         )}
                         <div className="flex flex-wrap gap-4">
                             <Link
                                 href={`/artworks`}
-                                className="inline-block px-8 py-3 text-sm font-serif tracking-wide transition-all duration-300"
-                                style={{ backgroundColor: "#b5451b", color: "#f7f3ee" }}
+                                className="group relative inline-flex items-center gap-2 px-8 py-4 uppercase text-sm font-bold tracking-widest overflow-hidden"
+                                style={{ letterSpacing: "0.1em", color: ink }}
                             >
-                                View Works
+                                <span className="absolute inset-0" style={{ background: emberGradientSteep }} />
+                                <span className="absolute inset-0 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300" style={{ backgroundColor: "#f6f1e8" }} />
+                                <span className="relative flex items-center gap-2">
+                                    View the Work <ArrowRight size={16} />
+                                </span>
                             </Link>
                             <Link
                                 href={`/about`}
-                                className="inline-block px-8 py-3 text-sm font-serif tracking-wide border transition-all duration-300 hover:opacity-70"
-                                style={{ borderColor: "#2c2925", color: "#2c2925" }}
+                                className="inline-flex items-center px-8 py-4 uppercase text-sm font-bold tracking-widest border-2 transition-colors duration-300 hover:bg-[#f6f1e8] hover:text-[#0a0908]"
+                                style={{ letterSpacing: "0.1em", borderColor: "#f6f1e8", color: "#f6f1e8" }}
                             >
                                 The Artist
                             </Link>
@@ -86,189 +98,243 @@ export default function EmberHome({ artist, artworks, domain }: ThemePageProps) 
                 </div>
             </section>
 
-            {/* ── Featured Works ───────────────────────────────────────── */}
-            {featured.length > 0 && (
-                <section className="max-w-6xl mx-auto px-8 py-24">
-                    {/* Section header with warm divider */}
-                    <div className="flex items-center gap-6 mb-14">
-                        <h2 className="font-serif text-3xl whitespace-nowrap" style={{ color: "#2c2925" }}>
-                            Selected Works
-                        </h2>
-                        <div className="flex-1 h-px" style={{ backgroundColor: "#d4a5a5", opacity: 0.6 }} />
-                    </div>
+            {tickerItems.length > 0 && <Marquee items={tickerItems} />}
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {featured.map((artwork) => {
-                            const img = getProductImageUrl(artwork);
-                            return (
-                                <Link
-                                    key={artwork.id}
-                                    href={`/artworks/${artwork.slug ?? artwork.id}`}
-                                    className="group block"
-                                >
-                                    {/* Matted card */}
-                                    <div
-                                        className="relative overflow-hidden transition-all duration-300 group-hover:shadow-lg mb-4"
-                                        style={{
-                                            backgroundColor: "#ede8e1",
-                                            padding: "1rem",
-                                            boxShadow: "0 1px 4px rgba(44,41,37,0.08)",
-                                        }}
+            {/* ── Quick Facts ──────────────────────────────────────────── */}
+            {facts.length > 0 && (
+                <section className="border-b" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+                    <div className="max-w-7xl mx-auto px-6 md:px-16 py-10 grid grid-cols-2 md:grid-cols-4 gap-8">
+                        {facts.map((f, i) => (
+                            <Reveal key={f.label} delayMs={i * 80}>
+                                <div>
+                                    <p
+                                        className="leading-none mb-1"
+                                        style={{ fontFamily: "var(--font-display)", fontSize: "clamp(2.2rem,4vw,3.2rem)", ...gradientTextStyle() }}
                                     >
-                                        <div className="relative aspect-[4/5]" style={{ backgroundColor: "#d9cfc5" }}>
-                                            {img ? (
-                                                <Image
-                                                    src={img}
-                                                    alt={artwork.title}
-                                                    fill
-                                                    className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-                                                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                                                />
-                                            ) : (
-                                                <div className="w-full h-full" style={{ backgroundColor: "#d9cfc5" }} />
-                                            )}
-                                            {artwork.status === "sold" && (
-                                                <div
-                                                    className="absolute top-3 left-3 px-2.5 py-1 text-xs tracking-widest"
-                                                    style={{ backgroundColor: "#b5451b", color: "#f7f3ee", letterSpacing: "0.1em" }}
-                                                >
-                                                    Sold
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                    <p className="font-serif text-base mb-1" style={{ color: "#2c2925" }}>{artwork.title}</p>
-                                    {artwork.medium && (
-                                        <p className="text-xs mb-1" style={{ color: "#8a7a6e" }}>{artwork.medium}</p>
-                                    )}
-                                    <p className="text-sm" style={{ color: "#b5451b" }}>
-                                        ${artwork.price.toLocaleString()}
+                                        {f.n}
                                     </p>
-                                </Link>
-                            );
-                        })}
-                    </div>
-
-                    {artworks.filter((a) => a.status === "active").length > 6 && (
-                        <div className="mt-14 text-center">
-                            <Link
-                                href={`/artworks`}
-                                className="inline-block text-sm font-serif border-b pb-0.5 transition-all duration-200 hover:opacity-60"
-                                style={{ color: "#b5451b", borderColor: "#b5451b" }}
-                            >
-                                The full collection &rarr;
-                            </Link>
-                        </div>
-                    )}
-                </section>
-            )}
-
-            {/* ── Artist Statement ─────────────────────────────────────── */}
-            {artist.artistStatement && (
-                <section className="py-20" style={{ backgroundColor: "#ede8e1" }}>
-                    <div className="max-w-3xl mx-auto px-8">
-                        <blockquote
-                            className="border-l-4 pl-8 py-2"
-                            style={{ borderColor: "#b5451b" }}
-                        >
-                            <p
-                                className="font-serif text-xl leading-loose italic mb-6"
-                                style={{ color: "#2c2925" }}
-                            >
-                                &ldquo;{artist.artistStatement}&rdquo;
-                            </p>
-                            <cite className="text-sm not-italic" style={{ color: "#8a7a6e" }}>
-                                &mdash; {name}
-                            </cite>
-                        </blockquote>
-                    </div>
-                </section>
-            )}
-
-            {/* ── From the Studio ──────────────────────────────────────── */}
-            {artist.studioImages && artist.studioImages.length > 0 && (
-                <section className="max-w-6xl mx-auto px-8 py-24">
-                    <div className="flex items-center gap-6 mb-12">
-                        <h2 className="font-serif text-2xl whitespace-nowrap" style={{ color: "#2c2925" }}>
-                            From the Studio
-                        </h2>
-                        <div className="flex-1 h-px" style={{ backgroundColor: "#d4a5a5", opacity: 0.6 }} />
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-                        {artist.studioImages.slice(0, 3).map((img, i) => (
-                            <div key={i} className="relative aspect-square overflow-hidden" style={{ backgroundColor: "#d9cfc5" }}>
-                                <Image
-                                    src={img}
-                                    alt={`Studio image ${i + 1}`}
-                                    fill
-                                    className="object-cover"
-                                    sizes="(max-width: 640px) 100vw, 33vw"
-                                />
-                            </div>
+                                    <p className="text-xs uppercase font-semibold tracking-widest" style={{ color: smoke, letterSpacing: "0.14em" }}>
+                                        {f.label}
+                                    </p>
+                                </div>
+                            </Reveal>
                         ))}
                     </div>
                 </section>
             )}
 
-            {/* ── Reviews ──────────────────────────────────────────────── */}
-            {artist.reviews && artist.reviews.length > 0 && (
-                <section className="py-20" style={{ backgroundColor: "#ede8e1" }}>
-                    <div className="max-w-5xl mx-auto px-8">
-                        <div className="flex items-center gap-6 mb-12">
-                            <h2 className="font-serif text-2xl whitespace-nowrap" style={{ color: "#2c2925" }}>
-                                Collector Voices
+            {/* ── Featured Works — layered asymmetric grid ────────────────── */}
+            {featured.length > 0 && (
+                <section className="max-w-7xl mx-auto px-6 md:px-16 py-24 md:py-32">
+                    <Reveal>
+                        <div className="flex items-end justify-between flex-wrap gap-4 mb-14">
+                            <h2 className="uppercase leading-none" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(2.2rem,5vw,3.8rem)", color: "#f6f1e8" }}>
+                                Selected Works
                             </h2>
-                            <div className="flex-1 h-px" style={{ backgroundColor: "#d4a5a5", opacity: 0.6 }} />
+                            <Link href="/artworks" className="text-sm uppercase font-bold tracking-widest flex items-center gap-2 pb-1 border-b-2" style={{ color: emberMid, borderColor: emberMid, letterSpacing: "0.1em" }}>
+                                Full Collection <ArrowRight size={15} />
+                            </Link>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {artist.reviews.slice(0, 4).map((review, i) => (
-                                <div
-                                    key={i}
-                                    className="p-8"
-                                    style={{
-                                        backgroundColor: "#f7f3ee",
-                                        boxShadow: "0 1px 4px rgba(44,41,37,0.06)",
-                                    }}
-                                >
-                                    <p
-                                        className="font-serif text-base leading-loose italic mb-6"
-                                        style={{ color: "#2c2925" }}
-                                    >
-                                        &ldquo;{review.text}&rdquo;
-                                    </p>
-                                    <div>
-                                        <p className="text-sm font-serif" style={{ color: "#2c2925" }}>{review.author}</p>
-                                        {review.role && (
-                                            <p className="text-xs mt-0.5" style={{ color: "#a0907f" }}>{review.role}</p>
-                                        )}
-                                    </div>
+                    </Reveal>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-6 md:gap-8">
+                        {featured.map((artwork, i) => {
+                            const img = getProductImageUrl(artwork);
+                            const big = i === 0;
+                            const tilt = i % 3 === 1 ? "md:group-hover:-rotate-1" : i % 3 === 2 ? "md:group-hover:rotate-1" : "";
+                            return (
+                                <Reveal key={artwork.id} delayMs={i * 70} className={big ? "lg:col-span-3 lg:row-span-2" : "lg:col-span-3"}>
+                                    <Link href={`/artworks/${artwork.slug ?? artwork.id}`} className="group block h-full">
+                                        <div
+                                            className={`relative overflow-hidden mb-4 transition-transform duration-300 ${tilt}`}
+                                            style={{ backgroundColor: coal }}
+                                        >
+                                            <div className="relative w-full" style={{ aspectRatio: big ? "4 / 5" : "5 / 4" }}>
+                                                {img ? (
+                                                    <Image
+                                                        src={img}
+                                                        alt={artwork.title}
+                                                        fill
+                                                        className="object-cover transition-transform duration-500 group-hover:scale-[1.06]"
+                                                        sizes={big ? "(max-width: 768px) 100vw, 50vw" : "(max-width: 768px) 100vw, 33vw"}
+                                                    />
+                                                ) : null}
+                                                <div
+                                                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                                    style={{ background: "linear-gradient(0deg, rgba(10,9,8,0.75) 0%, transparent 55%)" }}
+                                                />
+                                                {artwork.status === "sold" && (
+                                                    <div
+                                                        className="absolute top-0 left-0 px-4 py-2 text-xs font-bold uppercase tracking-widest"
+                                                        style={{ background: emberGradient, color: ink, letterSpacing: "0.1em" }}
+                                                    >
+                                                        Sold
+                                                    </div>
+                                                )}
+                                                <div className="absolute left-4 bottom-4 right-4 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                                                    <p className="text-sm font-bold" style={{ color: "#f6f1e8" }}>
+                                                        {artwork.status === "sold" ? "Sold" : `$${artwork.price.toLocaleString()}`}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p className="font-semibold text-base mb-1" style={{ color: "#f6f1e8" }}>{artwork.title}</p>
+                                        {artwork.medium && <p className="text-xs uppercase tracking-wide" style={{ color: smokeDark }}>{artwork.medium}</p>}
+                                    </Link>
+                                </Reveal>
+                            );
+                        })}
+                    </div>
+                </section>
+            )}
+
+            {/* ── Artist Statement ─────────────────────────────────────── */}
+            {(artist.artistStatement || (artist.bio && !artist.artistStatement)) && (
+                <section className="relative py-24 md:py-32 overflow-hidden" style={{ backgroundColor: coal }}>
+                    <p
+                        className="absolute -top-10 left-4 md:left-16 select-none pointer-events-none leading-none"
+                        style={{ fontFamily: "var(--font-display)", fontSize: "clamp(8rem,22vw,16rem)", color: "rgba(255,255,255,0.04)" }}
+                        aria-hidden
+                    >
+                        &ldquo;
+                    </p>
+                    <Reveal className="relative max-w-4xl mx-auto px-6 md:px-16 text-center">
+                        <p
+                            className="leading-snug mb-8"
+                            style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.7rem,3.6vw,2.8rem)", color: "#f6f1e8" }}
+                        >
+                            {(artist.artistStatement ?? artist.bio!).length > 340
+                                ? `${(artist.artistStatement ?? artist.bio!).slice(0, 340).trim()}…`
+                                : artist.artistStatement ?? artist.bio}
+                        </p>
+                        <p className="text-sm uppercase font-bold tracking-widest" style={{ color: emberMid, letterSpacing: "0.16em" }}>
+                            &mdash; {name}
+                        </p>
+                    </Reveal>
+                </section>
+            )}
+
+            {/* ── Next Show / Event highlight ──────────────────────────── */}
+            {nextEvent && (
+                <section className="max-w-7xl mx-auto px-6 md:px-16 py-24">
+                    <Reveal>
+                        <div className="flex items-center gap-3 mb-8">
+                            <Flame size={18} color={emberMid} />
+                            <p className="text-xs uppercase font-bold tracking-widest" style={{ color: emberMid, letterSpacing: "0.18em" }}>
+                                Next Up
+                            </p>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-14 items-center">
+                            {(nextEvent.imageUrl ?? nextEvent.image) && (
+                                <div className="md:col-span-2 relative aspect-[4/3] overflow-hidden" style={{ clipPath: "polygon(0 0, 100% 0, 100% 88%, 88% 100%, 0 100%)" }}>
+                                    <Image src={(nextEvent.imageUrl ?? nextEvent.image)!} alt={nextEvent.title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 40vw" />
                                 </div>
+                            )}
+                            <div className={nextEvent.imageUrl ?? nextEvent.image ? "md:col-span-3" : "md:col-span-5"}>
+                                {(nextEvent.startDate ?? nextEvent.date) && (
+                                    <p className="text-sm font-bold uppercase tracking-widest mb-3" style={{ color: smoke }}>
+                                        {nextEvent.startDate ?? nextEvent.date}
+                                        {nextEvent.endDate ? ` – ${nextEvent.endDate}` : ""}
+                                    </p>
+                                )}
+                                <h3 className="uppercase leading-tight mb-3" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.8rem,3.6vw,2.8rem)", color: "#f6f1e8" }}>
+                                    {nextEvent.title}
+                                </h3>
+                                <p className="text-sm mb-4" style={{ color: smoke }}>{nextEvent.location}</p>
+                                {nextEvent.description && (
+                                    <p className="text-sm leading-relaxed mb-6 max-w-xl" style={{ color: "#d8cfc4" }}>{nextEvent.description}</p>
+                                )}
+                                {nextEvent.url && (
+                                    <a
+                                        href={nextEvent.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest pb-1 border-b-2"
+                                        style={{ color: emberMid, borderColor: emberMid, letterSpacing: "0.1em" }}
+                                    >
+                                        Details <ArrowRight size={15} />
+                                    </a>
+                                )}
+                            </div>
+                        </div>
+                    </Reveal>
+                </section>
+            )}
+
+            {/* ── From the Studio ──────────────────────────────────────── */}
+            {artist.studioImages && artist.studioImages.length > 0 && (
+                <section className="py-24" style={{ backgroundColor: coal }}>
+                    <div className="max-w-7xl mx-auto px-6 md:px-16">
+                        <Reveal>
+                            <h2 className="uppercase leading-none mb-12" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(2rem,4.5vw,3.2rem)", color: "#f6f1e8" }}>
+                                From the Studio
+                            </h2>
+                        </Reveal>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 md:gap-6">
+                            {artist.studioImages.slice(0, 3).map((img, i) => (
+                                <Reveal key={i} delayMs={i * 90}>
+                                    <div
+                                        className={`relative aspect-[4/5] overflow-hidden ${i === 1 ? "sm:mt-8" : ""}`}
+                                        style={{ backgroundColor: coalLight }}
+                                    >
+                                        <Image src={img} alt={`Studio view ${i + 1}`} fill className="object-cover" sizes="(max-width: 640px) 100vw, 33vw" />
+                                    </div>
+                                </Reveal>
                             ))}
                         </div>
                     </div>
                 </section>
             )}
 
-            {/* ── Bio Teaser ───────────────────────────────────────────── */}
-            {artist.bio && !artist.artistStatement && (
-                <section className="py-20" style={{ backgroundColor: "#ede8e1" }}>
-                    <div className="max-w-2xl mx-auto px-8 text-center">
-                        <p
-                            className="font-serif text-lg leading-loose italic mb-8"
-                            style={{ color: "#2c2925" }}
-                        >
-                            &ldquo;{artist.bio.slice(0, 300)}{artist.bio.length > 300 ? "…" : ""}&rdquo;
-                        </p>
-                        <Link
-                            href={`/about`}
-                            className="inline-block text-sm border-b pb-0.5 transition-all duration-200 hover:opacity-60"
-                            style={{ color: "#b5451b", borderColor: "#b5451b" }}
-                        >
-                            More about {name} &rarr;
-                        </Link>
+            {/* ── Reviews ──────────────────────────────────────────────── */}
+            {artist.reviews && artist.reviews.length > 0 && (
+                <section className="max-w-7xl mx-auto px-6 md:px-16 py-24">
+                    <Reveal>
+                        <h2 className="uppercase leading-none mb-12" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(2rem,4.5vw,3.2rem)", color: "#f6f1e8" }}>
+                            Word on the Street
+                        </h2>
+                    </Reveal>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {artist.reviews.slice(0, 4).map((review, i) => (
+                            <Reveal key={i} delayMs={i * 80}>
+                                <div className="relative p-8 h-full" style={{ backgroundColor: coal, borderLeft: `3px solid ${i % 2 === 0 ? emberMid : emberDeep}` }}>
+                                    <p className="text-base leading-relaxed mb-6" style={{ color: "#e8dfd4" }}>
+                                        &ldquo;{review.text}&rdquo;
+                                    </p>
+                                    <p className="text-sm font-bold uppercase tracking-wide" style={{ color: "#f6f1e8" }}>{review.author}</p>
+                                    {review.role && <p className="text-xs mt-0.5" style={{ color: smokeDark }}>{review.role}</p>}
+                                </div>
+                            </Reveal>
+                        ))}
                     </div>
                 </section>
             )}
+
+            {/* ── Closing CTA ──────────────────────────────────────────── */}
+            <section className="relative py-24 md:py-32 overflow-hidden text-center" style={{ background: emberGradientSteep }}>
+                <Reveal className="relative max-w-2xl mx-auto px-6">
+                    <h2 className="uppercase leading-[0.9] mb-8" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(2.2rem,6vw,4.5rem)", color: ink }}>
+                        Own a piece of the fire
+                    </h2>
+                    <Link
+                        href="/artworks"
+                        className="inline-flex items-center gap-2 px-9 py-4 uppercase text-sm font-bold tracking-widest transition-transform duration-300 hover:scale-[1.04]"
+                        style={{ backgroundColor: ink, color: "#f6f1e8", letterSpacing: "0.1em" }}
+                    >
+                        Browse the Collection <ArrowRight size={16} />
+                    </Link>
+                </Reveal>
+            </section>
         </div>
     );
+}
+
+function gradientTextStyle(): React.CSSProperties {
+    return {
+        backgroundImage: emberGradient,
+        backgroundClip: "text",
+        WebkitBackgroundClip: "text",
+        color: "transparent",
+        WebkitTextFillColor: "transparent",
+    };
 }

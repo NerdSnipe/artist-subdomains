@@ -1,51 +1,108 @@
+import { ArrowUpRight, Instagram, Mail, MapPin } from "lucide-react";
 import type { ThemePageProps } from "@/themes/types";
-import { getArtistName } from "@/lib/artist-api";
+import { getArtistName, marketplaceArtistUrl } from "@/lib/artist-api";
+import Reveal from "./Reveal";
 
 export default function MarketContact({ artist }: ThemePageProps) {
     const name = getArtistName(artist);
+    const acceptsCommissions = Boolean(artist.acceptsCommissions && artist.acceptsCommissions !== "no");
+    const location = [artist.city, artist.state].filter(Boolean).join(", ");
+
+    const links = [
+        artist.email && { label: artist.email, href: `mailto:${artist.email}`, Icon: Mail },
+        artist.instagram && {
+            label: `@${artist.instagram.replace("@", "")}`,
+            href: `https://instagram.com/${artist.instagram.replace("@", "")}`,
+            Icon: Instagram,
+        },
+        artist.website && { label: artist.website.replace(/^https?:\/\//, ""), href: artist.website, Icon: ArrowUpRight },
+    ].filter(Boolean) as { label: string; href: string; Icon: typeof Mail }[];
 
     return (
-        <div className="max-w-xl mx-auto px-6 py-10">
-            <h1 className="text-2xl font-bold text-stone-900 mb-2">Contact</h1>
-            <p className="text-stone-400 text-sm mb-8">Reach out to {name} directly</p>
+        <div className="max-w-5xl mx-auto px-6 py-16">
+            <Reveal className="max-w-xl mb-14">
+                <p className="text-xs tracking-[0.25em] uppercase text-[#b2542e] font-semibold mb-3">
+                    Get In Touch
+                </p>
+                <h1 className="font-[family-name:var(--market-font-display)] text-4xl text-[#241e19] mb-4">
+                    Let&rsquo;s Talk
+                </h1>
+                <p className="text-[#6b5d4f] leading-relaxed">
+                    Questions about a piece, shipping, or working together on something custom — reach {name} directly
+                    below.
+                </p>
+            </Reveal>
 
-            {artist.acceptsCommissions && artist.acceptsCommissions !== "no" && (
-                <div className="bg-amber-50 border border-amber-200 p-5 mb-8">
-                    <h2 className="text-sm font-bold text-amber-900 mb-2">Commissions Open</h2>
-                    <p className="text-sm text-amber-700 leading-relaxed">
-                        {artist.commissionDescription ?? "This artist accepts custom commission requests. Get in touch to discuss your vision."}
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-10">
+                {acceptsCommissions && (
+                    <Reveal className="md:col-span-5 bg-[#f0d9c5] p-8">
+                        <p className="text-xs tracking-[0.2em] uppercase text-[#8f3f1f] font-semibold mb-3">
+                            Commissions Open
+                        </p>
+                        <p className="text-[#5a4a3a] leading-relaxed max-w-2xl">
+                            {artist.commissionDescription ??
+                                `${name} accepts custom commission requests — email or send a message on Instagram to discuss your vision, timeline, and budget.`}
+                        </p>
+                    </Reveal>
+                )}
+
+                <Reveal delay={80} className="md:col-span-3 bg-[#faf6ee] border border-[#e3d5c1] p-8">
+                    <p className="text-xs tracking-[0.2em] uppercase text-[#8a7d6e] font-semibold mb-6">
+                        Direct Contact
                     </p>
-                </div>
-            )}
+                    {links.length > 0 ? (
+                        <div className="space-y-5">
+                            {links.map(({ label, href, Icon }) => (
+                                <a
+                                    key={href}
+                                    href={href}
+                                    target={href.startsWith("mailto:") ? undefined : "_blank"}
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-3 text-[#241e19] font-medium hover:text-[#b2542e] transition-colors group"
+                                >
+                                    <span className="w-9 h-9 flex items-center justify-center border border-[#e3d5c1] group-hover:border-[#b2542e] transition-colors shrink-0">
+                                        <Icon size={15} />
+                                    </span>
+                                    {label}
+                                </a>
+                            ))}
+                        </div>
+                    ) : (
+                        <p className="text-sm text-[#8a7d6e]">
+                            Contact details aren&rsquo;t listed yet — reach out via the full profile below.
+                        </p>
+                    )}
+                    {location && (
+                        <div className="flex items-center gap-3 mt-6 pt-6 border-t border-[#e3d5c1] text-sm text-[#8a7d6e]">
+                            <MapPin size={15} className="text-[#b2542e]" />
+                            {location}
+                        </div>
+                    )}
+                </Reveal>
 
-            <div className="bg-white border border-stone-200 p-6 space-y-4">
-                {artist.email && (
+                <Reveal
+                    delay={140}
+                    className="md:col-span-2 bg-[#241e19] p-8 flex flex-col justify-between"
+                >
                     <div>
-                        <p className="text-xs text-stone-400 uppercase tracking-widest mb-1">Email</p>
-                        <a href={`mailto:${artist.email}`} className="text-stone-700 text-sm hover:text-stone-900 underline font-medium">{artist.email}</a>
+                        <p className="text-xs tracking-[0.2em] uppercase text-[#e8c9ae] font-semibold mb-4">
+                            Full Profile
+                        </p>
+                        <p className="text-sm text-[#c9bcaa] leading-relaxed mb-6">
+                            See {name}&rsquo;s complete portfolio, reviews, and past work on ArtsDistrictUSA.
+                        </p>
                     </div>
-                )}
-                {artist.instagram && (
-                    <div>
-                        <p className="text-xs text-stone-400 uppercase tracking-widest mb-1">Instagram</p>
-                        <a href={`https://instagram.com/${artist.instagram.replace("@", "")}`} target="_blank" rel="noopener noreferrer" className="text-stone-700 text-sm hover:text-stone-900 underline font-medium">
-                            @{artist.instagram.replace("@", "")}
+                    {artist.slug && (
+                        <a
+                            href={marketplaceArtistUrl(artist.slug)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 text-sm font-semibold text-[#f8f2e9] border-b-2 border-[#b2542e] pb-0.5 w-fit hover:text-[#e8c9ae] transition-colors"
+                        >
+                            View Profile <ArrowUpRight size={14} />
                         </a>
-                    </div>
-                )}
-                {artist.website && (
-                    <div>
-                        <p className="text-xs text-stone-400 uppercase tracking-widest mb-1">Website</p>
-                        <a href={artist.website} target="_blank" rel="noopener noreferrer" className="text-stone-700 text-sm hover:text-stone-900 underline font-medium">{artist.website}</a>
-                    </div>
-                )}
-                {artist.slug && (
-                    <div className="pt-2 border-t border-stone-100">
-                        <a href={`https://www.artsdistrictusa.com/artist/${artist.slug}`} target="_blank" rel="noopener noreferrer" className="text-sm text-stone-400 hover:text-stone-700 underline">
-                            View profile on ArtsDistrictUSA →
-                        </a>
-                    </div>
-                )}
+                    )}
+                </Reveal>
             </div>
         </div>
     );

@@ -56,10 +56,10 @@ export default function ArtworksBrowser({ artworks, domain }: Props) {
     const sold = filtered.filter((a) => a.status === "sold");
 
     const filterBtnClass = (active: boolean) =>
-        `text-[10px] tracking-[0.25em] uppercase px-4 py-2 border transition-all duration-300 ${
+        `text-[10px] tracking-[0.25em] uppercase px-4 py-2 border backdrop-blur-md transition-all duration-300 ${
             active
-                ? "border-[#c9a96e] text-[#c9a96e] bg-[#c9a96e]/10"
-                : "border-[#2a2520] text-[#4a4540] hover:border-[#c9a96e]/40 hover:text-[#8a8278]"
+                ? "border-[#c9a96e]/60 text-[#c9a96e] bg-[#c9a96e]/10"
+                : "border-white/10 bg-white/[0.02] text-[#4a4540] hover:border-[#c9a96e]/40 hover:text-[#8a8278]"
         }`;
 
     return (
@@ -112,7 +112,7 @@ export default function ArtworksBrowser({ artworks, domain }: Props) {
                     <select
                         value={sort}
                         onChange={(e) => setSort(e.target.value as SortOption)}
-                        className="text-[10px] tracking-[0.2em] uppercase bg-transparent border border-[#2a2520] text-[#4a4540] px-3 py-2 focus:outline-none focus:border-[#c9a96e]/40 cursor-pointer"
+                        className="text-[10px] tracking-[0.2em] uppercase bg-white/[0.02] backdrop-blur-md border border-white/10 text-[#4a4540] px-3 py-2 focus:outline-none focus:border-[#c9a96e]/40 cursor-pointer"
                     >
                         <option value="default">Default</option>
                         <option value="price-asc">Price: Low</option>

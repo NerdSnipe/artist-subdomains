@@ -86,7 +86,7 @@ export default function ObsidianArtworkDetail({
                 <div className="lg:w-[40%] px-8 md:px-12 lg:px-14 py-12 border-l border-[#c9a96e]/10 flex flex-col">
                     {/* Title + year */}
                     <div className="mb-8">
-                        <h1 className="text-3xl md:text-4xl font-thin tracking-[0.15em] uppercase text-[#f5f0eb] mb-3 leading-tight">
+                        <h1 className="font-[family-name:var(--font-obsidian-display)] text-4xl md:text-5xl font-light tracking-[0.03em] uppercase text-[#f5f0eb] mb-3 leading-tight">
                             {product.title}
                         </h1>
                         {product.yearCreated && (
@@ -98,7 +98,7 @@ export default function ObsidianArtworkDetail({
 
                     {/* Price */}
                     <div className="mb-8">
-                        <p className="text-2xl md:text-3xl font-thin text-[#c9a96e] tracking-wider">
+                        <p className="font-[family-name:var(--font-obsidian-display)] text-3xl md:text-4xl font-light text-[#c9a96e] tracking-wider">
                             ${product.price.toLocaleString()}
                         </p>
                         {product.salePrice && product.salePrice < product.price && (
@@ -205,7 +205,7 @@ export default function ObsidianArtworkDetail({
 
                     {/* Description */}
                     {product.description && (
-                        <div className="mb-10 border-t border-[#c9a96e]/10 pt-8">
+                        <div className="mb-10 rounded-sm border border-white/10 bg-white/[0.02] backdrop-blur-xl p-6">
                             <p className="text-sm text-[#7a7470] font-thin leading-relaxed">
                                 {product.description}
                             </p>

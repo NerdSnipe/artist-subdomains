@@ -1,78 +1,149 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowLeft, ArrowUpRight, Ruler, Sparkles } from "lucide-react";
 import type { ThemeArtworkDetailProps } from "@/themes/types";
 import { getProductImageUrl, marketplaceArtworkUrl } from "@/lib/artist-api";
+import { StudioFrame } from "./decor";
+import Reveal from "./Reveal";
 
-export default function ArtisanArtworkDetail({ artist, product, relatedProducts, domain }: ThemeArtworkDetailProps) {
+export default function ArtisanArtworkDetail({ artist, product, relatedProducts }: ThemeArtworkDetailProps) {
     const imgUrl = getProductImageUrl(product);
     const artistSlug = product.artistSlug ?? artist.slug ?? "";
+    const materials = product.materials?.map((m) => m.material.name) ?? [];
+    const mediums = product.mediums?.map((m) => m.medium.name) ?? (product.medium ? [product.medium] : []);
+    const tags = Array.from(new Set([...mediums, ...materials]));
+    const onSale = typeof product.salePrice === "number" && product.salePrice < product.price;
 
     return (
-        <div className="max-w-5xl mx-auto px-6 py-12" style={{ fontFamily: "'Georgia', serif" }}>
-            <Link href="/artworks" className="text-sm text-amber-700 hover:text-stone-800 mb-8 inline-block">
-                ← Back to Gallery
-            </Link>
+        <div className="bg-[var(--paper)]">
+            <div className="mx-auto max-w-6xl px-6 py-14">
+                <Link
+                    href="/artworks"
+                    className="mb-10 inline-flex items-center gap-1.5 text-sm text-[var(--sage-dark)] transition-colors hover:text-[var(--clay-dark)]"
+                >
+                    <ArrowLeft size={15} /> Back to the collection
+                </Link>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                <div className="relative aspect-square bg-amber-100 border border-amber-200">
-                    {imgUrl && <Image src={imgUrl} alt={product.title} fill className="object-contain" priority />}
-                    {product.status === "sold" && (
-                        <div className="absolute top-4 left-4 bg-stone-800 text-amber-50 text-xs px-3 py-1">Sold</div>
-                    )}
-                </div>
-
-                <div>
-                    <h1 className="text-3xl text-stone-800 mb-2"><em>{product.title}</em></h1>
-                    {product.yearCreated && <p className="text-sm text-amber-700 mb-4">{product.yearCreated}</p>}
-                    {product.medium && <p className="text-sm text-stone-500 mb-1">{product.medium}</p>}
-                    {product.dimensions && (
-                        <p className="text-sm text-stone-400 mb-4">
-                            {product.dimensions.width}″ × {product.dimensions.height}″
-                            {product.dimensions.depth ? ` × ${product.dimensions.depth}″` : ""}
-                        </p>
-                    )}
-
-                    <p className="text-2xl text-stone-800 mb-6">${product.price.toLocaleString()}</p>
-
-                    {product.description && (
-                        <p className="text-stone-600 leading-relaxed mb-8 italic">{product.description}</p>
-                    )}
-
-                    {product.status === "active" && artistSlug && product.slug && (
-                        <a
-                            href={marketplaceArtworkUrl(product)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-block bg-stone-800 text-amber-50 px-8 py-3 text-sm hover:bg-stone-700 transition-colors"
-                        >
-                            Inquire / Purchase
-                        </a>
-                    )}
-                    <p className="text-xs text-stone-400 mt-3">Handled through ArtsDistrictUSA</p>
-
-                    {product.isFramed && <p className="text-xs text-amber-700 mt-3">✦ Framed and ready to hang</p>}
-                </div>
-            </div>
-
-            {relatedProducts.length > 0 && (
-                <div className="border-t border-amber-200 mt-16 pt-12">
-                    <h2 className="text-xl text-stone-600 mb-8"><em>More from the Studio</em></h2>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-5">
-                        {relatedProducts.slice(0, 3).map((r) => {
-                            const rImg = getProductImageUrl(r);
-                            return (
-                                <Link key={r.id} href={`/artworks/${r.slug ?? r.id}`} className="group block">
-                                    <div className="relative aspect-[4/5] bg-amber-100 overflow-hidden mb-2 border border-amber-200">
-                                        {rImg && <Image src={rImg} alt={r.title} fill className="object-cover group-hover:scale-103 transition-transform" />}
+                <div className="grid grid-cols-1 gap-14 lg:grid-cols-2">
+                    <Reveal>
+                        <StudioFrame rotate={-1} className="mx-auto w-full max-w-lg">
+                            <div className="relative aspect-square w-full bg-[var(--sand)]">
+                                {imgUrl && (
+                                    <Image src={imgUrl} alt={product.title} fill className="object-contain" priority />
+                                )}
+                                {product.status === "sold" && (
+                                    <div className="absolute left-4 top-4 bg-[var(--ink)] px-3 py-1 text-xs uppercase tracking-wide text-[var(--paper)]">
+                                        Sold
                                     </div>
-                                    <p className="text-sm text-stone-700">{r.title}</p>
-                                    <p className="text-sm text-amber-700">${r.price.toLocaleString()}</p>
-                                </Link>
-                            );
-                        })}
-                    </div>
+                                )}
+                            </div>
+                        </StudioFrame>
+                    </Reveal>
+
+                    <Reveal delay={100}>
+                        <h1 className="text-3xl italic text-[var(--ink)] sm:text-4xl" style={{ fontFamily: "var(--font-display)" }}>
+                            {product.title}
+                        </h1>
+
+                        <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-[var(--ink-soft)]">
+                            {product.yearCreated && <span>{product.yearCreated}</span>}
+                            {product.isOriginal && (
+                                <>
+                                    <span className="h-1 w-1 rounded-full bg-[var(--clay)]/50" aria-hidden />
+                                    <span>Original, one of a kind</span>
+                                </>
+                            )}
+                        </div>
+
+                        {tags.length > 0 && (
+                            <div className="mt-5 flex flex-wrap gap-2">
+                                {tags.map((t) => (
+                                    <span
+                                        key={t}
+                                        className="rounded-full border border-[var(--sage-dark)]/25 px-3 py-1 text-xs uppercase tracking-wide text-[var(--sage-dark)]"
+                                    >
+                                        {t}
+                                    </span>
+                                ))}
+                            </div>
+                        )}
+
+                        {product.dimensions && (
+                            <div className="mt-5 flex items-center gap-2 text-sm text-[var(--ink-soft)]">
+                                <Ruler size={15} className="text-[var(--clay)]" />
+                                {product.dimensions.width}&Prime; × {product.dimensions.height}&Prime;
+                                {product.dimensions.depth ? ` × ${product.dimensions.depth}\u2033` : ""}
+                            </div>
+                        )}
+
+                        <div className="mt-6 flex items-baseline gap-3">
+                            <p className="text-2xl text-[var(--ink)]">
+                                ${(onSale ? product.salePrice! : product.price).toLocaleString()}
+                            </p>
+                            {onSale && (
+                                <p className="text-base text-[var(--ink-soft)] line-through">${product.price.toLocaleString()}</p>
+                            )}
+                        </div>
+
+                        {product.description && (
+                            <p className="mt-6 whitespace-pre-line leading-relaxed text-[var(--ink-soft)]">{product.description}</p>
+                        )}
+
+                        {product.status === "active" && artistSlug && product.slug && (
+                            <a
+                                href={marketplaceArtworkUrl(product)}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="group mt-8 inline-flex items-center gap-2 bg-[var(--clay)] px-8 py-3.5 text-sm font-medium tracking-wide text-[var(--paper)] transition-colors hover:bg-[var(--clay-dark)]"
+                            >
+                                Inquire / Purchase
+                                <ArrowUpRight size={15} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                            </a>
+                        )}
+                        <p className="mt-3 text-xs text-[var(--ink-soft)]/70">Handled securely through ArtsDistrictUSA</p>
+
+                        {(product.isFramed || product.readyToHang) && (
+                            <div className="mt-5 flex items-center gap-2 text-xs text-[var(--sage-dark)]">
+                                <Sparkles size={14} />
+                                {[product.isFramed && "Framed", product.readyToHang && "Ready to hang"].filter(Boolean).join(" · ")}
+                            </div>
+                        )}
+                    </Reveal>
                 </div>
-            )}
+
+                {relatedProducts.length > 0 && (
+                    <div className="mt-24 border-t border-[var(--ink)]/10 pt-14">
+                        <Reveal>
+                            <h2 className="mb-8 text-2xl italic text-[var(--ink)]" style={{ fontFamily: "var(--font-display)" }}>
+                                More from the Studio
+                            </h2>
+                        </Reveal>
+                        <div className="grid grid-cols-2 gap-5 sm:grid-cols-3">
+                            {relatedProducts.slice(0, 3).map((r, i) => {
+                                const rImg = getProductImageUrl(r);
+                                return (
+                                    <Reveal key={r.id} delay={i * 90}>
+                                        <Link href={`/artworks/${r.slug ?? r.id}`} className="group block">
+                                            <div className="relative aspect-[4/5] w-full overflow-hidden bg-[var(--sand)]">
+                                                {rImg && (
+                                                    <Image
+                                                        src={rImg}
+                                                        alt={r.title}
+                                                        fill
+                                                        className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                                                    />
+                                                )}
+                                            </div>
+                                            <p className="mt-2.5 text-sm text-[var(--ink)]">{r.title}</p>
+                                            <p className="text-sm text-[var(--clay-dark)]">${r.price.toLocaleString()}</p>
+                                        </Link>
+                                    </Reveal>
+                                );
+                            })}
+                        </div>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }

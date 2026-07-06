@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ShieldCheck } from "lucide-react";
 import type { ThemeLayoutProps } from "@/themes/types";
 import { getArtistName } from "@/lib/artist-api";
+import { displayFont, sansFont } from "./fonts";
 
 export default function ObsidianLayout({ children, artist, domain }: ThemeLayoutProps) {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -38,9 +39,14 @@ export default function ObsidianLayout({ children, artist, domain }: ThemeLayout
     ].filter((s): s is { href: string; label: string } => s !== null);
 
     return (
-        <div className="min-h-screen bg-[#0a0a0a] text-[#f5f0eb] flex flex-col">
+        <div
+            className={`${displayFont.variable} ${sansFont.variable} min-h-screen bg-[#0a0a0a] text-[#f5f0eb] flex flex-col font-[family-name:var(--font-obsidian-sans)]`}
+        >
+            {/* Ambient vignette texture */}
+            <div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_rgba(201,169,110,0.05),transparent_60%)]" />
+
             {/* Nav */}
-            <header className="sticky top-0 z-50 bg-[#0a0a0a]/95 backdrop-blur-sm">
+            <header className="sticky top-0 z-50 bg-[#0a0a0a]/75 backdrop-blur-xl border-b border-white/[0.04]">
                 <div className="max-w-7xl mx-auto px-6 md:px-12 h-20 flex items-center justify-between">
                     {/* Mobile hamburger — left side */}
                     <button
@@ -54,9 +60,12 @@ export default function ObsidianLayout({ children, artist, domain }: ThemeLayout
                     {/* Artist name — centered */}
                     <Link
                         href={`/`}
-                        className="absolute left-1/2 -translate-x-1/2 text-sm md:text-base font-thin tracking-[0.35em] uppercase text-[#c9a96e] hover:text-[#f5f0eb] transition-colors whitespace-nowrap"
+                        className="absolute left-1/2 -translate-x-1/2 flex items-center gap-3 text-sm md:text-base font-[family-name:var(--font-obsidian-display)] font-medium tracking-[0.35em] uppercase text-[#c9a96e] hover:text-[#f5f0eb] transition-colors whitespace-nowrap"
                     >
                         {name}
+                        {artist.verified && (
+                            <ShieldCheck size={14} strokeWidth={1.5} className="hidden sm:inline-block text-[#c9a96e]/70" />
+                        )}
                     </Link>
 
                     {/* Desktop nav — right side */}
@@ -96,10 +105,10 @@ export default function ObsidianLayout({ children, artist, domain }: ThemeLayout
                 )}
             </header>
 
-            <main className="flex-1">{children}</main>
+            <main className="relative z-10 flex-1">{children}</main>
 
             {/* Footer */}
-            <footer className="mt-24 border-t border-[#c9a96e]/20 bg-[#0a0a0a]">
+            <footer className="relative z-10 mt-24 border-t border-[#c9a96e]/20 bg-[#0a0a0a]">
                 <div className="max-w-7xl mx-auto px-6 md:px-12 py-12">
                     <div className="flex flex-col md:flex-row items-center justify-between gap-8">
                         <div className="text-center md:text-left">

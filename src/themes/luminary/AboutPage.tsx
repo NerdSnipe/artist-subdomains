@@ -1,10 +1,15 @@
 import Image from "next/image";
+import { ArrowUpRight } from "lucide-react";
 import type { ThemePageProps } from "@/themes/types";
 import { getArtistName } from "@/lib/artist-api";
+import GlowBlob from "./GlowBlob";
+import Reveal from "./Reveal";
+import { Kicker, PillButton } from "./ui";
 
 export default function LuminaryAboutPage({ artist }: ThemePageProps) {
     const name = getArtistName(artist);
     const location = [artist.city, artist.state, artist.country].filter(Boolean).join(", ");
+    const photo = artist.bioPhoto ?? artist.profilePhoto;
 
     const socials: { href: string; label: string }[] = [
         artist.instagram ? { href: `https://instagram.com/${artist.instagram.replace("@", "")}`, label: "Instagram" } : null,
@@ -18,276 +23,304 @@ export default function LuminaryAboutPage({ artist }: ThemePageProps) {
 
     return (
         <div>
-            {/* ── Page Header ──────────────────────────────────────────────── */}
-            <div className="border-b-2 border-[#1a1a1a]">
-                <div className="max-w-7xl mx-auto px-6 md:px-10 py-10 md:py-16">
-                    <p className="font-sans text-[10px] tracking-[0.3em] uppercase text-[#0f2d6b] mb-3">
-                        Artist Profile
-                    </p>
-                    <h1 className="font-serif font-black text-6xl md:text-8xl leading-[0.9] tracking-tight text-[#1a1a1a]">
-                        {name}
-                    </h1>
-                    {location && (
-                        <p className="font-sans text-sm tracking-widest uppercase text-neutral-400 mt-4">
-                            {location}
-                        </p>
-                    )}
-                </div>
-            </div>
-
-            {/* ── Artist Statement Pull Quote ────────────────────────────────── */}
-            {artist.artistStatement && (
-                <section className="border-b-2 border-[#1a1a1a]">
-                    <div className="max-w-7xl mx-auto px-6 md:px-10 py-16 grid grid-cols-12 gap-6">
-                        <div className="col-span-12 md:col-span-1">
-                            <span
-                                className="font-serif font-black text-8xl md:text-9xl leading-none text-[#0f2d6b] select-none"
-                                aria-hidden="true"
-                            >
-                                &ldquo;
-                            </span>
-                        </div>
-                        <div className="col-span-12 md:col-span-9">
-                            <blockquote className="font-serif text-2xl md:text-3xl lg:text-4xl font-black leading-[1.2] text-[#1a1a1a] italic mb-6">
-                                {artist.artistStatement}
-                            </blockquote>
-                            <div className="flex items-center gap-4">
-                                <div className="w-8 h-0.5 bg-[#0f2d6b]" />
-                                <p className="font-sans text-xs tracking-[0.2em] uppercase text-neutral-500">
-                                    Artist Statement — {name}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            )}
-
-            {/* ── Profile: Photo + Bio ──────────────────────────────────────── */}
-            <section className="max-w-7xl mx-auto px-6 md:px-10 py-14 md:py-20">
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16">
-                    {/* Large profile photo */}
-                    {(artist.bioPhoto ?? artist.profilePhoto) && (
-                        <div className="md:col-span-4">
-                            <div className="relative aspect-[3/4] overflow-hidden bg-neutral-100">
-                                <Image
-                                    src={(artist.bioPhoto ?? artist.profilePhoto)!}
-                                    alt={name}
-                                    fill
-                                    className="object-cover"
-                                />
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Bio text — columnar magazine style */}
-                    <div className={`${(artist.bioPhoto ?? artist.profilePhoto) ? "md:col-span-8" : "md:col-span-12"}`}>
-                        {artist.bio && (
-                            <div className="mb-10">
-                                <p className="font-sans text-[10px] tracking-[0.3em] uppercase text-neutral-400 mb-6">
-                                    Biography
-                                </p>
-                                <div
-                                    className="font-sans text-base text-neutral-700 leading-relaxed"
-                                    style={{ columnCount: artist.bio.length > 400 ? 2 : 1, columnGap: "2.5rem" }}
-                                >
-                                    <p className="whitespace-pre-line">{artist.bio}</p>
-                                </div>
-                            </div>
+            {/* ── Header + Portrait ────────────────────────────────────────── */}
+            <section className="relative overflow-hidden px-6 pb-16 pt-16 md:px-10 md:pb-24 md:pt-24">
+                <GlowBlob className="-top-20 left-0 h-96 w-96" colors={["#fbe3f2", "#e3ecff"]} opacity={0.5} />
+                <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-14 md:grid-cols-12 md:gap-10">
+                    <Reveal className="md:col-span-7 lg:col-span-6">
+                        <Kicker>Artist Profile</Kicker>
+                        <h1 className="mt-5 font-serif text-5xl italic leading-[1.05] text-[#3a3240] sm:text-6xl md:text-7xl">
+                            {name}
+                        </h1>
+                        {location && (
+                            <p className="mt-5 font-sans text-xs uppercase tracking-[0.22em] text-[#a9769f]">{location}</p>
                         )}
-
-                        {/* Social links */}
+                        {artist.artistTagline && (
+                            <p className="mt-6 max-w-md font-sans text-[15px] leading-relaxed text-[#6b6470]">
+                                {artist.artistTagline}
+                            </p>
+                        )}
                         {socials.length > 0 && (
-                            <div className="border-t border-neutral-200 pt-6">
-                                <p className="font-sans text-[10px] tracking-[0.3em] uppercase text-neutral-400 mb-4">
-                                    Follow
-                                </p>
-                                <div className="flex flex-wrap gap-x-6 gap-y-2">
-                                    {socials.map((s) => (
-                                        <a
-                                            key={s.label}
-                                            href={s.href}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="font-sans text-sm text-[#1a1a1a] hover:text-[#0f2d6b] transition-colors"
-                                        >
-                                            {s.label}
-                                        </a>
-                                    ))}
-                                </div>
+                            <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2">
+                                {socials.map((s) => (
+                                    <a
+                                        key={s.label}
+                                        href={s.href}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="font-sans text-sm text-[#6b6470] transition-colors hover:text-[#a9769f]"
+                                    >
+                                        {s.label}
+                                    </a>
+                                ))}
                             </div>
                         )}
-                    </div>
+                    </Reveal>
+
+                    {photo && (
+                        <Reveal className="relative md:col-span-5 lg:col-span-6" delay={150}>
+                            <div className="relative mx-auto max-w-sm md:max-w-none">
+                                <GlowBlob className="-inset-8 -z-10" colors={["#f6e3fb", "#d7e6ff"]} opacity={0.55} />
+                                <div className="relative aspect-[4/5] w-full overflow-hidden bg-white p-3 shadow-[0_30px_60px_-15px_rgba(58,50,64,0.22)]">
+                                    <div className="relative h-full w-full overflow-hidden bg-[#f6f3f1]">
+                                        <Image src={photo} alt={name} fill className="object-cover" />
+                                    </div>
+                                </div>
+                            </div>
+                        </Reveal>
+                    )}
                 </div>
             </section>
 
-            {/* ── Exhibitions — Editorial Timeline ───────────────────────────── */}
+            {/* ── Artist Statement ─────────────────────────────────────────── */}
+            {artist.artistStatement && (
+                <section className="relative py-4 md:py-8">
+                    <Reveal className="mx-auto max-w-3xl px-6 text-center md:px-10">
+                        <span aria-hidden="true" className="font-serif text-6xl italic text-[#d9b9d1]">
+                            &ldquo;
+                        </span>
+                        <blockquote className="-mt-4 font-serif text-2xl italic leading-relaxed text-[#3a3240] sm:text-3xl">
+                            {artist.artistStatement}
+                        </blockquote>
+                    </Reveal>
+                </section>
+            )}
+
+            {/* ── Biography ────────────────────────────────────────────────── */}
+            {artist.bio && (
+                <section className="mx-auto max-w-3xl px-6 py-16 md:px-10 md:py-24">
+                    <Reveal>
+                        <Kicker>Biography</Kicker>
+                        <p className="mt-6 whitespace-pre-line font-sans text-[16px] leading-[1.9] text-[#4d4650]">
+                            {artist.bio}
+                        </p>
+                    </Reveal>
+                </section>
+            )}
+
+            {/* ── Studio Process ───────────────────────────────────────────── */}
+            {artist.studioProcessDescription && (
+                <section className="relative overflow-hidden py-16 md:py-24">
+                    <GlowBlob className="right-0 top-1/2 h-80 w-80 -translate-y-1/2" colors={["#fdeadb", "#f6e3fb"]} opacity={0.4} />
+                    <Reveal className="relative mx-auto max-w-3xl px-6 md:px-10">
+                        <Kicker>{artist.studioSubtitle ?? "In the Studio"}</Kicker>
+                        <p className="mt-6 whitespace-pre-line font-sans text-[16px] leading-[1.9] text-[#4d4650]">
+                            {artist.studioProcessDescription}
+                        </p>
+                    </Reveal>
+                </section>
+            )}
+
+            {/* ── Studio Images ─────────────────────────────────────────────── */}
+            {artist.studioImages && artist.studioImages.length > 0 && (
+                <section className="mx-auto max-w-7xl px-6 py-16 md:px-10 md:py-24">
+                    <Reveal className="mb-10">
+                        <Kicker>Studio</Kicker>
+                        <h2 className="mt-4 font-serif text-3xl italic text-[#3a3240]">A peek behind the easel</h2>
+                    </Reveal>
+                    <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
+                        {artist.studioImages.slice(0, 6).map((imgUrl, i) => (
+                            <Reveal
+                                key={i}
+                                delay={(i % 3) * 90}
+                                className={i === 0 ? "col-span-2 md:col-span-2" : ""}
+                            >
+                                <div className={`relative overflow-hidden bg-white p-1.5 shadow-[0_14px_30px_-18px_rgba(58,50,64,0.22)] ${i === 0 ? "aspect-[16/9]" : "aspect-square"}`}>
+                                    <div className="relative h-full w-full overflow-hidden bg-[#f6f3f1]">
+                                        <Image src={imgUrl} alt={`${name} studio ${i + 1}`} fill className="object-cover" />
+                                    </div>
+                                </div>
+                            </Reveal>
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            {/* ── Book ─────────────────────────────────────────────────────── */}
+            {artist.book && (
+                <section className="relative overflow-hidden py-16 md:py-24">
+                    <GlowBlob className="left-0 top-0 h-80 w-80" colors={["#e3ecff", "#fbe3f2"]} opacity={0.45} />
+                    <Reveal className="relative mx-auto grid max-w-5xl grid-cols-1 items-center gap-10 px-6 md:grid-cols-12 md:px-10">
+                        <div className="md:col-span-4">
+                            <div className="relative aspect-[3/4] overflow-hidden bg-white p-3 shadow-[0_25px_50px_-15px_rgba(58,50,64,0.25)]">
+                                <div className="relative h-full w-full overflow-hidden bg-[#f6f3f1]">
+                                    <Image src={artist.book.imageUrl} alt={artist.book.title} fill className="object-cover" />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="md:col-span-8">
+                            <Kicker>Published Work</Kicker>
+                            <h2 className="mt-4 font-serif text-3xl italic text-[#3a3240] sm:text-4xl">{artist.book.title}</h2>
+                            <p className="mt-5 font-sans text-[15px] leading-relaxed text-[#6b6470]">{artist.book.description}</p>
+                            <p className="mt-4 font-sans text-xs uppercase tracking-[0.14em] text-[#a39aa0]">
+                                {[artist.book.publisher, artist.book.format].filter(Boolean).join(" · ")}
+                            </p>
+                            {artist.book.purchaseUrl && (
+                                <PillButton href={artist.book.purchaseUrl} external className="mt-6">
+                                    {artist.book.purchaseLabel ?? "Get the Book"}
+                                </PillButton>
+                            )}
+                        </div>
+                    </Reveal>
+                </section>
+            )}
+
+            {/* ── Exhibitions ──────────────────────────────────────────────── */}
             {artist.exhibitions && artist.exhibitions.length > 0 && (
-                <section className="border-t-2 border-[#1a1a1a]">
-                    <div className="max-w-7xl mx-auto px-6 md:px-10 py-12 md:py-16">
-                        <p className="font-sans text-[10px] tracking-[0.3em] uppercase text-[#0f2d6b] mb-10">
-                            Exhibitions
-                        </p>
-                        <div className="space-y-0">
-                            {artist.exhibitions.map((ex, i) => (
-                                <div
-                                    key={i}
-                                    className="grid grid-cols-12 gap-4 py-6 border-b border-neutral-100 group"
-                                >
-                                    {/* Year — large accent number */}
-                                    <div className="col-span-3 md:col-span-2">
-                                        <span className="font-serif font-black text-3xl md:text-4xl text-[#0f2d6b] leading-none">
-                                            {ex.year}
+                <section className="mx-auto max-w-5xl px-6 py-16 md:px-10 md:py-24">
+                    <Reveal className="mb-10">
+                        <Kicker>Timeline</Kicker>
+                        <h2 className="mt-4 font-serif text-3xl italic text-[#3a3240]">Exhibitions</h2>
+                    </Reveal>
+                    <div>
+                        {artist.exhibitions.map((ex, i) => (
+                            <Reveal key={i} delay={(i % 6) * 60}>
+                                <div className="grid grid-cols-12 items-baseline gap-4 border-b border-[#3a3240]/10 py-6">
+                                    <span className="col-span-3 font-serif text-2xl italic text-[#a9769f] sm:col-span-2">
+                                        {ex.year}
+                                    </span>
+                                    <div className="col-span-9 sm:col-span-7">
+                                        <p className="font-serif text-lg italic text-[#3a3240]">{ex.title}</p>
+                                        {ex.location && <p className="mt-1 font-sans text-sm text-[#8a8189]">{ex.location}</p>}
+                                    </div>
+                                    {ex.type && (
+                                        <span className="col-span-12 font-sans text-[10px] uppercase tracking-[0.16em] text-[#a39aa0] sm:col-span-3 sm:text-right">
+                                            {ex.type}
                                         </span>
-                                    </div>
-                                    <div className="col-span-9 md:col-span-7 flex flex-col justify-center">
-                                        <p className="font-serif font-black text-lg text-[#1a1a1a] leading-tight">
-                                            {ex.title}
-                                        </p>
-                                        {ex.location && (
-                                            <p className="font-sans text-sm text-neutral-500 mt-1">
-                                                {ex.location}
-                                            </p>
-                                        )}
-                                    </div>
-                                    <div className="col-span-12 md:col-span-3 flex md:justify-end items-start pt-0.5">
-                                        {ex.type && (
-                                            <span className="font-sans text-[10px] tracking-[0.2em] uppercase border border-neutral-300 text-neutral-400 px-2 py-1">
-                                                {ex.type}
-                                            </span>
-                                        )}
-                                    </div>
+                                    )}
                                 </div>
-                            ))}
-                        </div>
+                            </Reveal>
+                        ))}
                     </div>
                 </section>
             )}
 
-            {/* ── Publications — Bibliography Style ─────────────────────────── */}
+            {/* ── Publications ─────────────────────────────────────────────── */}
             {artist.publications && artist.publications.length > 0 && (
-                <section className="border-t-2 border-[#1a1a1a]">
-                    <div className="max-w-7xl mx-auto px-6 md:px-10 py-12 md:py-16">
-                        <p className="font-sans text-[10px] tracking-[0.3em] uppercase text-[#0f2d6b] mb-10">
-                            Publications &amp; Press
-                        </p>
-                        <div className="space-y-0 max-w-3xl">
-                            {artist.publications.map((pub, i) => (
-                                <div
-                                    key={i}
-                                    className="flex gap-6 py-5 border-b border-neutral-100"
-                                >
-                                    <span className="font-serif font-black text-xl text-[#0f2d6b] w-14 shrink-0 pt-0.5">
-                                        {pub.year}
-                                    </span>
+                <section className="mx-auto max-w-5xl px-6 py-16 md:px-10 md:py-24">
+                    <Reveal className="mb-10">
+                        <Kicker>Press</Kicker>
+                        <h2 className="mt-4 font-serif text-3xl italic text-[#3a3240]">Publications</h2>
+                    </Reveal>
+                    <div>
+                        {artist.publications.map((pub, i) => (
+                            <Reveal key={i} delay={(i % 6) * 60}>
+                                <div className="flex gap-6 border-b border-[#3a3240]/10 py-5">
+                                    <span className="w-14 shrink-0 font-serif text-xl italic text-[#a9769f]">{pub.year}</span>
                                     <div>
-                                        <p className="font-serif font-black text-base text-[#1a1a1a]">
-                                            {pub.title}
-                                        </p>
+                                        <p className="font-serif text-lg italic text-[#3a3240]">{pub.title}</p>
                                         {pub.publication && (
-                                            <p className="font-sans text-sm text-neutral-500 italic mt-0.5">
-                                                {pub.publication}
-                                            </p>
+                                            <p className="mt-0.5 font-sans text-sm text-[#8a8189]">{pub.publication}</p>
                                         )}
                                     </div>
                                 </div>
-                            ))}
-                        </div>
+                            </Reveal>
+                        ))}
                     </div>
                 </section>
             )}
 
-            {/* ── Reviews — Editorial Pull Quotes ───────────────────────────── */}
+            {/* ── Reviews ──────────────────────────────────────────────────── */}
             {artist.reviews && artist.reviews.length > 0 && (
-                <section className="border-t-2 border-[#1a1a1a] bg-neutral-50">
-                    <div className="max-w-7xl mx-auto px-6 md:px-10 py-12 md:py-16">
-                        <p className="font-sans text-[10px] tracking-[0.3em] uppercase text-[#0f2d6b] mb-10">
-                            What They&apos;re Saying
-                        </p>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <section className="relative overflow-hidden py-16 md:py-24">
+                    <GlowBlob className="left-1/2 top-0 h-96 w-96 -translate-x-1/2" colors={["#fdeadb", "#e3ecff"]} opacity={0.4} />
+                    <div className="relative mx-auto max-w-7xl px-6 md:px-10">
+                        <Reveal className="mb-10">
+                            <Kicker>Words From Others</Kicker>
+                            <h2 className="mt-4 font-serif text-3xl italic text-[#3a3240]">What People Are Saying</h2>
+                        </Reveal>
+                        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
                             {artist.reviews.map((review, i) => (
-                                <div key={i} className="bg-white border-l-2 border-[#0f2d6b] p-6 md:p-8">
-                                    <span
-                                        className="font-serif font-black text-5xl leading-none text-[#0f2d6b] select-none block mb-3"
-                                        aria-hidden="true"
-                                    >
-                                        &ldquo;
-                                    </span>
-                                    <blockquote className="font-serif text-lg md:text-xl font-black leading-[1.3] text-[#1a1a1a] italic mb-5">
-                                        {review.text}
-                                    </blockquote>
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-5 h-0.5 bg-[#0f2d6b]" />
-                                        <div>
-                                            <p className="font-sans text-xs font-medium text-[#1a1a1a] tracking-wide">
-                                                {review.author}
-                                            </p>
-                                            {review.role && (
-                                                <p className="font-sans text-[10px] tracking-[0.15em] uppercase text-neutral-400 mt-0.5">
-                                                    {review.role}
-                                                </p>
-                                            )}
-                                        </div>
+                                <Reveal key={i} delay={i * 90}>
+                                    <div className="bg-white/70 p-8 shadow-[0_16px_36px_-20px_rgba(58,50,64,0.2)] backdrop-blur-sm">
+                                        <span aria-hidden="true" className="mb-2 block font-serif text-4xl italic text-[#d9b9d1]">
+                                            &ldquo;
+                                        </span>
+                                        <blockquote className="font-serif text-lg italic leading-relaxed text-[#3a3240]">
+                                            {review.text}
+                                        </blockquote>
+                                        <p className="mt-5 font-sans text-sm font-semibold text-[#3a3240]">{review.author}</p>
+                                        {review.role && (
+                                            <p className="font-sans text-xs uppercase tracking-[0.12em] text-[#a39aa0]">{review.role}</p>
+                                        )}
                                     </div>
-                                </div>
+                                </Reveal>
                             ))}
                         </div>
                     </div>
                 </section>
             )}
 
-            {/* ── Gallery Representation ────────────────────────────────────── */}
+            {/* ── Galleries ────────────────────────────────────────────────── */}
             {artist.galleries && artist.galleries.length > 0 && (
-                <section className="border-t-2 border-[#1a1a1a]">
-                    <div className="max-w-7xl mx-auto px-6 md:px-10 py-12 md:py-16">
-                        <p className="font-sans text-[10px] tracking-[0.3em] uppercase text-[#0f2d6b] mb-8">
-                            Gallery Representation
-                        </p>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                            {artist.galleries.map((g, i) => (
-                                <div key={i} className="border border-neutral-200 p-5">
+                <section className="mx-auto max-w-7xl px-6 py-16 md:px-10 md:py-24">
+                    <Reveal className="mb-10">
+                        <Kicker>Representation</Kicker>
+                        <h2 className="mt-4 font-serif text-3xl italic text-[#3a3240]">Galleries</h2>
+                    </Reveal>
+                    <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
+                        {artist.galleries.map((g, i) => (
+                            <Reveal key={i} delay={(i % 3) * 90}>
+                                <div>
                                     {g.photo && (
-                                        <div className="relative aspect-[3/2] overflow-hidden bg-neutral-100 mb-4">
-                                            <Image src={g.photo} alt={g.name} fill className="object-cover" />
+                                        <div className="relative mb-4 aspect-[3/2] overflow-hidden bg-white p-1.5 shadow-[0_14px_30px_-18px_rgba(58,50,64,0.2)]">
+                                            <div className="relative h-full w-full overflow-hidden bg-[#f6f3f1]">
+                                                <Image src={g.photo} alt={g.name} fill className="object-cover" />
+                                            </div>
                                         </div>
                                     )}
-                                    <p className="font-serif font-black text-base text-[#1a1a1a] mb-1">
+                                    <p className="font-serif text-lg italic text-[#3a3240]">
                                         {(g.link ?? g.url) ? (
                                             <a
                                                 href={g.link ?? g.url}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="hover:text-[#0f2d6b] transition-colors"
+                                                className="inline-flex items-center gap-1 transition-colors hover:text-[#a9769f]"
                                             >
-                                                {g.name}
+                                                {g.name} <ArrowUpRight className="h-4 w-4" />
                                             </a>
-                                        ) : g.name}
+                                        ) : (
+                                            g.name
+                                        )}
                                     </p>
                                     {(g.city || g.state) && (
-                                        <p className="font-sans text-xs tracking-widest uppercase text-neutral-400">
+                                        <p className="mt-1 font-sans text-xs uppercase tracking-[0.14em] text-[#a39aa0]">
                                             {[g.city, g.state].filter(Boolean).join(", ")}
                                         </p>
                                     )}
                                 </div>
-                            ))}
-                        </div>
+                            </Reveal>
+                        ))}
                     </div>
                 </section>
             )}
 
-            {/* ── Studio Images ────────────────────────────────────────────── */}
-            {artist.studioImages && artist.studioImages.length > 0 && (
-                <section className="border-t-2 border-[#1a1a1a]">
-                    <div className="max-w-7xl mx-auto px-6 md:px-10 py-12 md:py-16">
-                        <p className="font-sans text-[10px] tracking-[0.3em] uppercase text-[#0f2d6b] mb-8">
-                            Studio
-                        </p>
-                        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-                            {artist.studioImages.slice(0, 6).map((imgUrl, i) => (
-                                <div key={i} className={`relative overflow-hidden bg-neutral-100 ${i === 0 ? "col-span-2 md:col-span-2 aspect-[16/9]" : "aspect-square"}`}>
-                                    <Image src={imgUrl} alt={`${name} studio ${i + 1}`} fill className="object-cover" />
-                                </div>
-                            ))}
-                        </div>
+            {/* ── Studio Locations ─────────────────────────────────────────── */}
+            {artist.studioLocations && artist.studioLocations.length > 0 && (
+                <section className="mx-auto max-w-5xl px-6 py-16 md:px-10 md:py-24">
+                    <Reveal className="mb-10">
+                        <Kicker>Visit</Kicker>
+                        <h2 className="mt-4 font-serif text-3xl italic text-[#3a3240]">Studio Locations</h2>
+                    </Reveal>
+                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                        {artist.studioLocations.map((loc, i) => (
+                            <Reveal key={i} delay={(i % 4) * 80} className="border-l border-[#e3c9dd] pl-6">
+                                {loc.name && <p className="font-serif text-lg italic text-[#3a3240]">{loc.name}</p>}
+                                <p className="mt-1 font-sans text-sm text-[#6b6470]">
+                                    {[loc.address, loc.city, loc.state, loc.zipCode].filter(Boolean).join(", ")}
+                                </p>
+                                {loc.directionsUrl && (
+                                    <a
+                                        href={loc.directionsUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="mt-2 inline-flex items-center gap-1 font-sans text-xs font-medium uppercase tracking-[0.12em] text-[#a9769f] hover:text-[#3a3240]"
+                                    >
+                                        Get Directions <ArrowUpRight className="h-3.5 w-3.5" />
+                                    </a>
+                                )}
+                            </Reveal>
+                        ))}
                     </div>
                 </section>
             )}

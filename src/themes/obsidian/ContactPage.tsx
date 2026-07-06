@@ -1,6 +1,7 @@
 import type { ThemePageProps } from "@/themes/types";
 import { getArtistName } from "@/lib/artist-api";
 import Image from "next/image";
+import VerifiedBadge from "./VerifiedBadge";
 
 interface SocialEntry {
     href: string;
@@ -57,7 +58,7 @@ export default function ObsidianContact({ artist }: ThemePageProps) {
                 <p className="text-[10px] tracking-[0.45em] uppercase text-[#c9a96e]/50 mb-4 font-light">
                     Reach Out
                 </p>
-                <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-thin tracking-[0.25em] uppercase text-[#f5f0eb] leading-none">
+                <h1 className="font-[family-name:var(--font-obsidian-display)] text-7xl md:text-9xl lg:text-[10rem] font-light tracking-[0.02em] uppercase text-[#f5f0eb] leading-none">
                     Contact
                 </h1>
             </div>
@@ -66,9 +67,11 @@ export default function ObsidianContact({ artist }: ThemePageProps) {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
                     {/* Left: Artist info */}
                     <div>
-                        <h2 className="text-2xl md:text-3xl font-thin tracking-[0.2em] uppercase text-[#f5f0eb] mb-2">
+                        <h2 className="font-[family-name:var(--font-obsidian-display)] text-3xl md:text-4xl font-light tracking-[0.03em] uppercase text-[#f5f0eb] mb-3">
                             {name}
                         </h2>
+
+                        {artist.verified && <VerifiedBadge className="mb-6" />}
 
                         {(artist.city || artist.state || artist.country) && (
                             <p className="text-[10px] tracking-[0.3em] uppercase text-[#4a4540] mb-10">
@@ -114,6 +117,18 @@ export default function ObsidianContact({ artist }: ThemePageProps) {
                         {/* Social links */}
                         {socials.length > 0 && (
                             <div>
+                                {artist.socialImages && artist.socialImages.length > 0 && (
+                                    <div className="flex gap-2 mb-6">
+                                        {artist.socialImages.slice(0, 4).map((img, i) => (
+                                            <div
+                                                key={i}
+                                                className="relative w-14 h-14 shrink-0 bg-[#111] overflow-hidden border border-white/10"
+                                            >
+                                                <Image src={img} alt={`${name} social ${i + 1}`} fill className="object-cover" />
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
                                 <p className="text-[9px] tracking-[0.35em] uppercase text-[#3a3530] mb-5">
                                     Follow
                                 </p>
@@ -159,10 +174,10 @@ export default function ObsidianContact({ artist }: ThemePageProps) {
                     <div>
                         {/* Commission status — prominently displayed */}
                         <div
-                            className={`mb-10 p-8 border ${
+                            className={`mb-10 p-8 border backdrop-blur-xl ${
                                 acceptsCommissions
-                                    ? "border-[#c9a96e]/30 bg-[#c9a96e]/5"
-                                    : "border-[#2a2520] bg-[#0d0d0d]"
+                                    ? "border-[#c9a96e]/30 bg-[#c9a96e]/[0.06]"
+                                    : "border-white/10 bg-white/[0.02]"
                             }`}
                         >
                             <p className="text-[9px] tracking-[0.4em] uppercase text-[#c9a96e]/50 mb-3 font-light">
@@ -183,6 +198,14 @@ export default function ObsidianContact({ artist }: ThemePageProps) {
                                         "This artist welcomes commission inquiries. Reach out by email to begin a conversation about your bespoke work."}
                                 </p>
                             )}
+                            {artist.priceRange && (
+                                <p className="mt-5 pt-5 border-t border-white/10 text-[10px] tracking-[0.25em] uppercase text-[#4a4540]">
+                                    Typical Range{" "}
+                                    <span className="text-[#8a8278] tracking-wider normal-case">
+                                        {artist.priceRange}
+                                    </span>
+                                </p>
+                            )}
                         </div>
 
                         {/* Studio locations */}
@@ -193,7 +216,7 @@ export default function ObsidianContact({ artist }: ThemePageProps) {
                                 </p>
                                 <div className="space-y-5">
                                     {artist.studioLocations.map((loc, i) => (
-                                        <div key={i} className="border border-[#1a1a1a] p-5 hover:border-[#c9a96e]/15 transition-colors duration-300">
+                                        <div key={i} className="border border-white/10 bg-white/[0.02] backdrop-blur-xl p-5 hover:border-[#c9a96e]/15 transition-colors duration-300">
                                             {loc.name && (
                                                 <p className="text-sm font-light text-[#c9c4be] mb-1">{loc.name}</p>
                                             )}

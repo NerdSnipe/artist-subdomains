@@ -2,15 +2,17 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 import type { ThemePageProps } from "@/themes/types";
 import { getProductImageUrl } from "@/lib/artist-api";
+import GlowBlob from "./GlowBlob";
+import Reveal from "./Reveal";
+import { Kicker } from "./ui";
 
-export default function LuminaryArtworksPage({ artworks, domain }: ThemePageProps) {
+export default function LuminaryArtworksPage({ artworks }: ThemePageProps) {
     const active = artworks.filter((a) => a.status === "active");
     const sold = artworks.filter((a) => a.status === "sold");
 
-    // Collect unique mediums
     const mediumOptions = useMemo(() => {
         const set = new Set<string>();
         active.forEach((w) => {
@@ -26,10 +28,7 @@ export default function LuminaryArtworksPage({ artworks, domain }: ThemePageProp
     const filtered = useMemo(() => {
         let works = [...active];
         if (selectedMedium !== "all") {
-            works = works.filter((w) => {
-                const m = w.mediums?.[0]?.medium?.name ?? w.medium;
-                return m === selectedMedium;
-            });
+            works = works.filter((w) => (w.mediums?.[0]?.medium?.name ?? w.medium) === selectedMedium);
         }
         if (sortBy === "price-asc") works.sort((a, b) => a.price - b.price);
         if (sortBy === "price-desc") works.sort((a, b) => b.price - a.price);
@@ -39,42 +38,31 @@ export default function LuminaryArtworksPage({ artworks, domain }: ThemePageProp
 
     return (
         <div>
-            {/* ── Page Header ──────────────────────────────────────────────── */}
-            <div className="border-b-2 border-[#1a1a1a]">
-                <div className="max-w-7xl mx-auto px-6 md:px-10 py-10 md:py-16">
-                    <div className="grid grid-cols-12 items-end gap-4">
-                        <div className="col-span-12 md:col-span-8">
-                            <p className="font-sans text-[10px] tracking-[0.3em] uppercase text-[#0f2d6b] mb-3">
-                                The Collection
-                            </p>
-                            <h1 className="font-serif font-black text-6xl md:text-8xl leading-[0.9] tracking-tight text-[#1a1a1a]">
-                                Works
-                            </h1>
-                        </div>
-                        <div className="col-span-12 md:col-span-4 text-left md:text-right">
-                            <p className="font-sans text-sm text-neutral-400">
-                                {active.length} work{active.length !== 1 ? "s" : ""} available
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {/* ── Header ───────────────────────────────────────────────────── */}
+            <section className="relative overflow-hidden px-6 pb-14 pt-16 md:px-10 md:pb-20 md:pt-24">
+                <GlowBlob className="-top-24 right-0 h-96 w-96" colors={["#f6e3fb", "#fdeadb"]} opacity={0.5} />
+                <Reveal className="relative mx-auto max-w-7xl">
+                    <Kicker>The Gallery</Kicker>
+                    <h1 className="mt-5 font-serif text-5xl italic text-[#3a3240] sm:text-6xl md:text-7xl">
+                        Available Works
+                    </h1>
+                    <p className="mt-4 font-sans text-sm text-[#8a8189]">
+                        {active.length} original work{active.length !== 1 ? "s" : ""} currently available
+                    </p>
+                </Reveal>
+            </section>
 
-            {/* ── Filter Bar ────────────────────────────────────────────────── */}
-            <div className="border-b border-neutral-200 bg-white sticky top-[65px] z-40">
-                <div className="max-w-7xl mx-auto px-6 md:px-10 py-3 flex flex-wrap items-center gap-4 md:gap-8">
-                    {/* Medium filter */}
+            {/* ── Filter Bar ───────────────────────────────────────────────── */}
+            <div className="sticky top-20 z-30 border-y border-[#3a3240]/10 bg-white/70 backdrop-blur-xl">
+                <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-4 px-6 py-4 md:gap-8 md:px-10">
                     {mediumOptions.length > 0 && (
-                        <div className="flex items-center gap-3 flex-wrap">
-                            <span className="font-sans text-[10px] tracking-[0.2em] uppercase text-neutral-400 shrink-0">
-                                Medium
-                            </span>
+                        <div className="flex flex-wrap items-center gap-2">
                             <button
                                 onClick={() => setSelectedMedium("all")}
-                                className={`font-sans text-[10px] tracking-[0.15em] uppercase px-3 py-1.5 border transition-colors ${
+                                className={`rounded-full px-4 py-1.5 font-sans text-[11px] uppercase tracking-[0.14em] transition-colors ${
                                     selectedMedium === "all"
-                                        ? "border-[#1a1a1a] bg-[#1a1a1a] text-white"
-                                        : "border-neutral-300 text-neutral-600 hover:border-[#0f2d6b] hover:text-[#0f2d6b]"
+                                        ? "bg-[#3a3240] text-white"
+                                        : "text-[#6b6470] hover:bg-[#3a3240]/5"
                                 }`}
                             >
                                 All
@@ -83,10 +71,10 @@ export default function LuminaryArtworksPage({ artworks, domain }: ThemePageProp
                                 <button
                                     key={m}
                                     onClick={() => setSelectedMedium(m)}
-                                    className={`font-sans text-[10px] tracking-[0.15em] uppercase px-3 py-1.5 border transition-colors ${
+                                    className={`rounded-full px-4 py-1.5 font-sans text-[11px] uppercase tracking-[0.14em] transition-colors ${
                                         selectedMedium === m
-                                            ? "border-[#1a1a1a] bg-[#1a1a1a] text-white"
-                                            : "border-neutral-300 text-neutral-600 hover:border-[#0f2d6b] hover:text-[#0f2d6b]"
+                                            ? "bg-[#3a3240] text-white"
+                                            : "text-[#6b6470] hover:bg-[#3a3240]/5"
                                     }`}
                                 >
                                     {m}
@@ -95,153 +83,117 @@ export default function LuminaryArtworksPage({ artworks, domain }: ThemePageProp
                         </div>
                     )}
 
-                    {/* Sort */}
-                    <div className="flex items-center gap-3 ml-auto">
-                        <span className="font-sans text-[10px] tracking-[0.2em] uppercase text-neutral-400 shrink-0">
-                            Sort
-                        </span>
+                    <div className="ml-auto flex items-center gap-3">
+                        <span className="font-sans text-[11px] uppercase tracking-[0.14em] text-[#a39aa0]">Sort</span>
                         <select
                             value={sortBy}
                             onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-                            className="font-sans text-[10px] tracking-[0.15em] uppercase text-neutral-600 border border-neutral-300 px-2 py-1.5 bg-white focus:outline-none focus:border-[#0f2d6b] cursor-pointer"
+                            className="cursor-pointer rounded-full border border-[#3a3240]/15 bg-white px-3 py-1.5 font-sans text-[11px] uppercase tracking-[0.1em] text-[#3a3240] focus:border-[#a9769f] focus:outline-none"
                         >
-                            <option value="default">Default</option>
+                            <option value="default">Curated</option>
                             <option value="price-asc">Price: Low to High</option>
                             <option value="price-desc">Price: High to Low</option>
-                            <option value="year">Year: Newest</option>
+                            <option value="year">Newest</option>
                         </select>
                     </div>
                 </div>
             </div>
 
-            {/* ── Works Grid ────────────────────────────────────────────────── */}
-            <div className="max-w-7xl mx-auto px-6 md:px-10 py-12">
+            {/* ── Grid ─────────────────────────────────────────────────────── */}
+            <div className="relative mx-auto max-w-7xl px-6 py-16 md:px-10 md:py-20">
                 {filtered.length === 0 ? (
                     <div className="py-24 text-center">
-                        <p className="font-serif font-black text-2xl text-neutral-300 mb-2">
-                            No works found
-                        </p>
+                        <p className="font-serif text-2xl italic text-[#c9bdd2]">No works match this filter</p>
                         <button
                             onClick={() => setSelectedMedium("all")}
-                            className="font-sans text-xs tracking-widest uppercase text-[#0f2d6b] hover:underline"
+                            className="mt-4 font-sans text-xs uppercase tracking-[0.14em] text-[#a9769f] hover:underline"
                         >
                             Clear filters
                         </button>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-12 gap-4 md:gap-6">
+                    <div className="grid grid-cols-2 gap-5 sm:gap-7 md:grid-cols-3">
                         {filtered.map((work, i) => {
                             const img = getProductImageUrl(work);
-                            // Editorial pacing: alternate between 2-up and 3-up rows
-                            // Row pattern: 6+6, 4+4+4, 6+6, 4+4+4…
-                            const rowIndex = Math.floor(i / 6);
-                            const posInCycle = i % 6;
-                            let colSpan = "col-span-12 sm:col-span-6 md:col-span-4";
-                            if (rowIndex % 2 === 0) {
-                                // 2-up row: first 2 works are wide
-                                colSpan = posInCycle < 2
-                                    ? "col-span-12 sm:col-span-6"
-                                    : "col-span-12 sm:col-span-6 md:col-span-4";
-                            }
-
+                            const glow = work.dominantColors?.[0]?.hex ?? "#e9d6ef";
                             return (
-                                <Link
-                                    key={work.id}
-                                    href={`/artworks/${work.slug ?? work.id}`}
-                                    className={`${colSpan} group block`}
-                                >
-                                    <div className={`relative overflow-hidden bg-neutral-100 ${
-                                        rowIndex % 2 === 0 && posInCycle < 2
-                                            ? "aspect-[4/3]"
-                                            : "aspect-[3/4]"
-                                    }`}>
-                                        {img ? (
-                                            <Image
-                                                src={img}
-                                                alt={work.title}
-                                                fill
-                                                className="object-cover group-hover:scale-[1.03] transition-transform duration-700"
-                                            />
-                                        ) : (
-                                            <div className="absolute inset-0 bg-neutral-200" />
-                                        )}
-                                        {work.salePrice && (
-                                            <div className="absolute top-3 left-3 bg-[#0f2d6b] text-white text-[10px] px-2 py-0.5 tracking-widest uppercase font-sans">
-                                                Sale
+                                <Reveal key={work.id} delay={(i % 6) * 60}>
+                                    <Link href={`/artworks/${work.slug ?? work.id}`} className="group relative block">
+                                        <GlowBlob
+                                            className="-inset-4 -z-10 opacity-0 transition-opacity duration-500 group-hover:opacity-70"
+                                            colors={[glow, "#ffffff"]}
+                                            opacity={0}
+                                        />
+                                        <div className="relative aspect-[4/5] w-full overflow-hidden bg-white p-2 shadow-[0_16px_32px_-18px_rgba(58,50,64,0.2)] transition-transform duration-500 group-hover:-translate-y-1.5">
+                                            <div className="relative h-full w-full overflow-hidden bg-[#f6f3f1]">
+                                                {img ? (
+                                                    <Image
+                                                        src={img}
+                                                        alt={work.title}
+                                                        fill
+                                                        className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                                                    />
+                                                ) : (
+                                                    <div className="absolute inset-0 bg-[#f0ebe9]" />
+                                                )}
+                                                {work.salePrice && (
+                                                    <span className="absolute left-3 top-3 rounded-full bg-[#a9769f] px-3 py-1 font-sans text-[10px] uppercase tracking-widest text-white">
+                                                        Sale
+                                                    </span>
+                                                )}
                                             </div>
-                                        )}
-                                    </div>
-                                    <div className="pt-3 pb-1 border-b border-neutral-100 mb-1">
-                                        <div className="flex items-start justify-between gap-2">
-                                            <p className="font-serif font-black text-base text-[#1a1a1a] group-hover:text-[#0f2d6b] transition-colors leading-tight">
-                                                {work.title}
-                                            </p>
-                                            <p className="font-sans text-sm font-medium text-[#1a1a1a] shrink-0">
+                                        </div>
+                                        <div className="mt-3.5 flex items-start justify-between gap-2">
+                                            <div>
+                                                <p className="font-serif italic text-[#3a3240] transition-colors group-hover:text-[#a9769f]">
+                                                    {work.title}
+                                                </p>
+                                                {(work.mediums?.[0]?.medium?.name ?? work.medium) && (
+                                                    <p className="mt-0.5 font-sans text-xs uppercase tracking-[0.1em] text-[#a39aa0]">
+                                                        {work.mediums?.[0]?.medium?.name ?? work.medium}
+                                                    </p>
+                                                )}
+                                            </div>
+                                            <p className="shrink-0 font-sans text-sm text-[#6b6470]">
                                                 {work.salePrice ? (
-                                                    <>
-                                                        <span className="text-[#0f2d6b]">${work.salePrice.toLocaleString()}</span>
-                                                        <span className="line-through text-neutral-300 text-xs ml-1">${work.price.toLocaleString()}</span>
-                                                    </>
+                                                    <span className="flex flex-col items-end">
+                                                        <span className="text-[#a9769f]">${work.salePrice.toLocaleString()}</span>
+                                                        <span className="text-xs text-[#c9bdd2] line-through">
+                                                            ${work.price.toLocaleString()}
+                                                        </span>
+                                                    </span>
                                                 ) : (
                                                     `$${work.price.toLocaleString()}`
                                                 )}
                                             </p>
                                         </div>
-                                        <div className="flex items-center gap-3 mt-1.5">
-                                            {(work.mediums?.[0]?.medium?.name ?? work.medium) && (
-                                                <span className="font-sans text-[10px] tracking-widest uppercase text-neutral-400">
-                                                    {work.mediums?.[0]?.medium?.name ?? work.medium}
-                                                </span>
-                                            )}
-                                            {work.dimensions && (
-                                                <span className="font-sans text-[10px] text-neutral-400">
-                                                    {work.dimensions.width} × {work.dimensions.height} {work.dimensions.unit}
-                                                </span>
-                                            )}
-                                        </div>
-                                    </div>
-                                </Link>
+                                    </Link>
+                                </Reveal>
                             );
                         })}
                     </div>
                 )}
 
-                {/* ── Sold Works ────────────────────────────────────────────── */}
+                {/* ── Sold Archive ─────────────────────────────────────────── */}
                 {sold.length > 0 && (
-                    <div className="mt-20 pt-10 border-t-2 border-[#1a1a1a]">
-                        <div className="flex items-baseline gap-6 mb-8">
-                            <h2 className="font-sans text-[10px] tracking-[0.3em] uppercase text-neutral-400">
-                                Sold Works
-                            </h2>
-                            <span className="font-sans text-[10px] tracking-[0.2em] uppercase text-neutral-300">
-                                — Archival Collection
-                            </span>
-                        </div>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                    <div className="mt-24 border-t border-[#3a3240]/10 pt-16">
+                        <Reveal className="mb-10">
+                            <Kicker>Archive</Kicker>
+                            <h2 className="mt-4 font-serif text-3xl italic text-[#3a3240]">Previously Sold</h2>
+                        </Reveal>
+                        <div className="grid grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-6">
                             {sold.map((work) => {
                                 const img = getProductImageUrl(work);
                                 return (
                                     <div key={work.id} className="group">
-                                        <div className="relative aspect-square overflow-hidden bg-neutral-100">
+                                        <div className="relative aspect-square overflow-hidden bg-[#f6f3f1] grayscale-[0.3]">
                                             {img ? (
-                                                <Image
-                                                    src={img}
-                                                    alt={work.title}
-                                                    fill
-                                                    className="object-cover grayscale opacity-60"
-                                                />
+                                                <Image src={img} alt={work.title} fill className="object-cover opacity-70" />
                                             ) : (
-                                                <div className="absolute inset-0 bg-neutral-200" />
+                                                <div className="absolute inset-0 bg-[#f0ebe9]" />
                                             )}
-                                            <div className="absolute bottom-0 left-0 right-0 py-1.5 px-2 bg-[#1a1a1a]">
-                                                <p className="font-sans text-[9px] tracking-widest uppercase text-white/60">
-                                                    Sold
-                                                </p>
-                                            </div>
                                         </div>
-                                        <p className="font-sans text-xs text-neutral-400 mt-2 leading-tight">
-                                            {work.title}
-                                        </p>
+                                        <p className="mt-2 truncate font-sans text-xs text-[#a39aa0]">{work.title}</p>
                                     </div>
                                 );
                             })}

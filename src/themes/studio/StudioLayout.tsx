@@ -5,6 +5,8 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import type { ThemeLayoutProps } from "@/themes/types";
 import { getArtistName } from "@/lib/artist-api";
+import { displayFont, condensedFont, bodyFont } from "./fonts";
+import FilmGrain from "./FilmGrain";
 
 export default function StudioLayout({ children, artist, domain }: ThemeLayoutProps) {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -17,19 +19,26 @@ export default function StudioLayout({ children, artist, domain }: ThemeLayoutPr
     ];
 
     return (
-        <div className="min-h-screen bg-neutral-950 text-neutral-100 flex flex-col">
-            <header className="border-b border-neutral-800 sticky top-0 z-50 bg-neutral-950">
-                <div className="max-w-7xl mx-auto px-8 h-14 flex items-center justify-between">
-                    <Link href="/" className="text-sm font-medium tracking-[0.2em] uppercase text-neutral-100">
+        <div
+            className={`${displayFont.variable} ${condensedFont.variable} ${bodyFont.variable} relative flex min-h-screen flex-col bg-[#0a0908] text-neutral-100 font-[family-name:var(--font-studio-body)] antialiased`}
+        >
+            <FilmGrain />
+
+            <header className="sticky top-0 z-50 border-b border-neutral-800/60 bg-[#0a0908]/85 backdrop-blur-md">
+                <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 md:px-10">
+                    <Link
+                        href="/"
+                        className="font-[family-name:var(--font-studio-condensed)] text-sm font-semibold uppercase tracking-[0.25em] text-neutral-100"
+                    >
                         {name}
                     </Link>
 
-                    <nav className="hidden md:flex items-center gap-10">
+                    <nav className="hidden items-center gap-10 md:flex">
                         {links.map((l) => (
                             <Link
                                 key={l.href}
                                 href={l.href}
-                                className="text-xs tracking-widest uppercase text-neutral-500 hover:text-neutral-100 transition-colors"
+                                className="font-[family-name:var(--font-studio-condensed)] text-xs font-medium uppercase tracking-[0.3em] text-neutral-500 transition-colors duration-300 hover:text-amber-100/90"
                             >
                                 {l.label}
                             </Link>
@@ -37,20 +46,23 @@ export default function StudioLayout({ children, artist, domain }: ThemeLayoutPr
                     </nav>
 
                     <button
-                        className="md:hidden text-neutral-400"
+                        type="button"
+                        className="text-neutral-400 md:hidden"
                         onClick={() => setMenuOpen((v) => !v)}
+                        aria-label="Toggle menu"
+                        aria-expanded={menuOpen}
                     >
-                        {menuOpen ? <X size={18} /> : <Menu size={18} />}
+                        {menuOpen ? <X size={20} /> : <Menu size={20} />}
                     </button>
                 </div>
 
                 {menuOpen && (
-                    <nav className="md:hidden border-t border-neutral-800 bg-neutral-950 px-8 py-5 flex flex-col gap-5">
+                    <nav className="flex flex-col gap-6 border-t border-neutral-800/60 bg-[#0a0908] px-6 py-6 md:hidden">
                         {links.map((l) => (
                             <Link
                                 key={l.href}
                                 href={l.href}
-                                className="text-xs tracking-widest uppercase text-neutral-400"
+                                className="font-[family-name:var(--font-studio-condensed)] text-xs uppercase tracking-[0.3em] text-neutral-400"
                                 onClick={() => setMenuOpen(false)}
                             >
                                 {l.label}
@@ -62,16 +74,16 @@ export default function StudioLayout({ children, artist, domain }: ThemeLayoutPr
 
             <main className="flex-1">{children}</main>
 
-            <footer className="border-t border-neutral-800 py-8 mt-20">
-                <div className="max-w-7xl mx-auto px-8 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-neutral-600 tracking-widest uppercase">
+            <footer className="mt-24 border-t border-neutral-800/60 py-10">
+                <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-6 font-[family-name:var(--font-studio-condensed)] text-[11px] uppercase tracking-[0.25em] text-neutral-600 md:flex-row md:px-10">
                     <span>© {new Date().getFullYear()} {name}</span>
                     <a
                         href="https://www.artsdistrictusa.com"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="hover:text-neutral-400"
+                        className="transition-colors hover:text-neutral-400"
                     >
-                        ArtsDistrictUSA
+                        Site by ArtsDistrictUSA
                     </a>
                 </div>
             </footer>

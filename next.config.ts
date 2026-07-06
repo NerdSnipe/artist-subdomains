@@ -5,9 +5,11 @@ const nextConfig: NextConfig = {
     return {
       afterFiles: [
         {
-          source: "/:path*",
+          // Exclude /preview and /api so their own (dynamic) routes can resolve
+          // normally instead of being swallowed by the domain catch-all below.
+          source: "/:path((?!preview|api).*)",
           has: [{ type: "host", value: "(?<domain>.+)" }],
-          destination: "/:domain/:path*",
+          destination: "/:domain/:path",
         },
       ],
     };

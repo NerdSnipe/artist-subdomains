@@ -1,116 +1,119 @@
 import Image from "next/image";
 import type { ThemePageProps } from "@/themes/types";
 import { getArtistName } from "@/lib/artist-api";
+import Marquee from "./Marquee";
+import Reveal from "./Reveal";
+import { ink, coal, coalLight, smoke, smokeDark, emberMid, emberDeep, emberGradient } from "./palette";
 
-export default function EmberAbout({ artist }: ThemePageProps) {
+export default function EmberAbout({ artist, domain }: ThemePageProps) {
     const name = getArtistName(artist);
+    const photo = artist.bioPhoto ?? artist.profilePhoto ?? null;
+
+    const tagItems = [artist.artStyle, artist.secondaryArtStyle, artist.medium, artist.secondaryMedium].filter(
+        (v): v is string => !!v
+    );
 
     return (
-        <div style={{ backgroundColor: "#f7f3ee", fontFamily: "'Georgia', 'Times New Roman', serif" }}>
-
-            {/* ── Bio + Photo ─────────────────────────────────────────── */}
-            <section className="max-w-6xl mx-auto px-8 py-20">
-                <div className="grid grid-cols-1 md:grid-cols-5 gap-14 items-start">
-                    {/* Photo column */}
-                    {(artist.bioPhoto || artist.profilePhoto) && (
+        <div style={{ backgroundColor: ink }}>
+            {/* ── Intro ────────────────────────────────────────────────── */}
+            <section className="max-w-7xl mx-auto px-6 md:px-16 pt-20 pb-16">
+                <div className="grid grid-cols-1 md:grid-cols-5 gap-12 md:gap-16 items-start">
+                    {photo && (
                         <div className="md:col-span-2">
                             <div
                                 className="relative aspect-[3/4] overflow-hidden"
-                                style={{
-                                    backgroundColor: "#ede8e1",
-                                    padding: "1rem",
-                                    boxShadow: "0 2px 16px rgba(44,41,37,0.08)",
-                                }}
+                                style={{ backgroundColor: coal, clipPath: "polygon(10% 0, 100% 0, 100% 100%, 0 100%)" }}
                             >
-                                <div className="relative w-full h-full" style={{ backgroundColor: "#d9cfc5" }}>
-                                    <Image
-                                        src={(artist.bioPhoto ?? artist.profilePhoto)!}
-                                        alt={name}
-                                        fill
-                                        className="object-cover"
-                                        sizes="(max-width: 768px) 100vw, 40vw"
-                                    />
-                                </div>
+                                <Image src={photo} alt={name} fill className="object-cover" sizes="(max-width: 768px) 100vw, 40vw" />
                             </div>
                         </div>
                     )}
 
-                    {/* Bio text */}
-                    <div className={artist.bioPhoto || artist.profilePhoto ? "md:col-span-3" : "md:col-span-5"}>
+                    <div className={photo ? "md:col-span-3" : "md:col-span-5"}>
                         {(artist.city || artist.state || artist.country) && (
-                            <p className="text-xs tracking-widest uppercase mb-5" style={{ color: "#b5451b", letterSpacing: "0.14em" }}>
+                            <p className="text-xs uppercase font-bold tracking-widest mb-5" style={{ color: emberMid, letterSpacing: "0.18em" }}>
                                 {[artist.city, artist.state, artist.country].filter(Boolean).join(", ")}
                             </p>
                         )}
-                        <h1 className="font-serif leading-tight mb-8" style={{ fontSize: "clamp(2rem, 4vw, 3rem)", color: "#2c2925" }}>
+                        <h1 className="uppercase leading-[0.9] mb-8" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(2.4rem,6vw,4.4rem)", color: "#f6f1e8" }}>
                             {name}
                         </h1>
 
                         {artist.bio && (
-                            <div
-                                className="text-base leading-loose whitespace-pre-line mb-10"
-                                style={{ color: "#4a403a" }}
-                            >
+                            <div className="text-base leading-loose whitespace-pre-line mb-8" style={{ color: "#d8cfc4" }}>
                                 {artist.bio}
                             </div>
                         )}
 
-                        {/* Artist statement — editorial treatment */}
+                        {tagItems.length > 0 && (
+                            <div className="flex flex-wrap gap-2 mb-4">
+                                {tagItems.map((t, i) => (
+                                    <span key={i} className="text-xs uppercase font-bold tracking-wide px-3 py-1.5" style={{ border: "1px solid rgba(255,255,255,0.18)", color: "#e8dfd4" }}>
+                                        {t}
+                                    </span>
+                                ))}
+                            </div>
+                        )}
+
                         {artist.artistStatement && (
-                            <blockquote
-                                className="border-l-4 pl-8 py-2 my-10"
-                                style={{ borderColor: "#b5451b" }}
-                            >
-                                <p className="font-serif text-xl italic leading-loose" style={{ color: "#2c2925" }}>
+                            <blockquote className="pl-6 py-1 my-8" style={{ borderLeft: `3px solid ${emberMid}` }}>
+                                <p className="text-xl leading-relaxed" style={{ fontFamily: "var(--font-display)", color: "#f6f1e8" }}>
                                     &ldquo;{artist.artistStatement}&rdquo;
                                 </p>
-                                <cite className="block mt-4 text-sm not-italic" style={{ color: "#8a7a6e" }}>
-                                    &mdash; {name}, Artist Statement
+                                <cite className="block mt-4 text-xs uppercase font-bold tracking-widest not-italic" style={{ color: smokeDark, letterSpacing: "0.1em" }}>
+                                    {name}, Artist Statement
                                 </cite>
                             </blockquote>
+                        )}
+
+                        {artist.studioProcessDescription && (
+                            <div className="mt-8">
+                                <p className="text-xs uppercase font-bold tracking-widest mb-3" style={{ color: emberMid, letterSpacing: "0.16em" }}>
+                                    Process
+                                </p>
+                                <p className="text-sm leading-loose" style={{ color: "#d8cfc4" }}>{artist.studioProcessDescription}</p>
+                            </div>
                         )}
                     </div>
                 </div>
             </section>
 
+            {tagItems.length > 0 && <Marquee items={tagItems} />}
+
             {/* ── Exhibitions Timeline ─────────────────────────────────── */}
             {artist.exhibitions && artist.exhibitions.length > 0 && (
-                <section className="py-20 border-t" style={{ backgroundColor: "#ede8e1", borderColor: "#d9d0c4" }}>
-                    <div className="max-w-4xl mx-auto px-8">
-                        <div className="flex items-center gap-6 mb-14">
-                            <h2 className="font-serif text-2xl whitespace-nowrap" style={{ color: "#2c2925" }}>
+                <section className="py-24" style={{ backgroundColor: coal }}>
+                    <div className="max-w-4xl mx-auto px-6 md:px-16">
+                        <Reveal>
+                            <h2 className="uppercase leading-none mb-14" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(2rem,4.5vw,3rem)", color: "#f6f1e8" }}>
                                 Exhibitions
                             </h2>
-                            <div className="flex-1 h-px" style={{ backgroundColor: "#d4a5a5", opacity: 0.6 }} />
-                        </div>
-
-                        {/* Timeline */}
-                        <div className="relative pl-6 border-l-2" style={{ borderColor: "#d9d0c4" }}>
+                        </Reveal>
+                        <div className="relative pl-8" style={{ borderLeft: "2px solid rgba(255,255,255,0.12)" }}>
                             {artist.exhibitions.map((ex, i) => (
-                                <div key={i} className="relative mb-10 last:mb-0">
-                                    {/* Terracotta dot */}
-                                    <div
-                                        className="absolute -left-[1.45rem] top-1.5 w-3 h-3 rounded-full border-2"
-                                        style={{ backgroundColor: "#b5451b", borderColor: "#ede8e1" }}
-                                    />
-                                    <div className="flex flex-wrap items-baseline gap-x-5 gap-y-1">
-                                        <span className="font-serif text-lg font-medium" style={{ color: "#b5451b" }}>
-                                            {ex.year}
-                                        </span>
-                                        {ex.type && (
+                                <Reveal key={i} delayMs={Math.min(i, 6) * 60}>
+                                    <div className="relative mb-10 last:mb-0">
+                                        <div
+                                            className="absolute -left-[2.15rem] top-1.5 w-3.5 h-3.5 rotate-45"
+                                            style={{ background: emberGradient }}
+                                        />
+                                        <div className="flex flex-wrap items-baseline gap-x-5 gap-y-1">
                                             <span
-                                                className="text-xs uppercase tracking-widest"
-                                                style={{ color: "#a0907f", letterSpacing: "0.1em" }}
+                                                className="text-lg font-bold"
+                                                style={{ fontFamily: "var(--font-display)", color: emberMid }}
                                             >
-                                                {ex.type}
+                                                {ex.year}
                                             </span>
-                                        )}
+                                            {ex.type && (
+                                                <span className="text-xs uppercase font-bold tracking-widest" style={{ color: smokeDark, letterSpacing: "0.12em" }}>
+                                                    {ex.type}
+                                                </span>
+                                            )}
+                                        </div>
+                                        <p className="text-base font-semibold mt-1" style={{ color: "#f6f1e8" }}>{ex.title}</p>
+                                        {ex.location && <p className="text-sm mt-0.5" style={{ color: smoke }}>{ex.location}</p>}
                                     </div>
-                                    <p className="font-serif text-base mt-0.5" style={{ color: "#2c2925" }}>{ex.title}</p>
-                                    {ex.location && (
-                                        <p className="text-sm mt-0.5" style={{ color: "#8a7a6e" }}>{ex.location}</p>
-                                    )}
-                                </div>
+                                </Reveal>
                             ))}
                         </div>
                     </div>
@@ -119,25 +122,20 @@ export default function EmberAbout({ artist }: ThemePageProps) {
 
             {/* ── Publications ─────────────────────────────────────────── */}
             {artist.publications && artist.publications.length > 0 && (
-                <section className="py-20 border-t" style={{ backgroundColor: "#f7f3ee", borderColor: "#d9d0c4" }}>
-                    <div className="max-w-4xl mx-auto px-8">
-                        <div className="flex items-center gap-6 mb-14">
-                            <h2 className="font-serif text-2xl whitespace-nowrap" style={{ color: "#2c2925" }}>
-                                Publications
+                <section className="py-24">
+                    <div className="max-w-4xl mx-auto px-6 md:px-16">
+                        <Reveal>
+                            <h2 className="uppercase leading-none mb-14" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(2rem,4.5vw,3rem)", color: "#f6f1e8" }}>
+                                Press &amp; Publications
                             </h2>
-                            <div className="flex-1 h-px" style={{ backgroundColor: "#d4a5a5", opacity: 0.6 }} />
-                        </div>
+                        </Reveal>
                         <div className="space-y-6">
                             {artist.publications.map((pub, i) => (
-                                <div key={i} className="flex gap-8">
-                                    <span className="font-serif text-sm w-12 shrink-0 pt-0.5" style={{ color: "#b5451b" }}>
-                                        {pub.year}
-                                    </span>
+                                <div key={i} className="flex gap-8 pb-6 border-b" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+                                    <span className="text-sm font-bold w-14 shrink-0 pt-0.5" style={{ color: emberMid }}>{pub.year}</span>
                                     <div>
-                                        <p className="text-sm font-serif" style={{ color: "#2c2925" }}>{pub.title}</p>
-                                        {pub.publication && (
-                                            <p className="text-xs mt-0.5 italic" style={{ color: "#8a7a6e" }}>{pub.publication}</p>
-                                        )}
+                                        <p className="text-sm font-semibold" style={{ color: "#f6f1e8" }}>{pub.title}</p>
+                                        {pub.publication && <p className="text-xs mt-1 uppercase tracking-wide" style={{ color: smokeDark }}>{pub.publication}</p>}
                                     </div>
                                 </div>
                             ))}
@@ -148,54 +146,34 @@ export default function EmberAbout({ artist }: ThemePageProps) {
 
             {/* ── Gallery Representation ───────────────────────────────── */}
             {artist.galleries && artist.galleries.length > 0 && (
-                <section className="py-20 border-t" style={{ backgroundColor: "#ede8e1", borderColor: "#d9d0c4" }}>
-                    <div className="max-w-6xl mx-auto px-8">
-                        <div className="flex items-center gap-6 mb-14">
-                            <h2 className="font-serif text-2xl whitespace-nowrap" style={{ color: "#2c2925" }}>
+                <section className="py-24" style={{ backgroundColor: coal }}>
+                    <div className="max-w-7xl mx-auto px-6 md:px-16">
+                        <Reveal>
+                            <h2 className="uppercase leading-none mb-14" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(2rem,4.5vw,3rem)", color: "#f6f1e8" }}>
                                 Gallery Representation
                             </h2>
-                            <div className="flex-1 h-px" style={{ backgroundColor: "#d4a5a5", opacity: 0.6 }} />
-                        </div>
+                        </Reveal>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                             {artist.galleries.map((g, i) => (
-                                <div
-                                    key={i}
-                                    className="p-6"
-                                    style={{
-                                        backgroundColor: "#f7f3ee",
-                                        boxShadow: "0 1px 4px rgba(44,41,37,0.06)",
-                                    }}
-                                >
-                                    {g.photo && (
-                                        <div className="relative aspect-video mb-4 overflow-hidden" style={{ backgroundColor: "#d9cfc5" }}>
-                                            <Image
-                                                src={g.photo}
-                                                alt={g.name}
-                                                fill
-                                                className="object-cover"
-                                                sizes="(max-width: 640px) 100vw, 33vw"
-                                            />
-                                        </div>
-                                    )}
-                                    {(g.link || g.url) ? (
-                                        <a
-                                            href={g.link ?? g.url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="font-serif text-base transition-opacity duration-200 hover:opacity-60"
-                                            style={{ color: "#2c2925" }}
-                                        >
-                                            {g.name}
-                                        </a>
-                                    ) : (
-                                        <p className="font-serif text-base" style={{ color: "#2c2925" }}>{g.name}</p>
-                                    )}
-                                    {(g.city || g.state) && (
-                                        <p className="text-xs mt-1" style={{ color: "#8a7a6e" }}>
-                                            {[g.city, g.state].filter(Boolean).join(", ")}
-                                        </p>
-                                    )}
-                                </div>
+                                <Reveal key={i} delayMs={(i % 3) * 80}>
+                                    <div className="p-6" style={{ backgroundColor: coalLight, borderTop: `3px solid ${i % 2 === 0 ? emberMid : emberDeep}` }}>
+                                        {g.photo && (
+                                            <div className="relative aspect-video mb-4 overflow-hidden">
+                                                <Image src={g.photo} alt={g.name} fill className="object-cover" sizes="(max-width: 640px) 100vw, 33vw" />
+                                            </div>
+                                        )}
+                                        {(g.link || g.url) ? (
+                                            <a href={g.link ?? g.url} target="_blank" rel="noopener noreferrer" className="font-semibold text-base transition-opacity duration-200 hover:opacity-70" style={{ color: "#f6f1e8" }}>
+                                                {g.name}
+                                            </a>
+                                        ) : (
+                                            <p className="font-semibold text-base" style={{ color: "#f6f1e8" }}>{g.name}</p>
+                                        )}
+                                        {(g.city || g.state) && (
+                                            <p className="text-xs mt-1" style={{ color: smokeDark }}>{[g.city, g.state].filter(Boolean).join(", ")}</p>
+                                        )}
+                                    </div>
+                                </Reveal>
                             ))}
                         </div>
                     </div>
@@ -204,59 +182,40 @@ export default function EmberAbout({ artist }: ThemePageProps) {
 
             {/* ── Events ───────────────────────────────────────────────── */}
             {artist.events && artist.events.length > 0 && (
-                <section className="py-20 border-t" style={{ backgroundColor: "#f7f3ee", borderColor: "#d9d0c4" }}>
-                    <div className="max-w-4xl mx-auto px-8">
-                        <div className="flex items-center gap-6 mb-14">
-                            <h2 className="font-serif text-2xl whitespace-nowrap" style={{ color: "#2c2925" }}>
+                <section className="py-24">
+                    <div className="max-w-4xl mx-auto px-6 md:px-16">
+                        <Reveal>
+                            <h2 className="uppercase leading-none mb-14" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(2rem,4.5vw,3rem)", color: "#f6f1e8" }}>
                                 Upcoming Events
                             </h2>
-                            <div className="flex-1 h-px" style={{ backgroundColor: "#d4a5a5", opacity: 0.6 }} />
-                        </div>
-                        <div className="space-y-8">
+                        </Reveal>
+                        <div className="space-y-6">
                             {artist.events.map((event, i) => {
                                 const eventImg = event.imageUrl ?? event.image ?? null;
                                 const dateStr = event.startDate ?? event.date ?? null;
                                 return (
-                                    <div
-                                        key={i}
-                                        className="p-8 flex gap-8"
-                                        style={{ backgroundColor: "#ede8e1" }}
-                                    >
-                                        {eventImg && (
-                                            <div className="relative w-24 h-24 shrink-0 overflow-hidden" style={{ backgroundColor: "#d9cfc5" }}>
-                                                <Image
-                                                    src={eventImg}
-                                                    alt={event.title}
-                                                    fill
-                                                    className="object-cover"
-                                                    sizes="96px"
-                                                />
+                                    <Reveal key={i} delayMs={(i % 4) * 70}>
+                                        <div className="p-6 md:p-8 flex flex-col sm:flex-row gap-6" style={{ backgroundColor: coal }}>
+                                            {eventImg && (
+                                                <div className="relative w-full sm:w-28 h-40 sm:h-28 shrink-0 overflow-hidden">
+                                                    <Image src={eventImg} alt={event.title} fill className="object-cover" sizes="112px" />
+                                                </div>
+                                            )}
+                                            <div>
+                                                {dateStr && (
+                                                    <p className="text-xs uppercase font-bold tracking-widest mb-1" style={{ color: emberMid, letterSpacing: "0.12em" }}>{dateStr}</p>
+                                                )}
+                                                <p className="text-base font-semibold mb-1" style={{ color: "#f6f1e8" }}>{event.title}</p>
+                                                <p className="text-sm mb-2" style={{ color: smoke }}>{event.location}</p>
+                                                {event.description && <p className="text-sm leading-relaxed" style={{ color: "#d8cfc4" }}>{event.description}</p>}
+                                                {event.url && (
+                                                    <a href={event.url} target="_blank" rel="noopener noreferrer" className="inline-block mt-3 text-xs font-bold uppercase tracking-widest pb-0.5 border-b-2" style={{ color: emberMid, borderColor: emberMid, letterSpacing: "0.08em" }}>
+                                                        Learn More →
+                                                    </a>
+                                                )}
                                             </div>
-                                        )}
-                                        <div>
-                                            {dateStr && (
-                                                <p className="text-xs uppercase tracking-widest mb-1" style={{ color: "#b5451b", letterSpacing: "0.1em" }}>
-                                                    {dateStr}
-                                                </p>
-                                            )}
-                                            <p className="font-serif text-base mb-1" style={{ color: "#2c2925" }}>{event.title}</p>
-                                            <p className="text-sm mb-2" style={{ color: "#8a7a6e" }}>{event.location}</p>
-                                            {event.description && (
-                                                <p className="text-sm leading-relaxed" style={{ color: "#6b5f52" }}>{event.description}</p>
-                                            )}
-                                            {event.url && (
-                                                <a
-                                                    href={event.url}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="inline-block mt-3 text-xs border-b pb-px transition-opacity duration-200 hover:opacity-60"
-                                                    style={{ color: "#b5451b", borderColor: "#b5451b" }}
-                                                >
-                                                    Learn More &rarr;
-                                                </a>
-                                            )}
                                         </div>
-                                    </div>
+                                    </Reveal>
                                 );
                             })}
                         </div>

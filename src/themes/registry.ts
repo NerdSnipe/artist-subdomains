@@ -6,6 +6,9 @@ import { artisanTheme } from "./artisan";
 import { obsidianTheme } from "./obsidian";
 import { emberTheme } from "./ember";
 import { luminaryTheme } from "./luminary";
+import { vividTheme } from "./vivid";
+import { noirTheme } from "./noir";
+import { chronicleTheme } from "./chronicle";
 
 const registry: Record<string, ThemeModule> = {
     gallery: galleryTheme,
@@ -15,8 +18,13 @@ const registry: Record<string, ThemeModule> = {
     obsidian: obsidianTheme,
     ember: emberTheme,
     luminary: luminaryTheme,
+    vivid: vividTheme,
+    noir: noirTheme,
+    chronicle: chronicleTheme,
 };
 
 export function getThemeModule(key: string): ThemeModule {
     return registry[key] ?? registry.gallery;
 }
+
+export const themeList: ThemeModule[] = Object.values(registry);
