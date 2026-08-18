@@ -18,14 +18,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         const { product } = await getProductBySlug(config.artistSlug, slug);
         const data = await getArtistData(config.artistSlug);
         const name = getArtistName(data.profile);
+        const description = product.description?.slice(0, 160);
+        const ogImageUrl = `https://${domain}/artworks/${slug}/opengraph-image`;
+        const twitterImageUrl = `https://${domain}/artworks/${slug}/twitter-image`;
 
         return {
-            metadataBase: new URL(`https://${domain}`),
             title: `${product.title} — ${name}`,
-            description: product.description?.slice(0, 160),
+            description,
             openGraph: {
                 title: product.title,
-                description: product.description?.slice(0, 160),
+                description,
+                images: [{ url: ogImageUrl, width: 1200, height: 630 }],
+            },
+            twitter: {
+                card: "summary_large_image",
+                title: product.title,
+                description,
+                images: [twitterImageUrl],
             },
             alternates: { canonical: marketplaceArtworkUrl(product) },
         };
