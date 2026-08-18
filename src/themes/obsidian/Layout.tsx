@@ -4,12 +4,13 @@ import Link from "next/link";
 import { useState } from "react";
 import { Menu, X, ShieldCheck } from "lucide-react";
 import type { ThemeLayoutProps } from "@/themes/types";
-import { getArtistName } from "@/lib/artist-api";
+import { getArtistName, marketplaceArtistUrl } from "@/lib/artist-api";
 import { displayFont, sansFont } from "./fonts";
 
 export default function ObsidianLayout({ children, artist, domain }: ThemeLayoutProps) {
     const [menuOpen, setMenuOpen] = useState(false);
     const name = getArtistName(artist);
+    const profileUrl = artist.slug ? marketplaceArtistUrl(artist.slug) : null;
 
     const links = [
         { href: `/`, label: "Home" },
@@ -140,16 +141,26 @@ export default function ObsidianLayout({ children, artist, domain }: ThemeLayout
 
                         <div className="text-center md:text-right">
                             <p className="text-[10px] tracking-[0.15em] uppercase text-[#2a2520]">
-                                © {new Date().getFullYear()} {name}
+                                © {new Date().getFullYear()}{" "}
+                                {profileUrl ? (
+                                    <a href={profileUrl} target="_blank" rel="noopener noreferrer" className="hover:text-[#4a4540] transition-colors">
+                                        {name}
+                                    </a>
+                                ) : (
+                                    name
+                                )}
                             </p>
-                            <a
-                                href="https://www.artsdistrictusa.com"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-[10px] tracking-[0.15em] uppercase text-[#2a2520] hover:text-[#4a4540] transition-colors"
-                            >
-                                ArtsDistrictUSA
-                            </a>
+                            <p className="text-[10px] tracking-[0.15em] uppercase text-[#2a2520]">
+                                A member of the{" "}
+                                <a
+                                    href="https://www.artsdistrictusa.com"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="hover:text-[#4a4540] transition-colors"
+                                >
+                                    Local Artist Marketplace
+                                </a>
+                            </p>
                         </div>
                     </div>
                 </div>

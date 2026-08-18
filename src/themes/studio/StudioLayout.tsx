@@ -4,13 +4,14 @@ import Link from "next/link";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import type { ThemeLayoutProps } from "@/themes/types";
-import { getArtistName } from "@/lib/artist-api";
+import { getArtistName, marketplaceArtistUrl } from "@/lib/artist-api";
 import { displayFont, condensedFont, bodyFont } from "./fonts";
 import FilmGrain from "./FilmGrain";
 
 export default function StudioLayout({ children, artist, domain }: ThemeLayoutProps) {
     const [menuOpen, setMenuOpen] = useState(false);
     const name = getArtistName(artist);
+    const profileUrl = artist.slug ? marketplaceArtistUrl(artist.slug) : null;
     const links = [
         { href: "/", label: "Studio" },
         { href: "/artworks", label: "Works" },
@@ -76,15 +77,27 @@ export default function StudioLayout({ children, artist, domain }: ThemeLayoutPr
 
             <footer className="mt-24 border-t border-neutral-800/60 py-10">
                 <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-6 font-[family-name:var(--font-studio-condensed)] text-[11px] uppercase tracking-[0.25em] text-neutral-600 md:flex-row md:px-10">
-                    <span>© {new Date().getFullYear()} {name}</span>
-                    <a
-                        href="https://www.artsdistrictusa.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="transition-colors hover:text-neutral-400"
-                    >
-                        Site by ArtsDistrictUSA
-                    </a>
+                    <span>
+                        © {new Date().getFullYear()}{" "}
+                        {profileUrl ? (
+                            <a href={profileUrl} target="_blank" rel="noopener noreferrer" className="hover:text-neutral-400">
+                                {name}
+                            </a>
+                        ) : (
+                            name
+                        )}
+                    </span>
+                    <span>
+                        A member of the{" "}
+                        <a
+                            href="https://www.artsdistrictusa.com"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="transition-colors hover:text-neutral-400"
+                        >
+                            Local Artist Marketplace
+                        </a>
+                    </span>
                 </div>
             </footer>
         </div>

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Instagram, Facebook, Twitter, Youtube, Linkedin, Music2, ArrowUpRight, Menu, X } from "lucide-react";
 import type { ThemeLayoutProps } from "@/themes/types";
-import { getArtistName } from "@/lib/artist-api";
+import { getArtistName, marketplaceArtistUrl } from "@/lib/artist-api";
 import { fontVariables } from "./fonts";
 import Marquee from "./Marquee";
 
@@ -13,6 +13,7 @@ export default function VividLayout({ children, artist }: ThemeLayoutProps) {
     const [menuOpen, setMenuOpen] = useState(false);
     const pathname = usePathname();
     const name = getArtistName(artist);
+    const profileUrl = artist.slug ? marketplaceArtistUrl(artist.slug) : null;
 
     useEffect(() => {
         setMenuOpen(false);
@@ -300,19 +301,29 @@ export default function VividLayout({ children, artist }: ThemeLayoutProps) {
                         style={{ borderColor: "rgba(255,255,255,0.08)" }}
                     >
                         <p className="text-xs" style={{ color: "rgba(246,244,239,0.35)" }}>
-                            &copy; {new Date().getFullYear()} {name}. All rights reserved.
+                            &copy; {new Date().getFullYear()}{" "}
+                            {profileUrl ? (
+                                <a href={profileUrl} target="_blank" rel="noopener noreferrer" style={{ color: "rgba(246,244,239,0.35)" }}>
+                                    {name}
+                                </a>
+                            ) : (
+                                name
+                            )}. All rights reserved.
                         </p>
-                        <a
-                            href="https://www.artsdistrictusa.com"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-xs transition-colors duration-200"
-                            style={{ color: "rgba(246,244,239,0.35)" }}
-                            onMouseEnter={(e) => (e.currentTarget.style.color = "var(--v-paper)")}
-                            onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(246,244,239,0.35)")}
-                        >
-                            Powered by ArtsDistrictUSA
-                        </a>
+                        <span className="text-xs" style={{ color: "rgba(246,244,239,0.35)" }}>
+                            A member of the{" "}
+                            <a
+                                href="https://www.artsdistrictusa.com"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="transition-colors duration-200"
+                                style={{ color: "rgba(246,244,239,0.35)" }}
+                                onMouseEnter={(e) => (e.currentTarget.style.color = "var(--v-paper)")}
+                                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(246,244,239,0.35)")}
+                            >
+                                Local Artist Marketplace
+                            </a>
+                        </span>
                     </div>
                 </div>
             </footer>

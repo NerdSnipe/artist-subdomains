@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState, type CSSProperties } from "react";
 import { Menu, X } from "lucide-react";
 import type { ThemeLayoutProps } from "@/themes/types";
-import { getArtistName } from "@/lib/artist-api";
+import { getArtistName, marketplaceArtistUrl } from "@/lib/artist-api";
 import { displayFont, bodyFont, scriptFont } from "./fonts";
 import { GrainOverlay, TornEdge } from "./decor";
 
@@ -24,6 +24,7 @@ const PALETTE = {
 export default function ArtisanLayout({ children, artist, domain }: ThemeLayoutProps) {
     const [menuOpen, setMenuOpen] = useState(false);
     const name = getArtistName(artist);
+    const profileUrl = artist.slug ? marketplaceArtistUrl(artist.slug) : null;
     const links = [
         { href: "/", label: "Home" },
         { href: "/artworks", label: "The Work" },
@@ -99,20 +100,29 @@ export default function ArtisanLayout({ children, artist, domain }: ThemeLayoutP
                 <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-6 text-center md:flex-row md:justify-between md:text-left">
                     <div>
                         <p className="text-lg italic text-[var(--sand)]" style={{ fontFamily: "var(--font-display)" }}>
-                            {name}
+                            {profileUrl ? (
+                                <a href={profileUrl} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                                    {name}
+                                </a>
+                            ) : (
+                                name
+                            )}
                         </p>
                         <p className="mt-1 text-xs tracking-wide text-[var(--sand)]/50">
                             © {new Date().getFullYear()} · handmade, one piece at a time
                         </p>
                     </div>
-                    <a
-                        href="https://www.artsdistrictusa.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs tracking-wide text-[var(--sand)]/50 underline-offset-4 transition-colors hover:text-[var(--sand)] hover:underline"
-                    >
-                        Website by ArtsDistrictUSA
-                    </a>
+                    <span className="text-xs tracking-wide text-[var(--sand)]/50">
+                        A member of the{" "}
+                        <a
+                            href="https://www.artsdistrictusa.com"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="underline-offset-4 transition-colors hover:text-[var(--sand)] hover:underline"
+                        >
+                            Local Artist Marketplace
+                        </a>
+                    </span>
                 </div>
             </footer>
         </div>

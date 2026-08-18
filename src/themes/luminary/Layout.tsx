@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { ThemeLayoutProps } from "@/themes/types";
-import { getArtistName } from "@/lib/artist-api";
+import { getArtistName, marketplaceArtistUrl } from "@/lib/artist-api";
 import { displayFont, bodyFont } from "./fonts";
 import GlowBlob from "./GlowBlob";
 
@@ -11,6 +11,7 @@ export default function LuminaryLayout({ children, artist, domain }: ThemeLayout
     const [menuOpen, setMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const name = getArtistName(artist);
+    const profileUrl = artist.slug ? marketplaceArtistUrl(artist.slug) : null;
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 12);
@@ -174,17 +175,24 @@ export default function LuminaryLayout({ children, artist, domain }: ThemeLayout
                 <div className="border-t border-[#3a3240]/10">
                     <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-6 py-6 text-center md:flex-row md:px-10 md:text-left">
                         <span className="font-sans text-[11px] uppercase tracking-[0.2em] text-[#3a3240]/35">
-                            &copy; {new Date().getFullYear()} {name}
+                            &copy; {new Date().getFullYear()}{" "}
+                            {profileUrl ? (
+                                <a href={profileUrl} target="_blank" rel="noopener noreferrer" className="hover:text-[#a9769f]">
+                                    {name}
+                                </a>
+                            ) : (
+                                name
+                            )}
                         </span>
                         <span className="font-sans text-[11px] uppercase tracking-[0.2em] text-[#3a3240]/35">
-                            Site by{" "}
+                            A member of the{" "}
                             <a
                                 href="https://www.artsdistrictusa.com"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="underline decoration-[#e3c9dd] underline-offset-4 transition-colors hover:text-[#a9769f]"
                             >
-                                ArtsDistrictUSA
+                                Local Artist Marketplace
                             </a>
                         </span>
                     </div>

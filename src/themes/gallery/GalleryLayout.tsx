@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Menu, X, Instagram, Facebook, Youtube, Globe } from "lucide-react";
 import type { ThemeLayoutProps } from "@/themes/types";
-import { getArtistName } from "@/lib/artist-api";
+import { getArtistName, marketplaceArtistUrl } from "@/lib/artist-api";
 import { galleryFontVariables } from "./fonts";
 import { VerifiedBadge } from "./ui";
 
@@ -20,6 +20,7 @@ export default function GalleryLayout({ children, artist, domain }: ThemeLayoutP
     const [menuOpen, setMenuOpen] = useState(false);
     const pathname = usePathname();
     const name = getArtistName(artist);
+    const profileUrl = artist.slug ? marketplaceArtistUrl(artist.slug) : null;
 
     useEffect(() => {
         setMenuOpen(false);
@@ -145,17 +146,24 @@ export default function GalleryLayout({ children, artist, domain }: ThemeLayoutP
                             </div>
                         )}
                         <p className="text-[11px] text-[#8C8478] tracking-wide">
-                            © {new Date().getFullYear()} {name}. All rights reserved.
+                            © {new Date().getFullYear()}{" "}
+                            {profileUrl ? (
+                                <a href={profileUrl} target="_blank" rel="noopener noreferrer" className="hover:text-[#B8AF9E]">
+                                    {name}
+                                </a>
+                            ) : (
+                                name
+                            )}. All rights reserved.
                         </p>
                         <p className="text-[11px] text-[#B8AF9E] mt-1 tracking-wide">
-                            Site by{" "}
+                            A member of the{" "}
                             <a
                                 href="https://www.artsdistrictusa.com"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="underline decoration-[#E3DCCE] underline-offset-2 hover:text-[#8C8478]"
                             >
-                                ArtsDistrictUSA
+                                Local Artist Marketplace
                             </a>
                         </p>
                     </div>

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import type { ThemeLayoutProps } from "@/themes/types";
-import { getArtistName } from "@/lib/artist-api";
+import { getArtistName, marketplaceArtistUrl } from "@/lib/artist-api";
 import MarqueeStrip from "./MarqueeStrip";
 
 const MONO = "'IBM Plex Mono', monospace";
@@ -18,6 +18,7 @@ const NAV_LINKS = [
 
 export default function ChronicleLayout({ children, artist }: ThemeLayoutProps) {
     const name = getArtistName(artist);
+    const profileUrl = artist.slug ? marketplaceArtistUrl(artist.slug) : null;
     const [menuOpen, setMenuOpen] = useState(false);
 
     const socials: { platform: string; handle: string; href: string }[] = [
@@ -305,14 +306,21 @@ export default function ChronicleLayout({ children, artist }: ThemeLayoutProps) 
                                 color: "#9ca3af",
                             }}
                         >
-                            © {new Date().getFullYear()} {name}. Powered by{" "}
+                            © {new Date().getFullYear()}{" "}
+                            {profileUrl ? (
+                                <a href={profileUrl} target="_blank" rel="noopener noreferrer" className="underline hover:text-[#6b7c6d]">
+                                    {name}
+                                </a>
+                            ) : (
+                                name
+                            )}. A member of the{" "}
                             <a
                                 href="https://www.artsdistrictusa.com"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="underline hover:text-[#6b7c6d]"
                             >
-                                ArtsDistrictUSA
+                                Local Artist Marketplace
                             </a>
                         </p>
                     </div>

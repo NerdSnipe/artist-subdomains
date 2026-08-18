@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Instagram, Facebook, Twitter, Youtube, Menu, X } from "lucide-react";
 import type { ThemeLayoutProps } from "@/themes/types";
-import { getArtistName } from "@/lib/artist-api";
+import { getArtistName, marketplaceArtistUrl } from "@/lib/artist-api";
 import { fontVariables } from "./fonts";
 import Marquee from "./Marquee";
 import { ink, coal, emberMid, emberGradient, smoke } from "./palette";
@@ -12,6 +12,7 @@ import { ink, coal, emberMid, emberGradient, smoke } from "./palette";
 export default function EmberLayout({ children, artist, domain }: ThemeLayoutProps) {
     const [menuOpen, setMenuOpen] = useState(false);
     const name = getArtistName(artist);
+    const profileUrl = artist.slug ? marketplaceArtistUrl(artist.slug) : null;
 
     useEffect(() => {
         document.body.style.overflow = menuOpen ? "hidden" : "";
@@ -233,17 +234,26 @@ export default function EmberLayout({ children, artist, domain }: ThemeLayoutPro
                         style={{ borderColor: "rgba(255,255,255,0.08)" }}
                     >
                         <p className="text-xs" style={{ color: "#6f6459" }}>
-                            &copy; {new Date().getFullYear()} {name}. All rights reserved.
+                            &copy; {new Date().getFullYear()}{" "}
+                            {profileUrl ? (
+                                <a href={profileUrl} target="_blank" rel="noopener noreferrer" className="hover:text-[#f6f1e8]">
+                                    {name}
+                                </a>
+                            ) : (
+                                name
+                            )}. All rights reserved.
                         </p>
-                        <a
-                            href="https://www.artsdistrictusa.com"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-xs transition-colors duration-200 hover:text-[#f6f1e8]"
-                            style={{ color: "#6f6459" }}
-                        >
-                            Powered by ArtsDistrictUSA
-                        </a>
+                        <span className="text-xs" style={{ color: "#6f6459" }}>
+                            A member of the{" "}
+                            <a
+                                href="https://www.artsdistrictusa.com"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="transition-colors duration-200 hover:text-[#f6f1e8]"
+                            >
+                                Local Artist Marketplace
+                            </a>
+                        </span>
                     </div>
                 </div>
             </footer>

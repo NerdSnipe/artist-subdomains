@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import type { ThemeLayoutProps } from "@/themes/types";
-import { getArtistName } from "@/lib/artist-api";
+import { getArtistName, marketplaceArtistUrl } from "@/lib/artist-api";
 
 // SVG grain filter data URI
 const GRAIN_STYLE = `
@@ -83,6 +83,7 @@ const GRAIN_STYLE = `
 export default function NoirLayout({ children, artist }: ThemeLayoutProps) {
     const [menuOpen, setMenuOpen] = useState(false);
     const name = getArtistName(artist);
+    const profileUrl = artist.slug ? marketplaceArtistUrl(artist.slug) : null;
 
     const socials: { href: string; label: string }[] = [
         artist.instagram ? { href: `https://instagram.com/${artist.instagram.replace("@", "")}`, label: "Instagram" } : null,
@@ -209,7 +210,14 @@ export default function NoirLayout({ children, artist }: ThemeLayoutProps) {
                         className="text-[8px] tracking-[0.2em] uppercase text-[#2a2a2a]"
                         style={{ fontFamily: "'Courier New', monospace" }}
                     >
-                        © {new Date().getFullYear()} {name}. All rights reserved.
+                        © {new Date().getFullYear()}{" "}
+                        {profileUrl ? (
+                            <a href={profileUrl} target="_blank" rel="noopener noreferrer" className="hover:text-[#a8884a]">
+                                {name}
+                            </a>
+                        ) : (
+                            name
+                        )}. All rights reserved.
                     </p>
                 </div>
             </footer>

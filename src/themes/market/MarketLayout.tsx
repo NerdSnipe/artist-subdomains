@@ -26,6 +26,7 @@ const NAV_LINKS = [
 export default function MarketLayout({ children, artist, domain }: ThemeLayoutProps) {
     const [menuOpen, setMenuOpen] = useState(false);
     const name = getArtistName(artist);
+    const profileUrl = artist.slug ? marketplaceArtistUrl(artist.slug) : null;
 
     const socials = [
         { href: artist.instagram ? `https://instagram.com/${artist.instagram.replace("@", "")}` : null, Icon: Instagram, label: "Instagram" },
@@ -177,15 +178,27 @@ export default function MarketLayout({ children, artist, domain }: ThemeLayoutPr
                 </div>
 
                 <div className="max-w-6xl mx-auto px-6 pt-6 border-t border-[#4a4038]/60 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-[#8a7d6e]">
-                    <span>© {new Date().getFullYear()} {name}. All artwork rights reserved.</span>
-                    <a
-                        href="https://www.artsdistrictusa.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="hover:text-[#f8f2e9] transition-colors"
-                    >
-                        Powered by ArtsDistrictUSA
-                    </a>
+                    <span>
+                        © {new Date().getFullYear()}{" "}
+                        {profileUrl ? (
+                            <a href={profileUrl} target="_blank" rel="noopener noreferrer" className="hover:text-[#f8f2e9]">
+                                {name}
+                            </a>
+                        ) : (
+                            name
+                        )}. All artwork rights reserved.
+                    </span>
+                    <span>
+                        A member of the{" "}
+                        <a
+                            href="https://www.artsdistrictusa.com"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-[#f8f2e9] transition-colors"
+                        >
+                            Local Artist Marketplace
+                        </a>
+                    </span>
                 </div>
             </footer>
         </div>
