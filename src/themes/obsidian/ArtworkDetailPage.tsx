@@ -11,9 +11,9 @@ export default function ObsidianArtworkDetail({
 }: ThemeArtworkDetailProps) {
     const imgUrl = getProductImageUrl(product);
     const artistSlug = product.artistSlug ?? artist.slug ?? "";
-    const medium = product.medium ?? product.mediums?.[0]?.medium.name;
-    const styles = product.styles?.map((s) => s.artStyle.name) ?? [];
-    const subjects = product.subjects?.map((s) => s.subject.name) ?? [];
+    const medium = product.medium ?? product.mediums?.[0]?.medium?.name;
+    const styles = product.styles?.map((s) => s.artStyle?.name).filter(Boolean) as string[] ?? [];
+    const subjects = product.subjects?.map((s) => s.subject?.name).filter(Boolean) as string[] ?? [];
     const hasMarketplaceLink = product.status === "active" && artistSlug && product.slug;
 
     // Sorted additional images

@@ -18,9 +18,9 @@ export default function ChronicleArtworkDetailPage({
     const artistSlug = product.artistSlug ?? artist.slug ?? "";
     const canPurchase = product.status === "active" && !!artistSlug && !!product.slug;
 
-    const mediumNames = product.mediums?.map((m) => m.medium.name) ?? (product.medium ? [product.medium] : []);
-    const styleNames = product.styles?.map((s) => s.artStyle.name) ?? [];
-    const subjectNames = product.subjects?.map((s) => s.subject.name) ?? [];
+    const mediumNames = product.mediums?.map((m) => m.medium?.name).filter(Boolean) as string[] ?? (product.medium ? [product.medium] : []);
+    const styleNames = product.styles?.map((s) => s.artStyle?.name).filter(Boolean) as string[] ?? [];
+    const subjectNames = product.subjects?.map((s) => s.subject?.name).filter(Boolean) as string[] ?? [];
 
     const relatedActive = relatedProducts.filter((r) => r.status !== "inactive").slice(0, 8);
 
@@ -286,19 +286,16 @@ export default function ChronicleArtworkDetailPage({
                                         href={marketplaceArtworkUrl(product)}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="block w-full text-center transition-colors"
+                                        className="block w-full text-center transition-colors bg-[#6b7c6d] hover:bg-[#1c1917]"
                                         style={{
                                             fontFamily: MONO,
                                             fontSize: "0.65rem",
                                             letterSpacing: "0.16em",
                                             textTransform: "uppercase",
-                                            backgroundColor: "#6b7c6d",
                                             color: "#faf8f5",
                                             padding: "0.875rem",
                                             textDecoration: "none",
                                         }}
-                                        onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = "#1c1917"; }}
-                                        onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = "#6b7c6d"; }}
                                     >
                                         Acquire This Work
                                     </a>

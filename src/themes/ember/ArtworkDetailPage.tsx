@@ -10,9 +10,9 @@ export default function EmberArtworkDetail({ artist, product, relatedProducts, d
     const imgUrl = getProductImageUrl(product);
     const canPurchase = product.status === "active" && !!product.artistSlug && !!product.slug;
 
-    const mediumNames = product.mediums?.map((m) => m.medium.name) ?? (product.medium ? [product.medium] : []);
-    const styleNames = product.styles?.map((s) => s.artStyle.name) ?? [];
-    const subjectNames = product.subjects?.map((s) => s.subject.name) ?? [];
+    const mediumNames = product.mediums?.map((m) => m.medium?.name).filter(Boolean) as string[] ?? (product.medium ? [product.medium] : []);
+    const styleNames = product.styles?.map((s) => s.artStyle?.name).filter(Boolean) as string[] ?? [];
+    const subjectNames = product.subjects?.map((s) => s.subject?.name).filter(Boolean) as string[] ?? [];
     const tags = [...mediumNames, ...styleNames, ...subjectNames];
 
     const related = relatedProducts.filter((r) => r.id !== product.id && r.status !== "inactive").slice(0, 3);

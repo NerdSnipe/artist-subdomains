@@ -24,7 +24,7 @@ export default function ArtworksBrowser({ artworks, domain }: Props) {
         for (const a of artworks) {
             if (a.medium) set.add(a.medium);
             if (a.mediums) {
-                for (const m of a.mediums) set.add(m.medium.name);
+                for (const m of a.mediums) if (m.medium?.name) set.add(m.medium.name);
             }
         }
         return Array.from(set).sort();
@@ -36,7 +36,7 @@ export default function ArtworksBrowser({ artworks, domain }: Props) {
         if (selectedMedium !== "all") {
             list = list.filter((a) => {
                 const direct = a.medium === selectedMedium;
-                const nested = a.mediums?.some((m) => m.medium.name === selectedMedium);
+                const nested = a.mediums?.some((m) => m.medium?.name === selectedMedium);
                 return direct || nested;
             });
         }
@@ -133,7 +133,7 @@ export default function ArtworksBrowser({ artworks, domain }: Props) {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
                     {active.map((artwork) => {
                         const imgUrl = getProductImageUrl(artwork);
-                        const medium = artwork.medium ?? artwork.mediums?.[0]?.medium.name;
+                        const medium = artwork.medium ?? artwork.mediums?.[0]?.medium?.name;
                         return (
                             <Link
                                 key={artwork.id}

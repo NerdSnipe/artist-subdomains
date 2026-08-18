@@ -321,19 +321,16 @@ export default function ChronicleContactPage({ artist }: ThemePageProps) {
                                 {artist.email && (
                                     <a
                                         href={`mailto:${artist.email}?subject=Commission Inquiry`}
-                                        className="mt-8 inline-block transition-colors"
+                                        className="mt-8 inline-block transition-colors bg-[#1c1917] hover:bg-[#6b7c6d]"
                                         style={{
                                             fontFamily: MONO,
                                             fontSize: "0.65rem",
                                             letterSpacing: "0.16em",
                                             textTransform: "uppercase",
-                                            backgroundColor: "#1c1917",
                                             color: "#faf8f5",
                                             padding: "0.8rem 1.5rem",
                                             textDecoration: "none",
                                         }}
-                                        onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = "#6b7c6d"; }}
-                                        onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = "#1c1917"; }}
                                     >
                                         Start a Conversation →
                                     </a>
@@ -361,19 +358,16 @@ export default function ChronicleContactPage({ artist }: ThemePageProps) {
                                 {artist.email && (
                                     <a
                                         href={`mailto:${artist.email}`}
-                                        className="mt-8 inline-block transition-colors"
+                                        className="mt-8 inline-block transition-colors bg-[#1c1917] hover:bg-[#6b7c6d]"
                                         style={{
                                             fontFamily: MONO,
                                             fontSize: "0.65rem",
                                             letterSpacing: "0.16em",
                                             textTransform: "uppercase",
-                                            backgroundColor: "#1c1917",
                                             color: "#faf8f5",
                                             padding: "0.8rem 1.5rem",
                                             textDecoration: "none",
                                         }}
-                                        onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = "#6b7c6d"; }}
-                                        onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = "#1c1917"; }}
                                     >
                                         Send a Message →
                                     </a>

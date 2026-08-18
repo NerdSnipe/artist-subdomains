@@ -13,7 +13,7 @@ export default function ArtisanHome({ artist, artworks }: ThemePageProps) {
     const heroImage = artist.coverPhoto ?? artist.profilePhoto ?? artist.bioPhoto ?? null;
 
     const materialSet = new Set<string>();
-    artworks.forEach((a) => a.materials?.forEach((m) => materialSet.add(m.material.name)));
+    artworks.forEach((a) => a.materials?.forEach((m) => { if (m.material?.name) materialSet.add(m.material.name); }));
     const craftTags = [artist.medium, artist.secondaryMedium, artist.artStyle, artist.secondaryArtStyle]
         .filter((v): v is string => Boolean(v))
         .concat(Array.from(materialSet).slice(0, 4));

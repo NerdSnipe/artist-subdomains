@@ -14,9 +14,9 @@ export default function LuminaryArtworkDetailPage({ artist, product, relatedProd
     const canPurchase = product.status === "active" && !!artistSlug && !!product.slug;
 
     const images = [...(product.images ?? [])].sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
-    const mediumNames = product.mediums?.map((m) => m.medium.name) ?? (product.medium ? [product.medium] : []);
-    const styleNames = product.styles?.map((s) => s.artStyle.name) ?? [];
-    const subjectNames = product.subjects?.map((s) => s.subject.name) ?? [];
+    const mediumNames = product.mediums?.map((m) => m.medium?.name).filter(Boolean) as string[] ?? (product.medium ? [product.medium] : []);
+    const styleNames = product.styles?.map((s) => s.artStyle?.name).filter(Boolean) as string[] ?? [];
+    const subjectNames = product.subjects?.map((s) => s.subject?.name).filter(Boolean) as string[] ?? [];
 
     const glow = product.dominantColors?.[0]?.hex ?? "#f3c6de";
     const glow2 = product.dominantColors?.[1]?.hex ?? "#c9d8f7";

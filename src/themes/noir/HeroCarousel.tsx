@@ -142,7 +142,7 @@ export default function HeroCarousel({ artworks, artist }: Props) {
                         className="text-[10px] tracking-[0.5em] uppercase text-[#a8884a]"
                         style={{ fontFamily: "'Courier New', monospace" }}
                     >
-                        {slide.medium ?? slide.mediums?.[0]?.medium.name ?? "Fine Art"}
+                        {slide.medium ?? slide.mediums?.[0]?.medium?.name ?? "Fine Art"}
                     </p>
                     <p
                         className="text-lg md:text-xl font-light tracking-[0.15em] text-[#e8e8e8]/80 italic"

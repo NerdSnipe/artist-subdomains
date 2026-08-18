@@ -21,7 +21,7 @@ export default function EmberArtworks({ artist, artworks, domain }: ThemePagePro
         const set = new Set<string>();
         active.forEach((a) => {
             if (a.medium) set.add(a.medium);
-            a.mediums?.forEach((m) => set.add(m.medium.name));
+            a.mediums?.forEach((m) => { if (m.medium?.name) set.add(m.medium.name); });
         });
         return Array.from(set).sort();
     }, [active]);
@@ -29,7 +29,7 @@ export default function EmberArtworks({ artist, artworks, domain }: ThemePagePro
     const filtered = useMemo(() => {
         let list = [...active];
         if (filterMedium !== "all") {
-            list = list.filter((a) => a.medium === filterMedium || a.mediums?.some((m) => m.medium.name === filterMedium));
+            list = list.filter((a) => a.medium === filterMedium || a.mediums?.some((m) => m.medium?.name === filterMedium));
         }
         if (sortBy === "price-asc") list.sort((a, b) => a.price - b.price);
         else if (sortBy === "price-desc") list.sort((a, b) => b.price - a.price);

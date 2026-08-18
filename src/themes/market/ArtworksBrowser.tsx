@@ -8,7 +8,7 @@ import ProductCard from "./ProductCard";
 type Availability = "available" | "sold" | "all";
 
 function mediumOf(p: Product): string | null {
-    return p.mediums?.[0]?.medium.name ?? p.medium ?? null;
+    return p.mediums?.[0]?.medium?.name ?? p.medium ?? null;
 }
 
 export default function ArtworksBrowser({ artworks }: { artworks: Product[] }) {

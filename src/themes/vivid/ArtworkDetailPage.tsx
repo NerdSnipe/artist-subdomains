@@ -13,10 +13,10 @@ export default function VividArtworkDetailPage({ artist, product, relatedProduct
     const canPurchase = product.status === "active" && !!artistSlug && !!product.slug;
     const palette = derivePalette(product.dominantColors, product.id);
 
-    const mediumNames = product.mediums?.map((m) => m.medium.name) ?? (product.medium ? [product.medium] : []);
-    const styleNames = product.styles?.map((s) => s.artStyle.name) ?? [];
-    const subjectNames = product.subjects?.map((s) => s.subject.name) ?? [];
-    const materialNames = product.materials?.map((m) => m.material.name) ?? [];
+    const mediumNames = product.mediums?.map((m) => m.medium?.name).filter(Boolean) as string[] ?? (product.medium ? [product.medium] : []);
+    const styleNames = product.styles?.map((s) => s.artStyle?.name).filter(Boolean) as string[] ?? [];
+    const subjectNames = product.subjects?.map((s) => s.subject?.name).filter(Boolean) as string[] ?? [];
+    const materialNames = product.materials?.map((m) => m.material?.name).filter(Boolean) as string[] ?? [];
 
     const related = relatedProducts.slice(0, 4);
 

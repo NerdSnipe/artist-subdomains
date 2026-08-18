@@ -9,8 +9,8 @@ import Reveal from "./Reveal";
 export default function ArtisanArtworkDetail({ artist, product, relatedProducts }: ThemeArtworkDetailProps) {
     const imgUrl = getProductImageUrl(product);
     const artistSlug = product.artistSlug ?? artist.slug ?? "";
-    const materials = product.materials?.map((m) => m.material.name) ?? [];
-    const mediums = product.mediums?.map((m) => m.medium.name) ?? (product.medium ? [product.medium] : []);
+    const materials = product.materials?.map((m) => m.material?.name).filter(Boolean) as string[] ?? [];
+    const mediums = product.mediums?.map((m) => m.medium?.name).filter(Boolean) as string[] ?? (product.medium ? [product.medium] : []);
     const tags = Array.from(new Set([...mediums, ...materials]));
     const onSale = typeof product.salePrice === "number" && product.salePrice < product.price;
 

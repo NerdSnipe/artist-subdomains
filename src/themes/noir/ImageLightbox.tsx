@@ -38,7 +38,7 @@ export default function ImageLightbox({ artworks, currentIndex, onClose, onNext,
     if (!artwork) return null;
 
     const imgUrl = getProductImageUrl(artwork);
-    const medium = artwork.medium ?? artwork.mediums?.[0]?.medium.name;
+    const medium = artwork.medium ?? artwork.mediums?.[0]?.medium?.name;
 
     return (
         <div

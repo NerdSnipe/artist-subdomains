@@ -12,8 +12,8 @@ function formatDimensions(product: Product): string | null {
 }
 
 function primaryTaxonomy(product: Product): string | null {
-    const medium = product.mediums?.[0]?.medium.name ?? product.medium;
-    const style = product.styles?.[0]?.artStyle.name;
+    const medium = product.mediums?.[0]?.medium?.name ?? product.medium;
+    const style = product.styles?.[0]?.artStyle?.name;
     if (medium && style) return `${style} · ${medium}`;
     return medium ?? style ?? null;
 }
