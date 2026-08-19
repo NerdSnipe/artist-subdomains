@@ -22,6 +22,13 @@ export interface ThemeLayoutProps {
 export interface ThemeModule {
     key: string;
     name: string;
+    /** One-line description shown to artists when choosing a theme. */
+    description: string;
+    /** Three representative hex colors, background → accent → text. */
+    palette: [string, string, string];
+    /** Dimensions of the theme's preview screenshot at website-previews/{key}.png. */
+    previewWidth: number;
+    previewHeight: number;
     Layout: React.ComponentType<ThemeLayoutProps>;
     HomePage: React.ComponentType<ThemePageProps>;
     ArtworksPage: React.ComponentType<ThemePageProps>;
