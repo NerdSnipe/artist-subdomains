@@ -12,6 +12,12 @@ import ContactPage from "./AnthemNoirContact";
 export const anthemnoirTheme: ThemeModule = {
     key: "anthemnoir",
     name: "Anthem Noir",
+    description: "Black & beige varsity poster energy — huge condensed all-caps type, near-black and warm beige with a single unified gold accent, built for bold, graphic, statement-making work.",
+    palette: ["#0C0B09", "#E9DFC9", "#C9A227"],
+    // TODO: upload the real preview screenshot to the img-artdistrictusa-com S3 bucket at
+    // website-previews/anthemnoir.png and update these dimensions to match it exactly.
+    previewWidth: 1600,
+    previewHeight: 6137,
     Layout,
     HomePage,
     ArtworksPage,
