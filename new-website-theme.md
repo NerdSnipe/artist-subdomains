@@ -510,6 +510,12 @@ export default function ArtworksBrowser({ artworks, domain }) {
 
 ## Registering your theme
 
+This app is the single source of truth for the theme catalog. The ADUSA
+Backend has **no hardcoded theme list** — its artist-facing picker and its
+save-time validation both call this app's `GET /api/themes` live. So
+registering a theme only touches this repo; there is nothing to change in
+the ADUSA Backend.
+
 ### 1. Add to the registry
 
 In `src/themes/registry.ts`:
@@ -526,38 +532,20 @@ const registry: Record<string, ThemeModule> = {
 };
 ```
 
-### 2. Update the backend validation
+### 2. Upload a preview screenshot
 
-In the ADUSA Backend at:
+Upload a full-page screenshot of your theme to the `img-artdistrictusa-com`
+S3 bucket at:
+
 ```
-/Users/nerdsnipe/DispatchProjects/ghl-art-directory/ADUSA Backend/app/api/artist-domain/me/route.ts
-```
-
-Add your key to `VALID_THEME_KEYS`:
-
-```ts
-const VALID_THEME_KEYS = ['gallery', 'studio', 'market', 'artisan', 'your-key'] as const;
+website-previews/your-key.png
 ```
 
-### 3. Add to the themes list
+Its pixel dimensions must match `previewWidth`/`previewHeight` in your
+`ThemeModule`. `GET /api/themes` builds the preview URL from your `key`
+automatically — this is what renders in the artist-facing picker lightbox.
 
-In the ADUSA Backend at:
-```
-/Users/nerdsnipe/DispatchProjects/ghl-art-directory/ADUSA Backend/app/api/artist-domain/themes/route.ts
-```
-
-Add an entry to the `themes` array:
-
-```ts
-{
-    key: "your-key",
-    name: "Display Name",
-    description: "One sentence describing the feel of this theme",
-    screenshotUrl: null,  // update later with an actual screenshot URL
-},
-```
-
-### 4. Type check
+### 3. Type check
 
 ```bash
 cd /Users/nerdsnipe/Ahead/artist-subdomains
@@ -566,12 +554,21 @@ npm run typecheck
 
 Zero errors before shipping.
 
+### 4. Deploy
+
+Once deployed, `GET /api/themes` and `getThemeModule("your-key")` both pick
+up the new theme immediately. The ADUSA Backend's picker and save
+validation update on their next fetch (cached ~5 minutes there) — no
+backend deploy needed.
+
 ---
 
 ## Checklist before shipping a new theme
 
 - [ ] All 6 exports present in `index.ts` (`Layout`, `HomePage`, `ArtworksPage`, `ArtworkDetailPage`, `AboutPage`, `ContactPage`)
 - [ ] `key` field in `ThemeModule` matches the folder name and registry key exactly
+- [ ] `description`, `palette`, `previewWidth`, `previewHeight` set on the `ThemeModule`
+- [ ] Preview screenshot uploaded to S3 at `website-previews/{key}.png`, matching the declared dimensions
 - [ ] All internal links use `/${domain}/...` prefix
 - [ ] Artwork links use `artwork.slug ?? artwork.id` (never assume slug is present)
 - [ ] Purchase link uses `marketplaceArtworkUrl()` and is only shown for `status === "active"` products
@@ -580,8 +577,6 @@ Zero errors before shipping.
 - [ ] All optional fields on `ArtistProfile` and `Product` are guarded before use
 - [ ] Layout component does not render `<html>` or `<body>` tags (root layout owns those)
 - [ ] Key registered in `src/themes/registry.ts`
-- [ ] Key added to `VALID_THEME_KEYS` in the ADUSA Backend `me/route.ts`
-- [ ] Theme entry added to ADUSA Backend `themes/route.ts`
 - [ ] `npm run typecheck` passes with zero errors
 - [ ] Tested locally at `localhost:3000/{any-registered-domain}/` with all 5 pages
 
