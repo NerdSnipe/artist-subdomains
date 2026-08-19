@@ -9,6 +9,7 @@ import { luminaryTheme } from "./luminary";
 import { vividTheme } from "./vivid";
 import { noirTheme } from "./noir";
 import { chronicleTheme } from "./chronicle";
+import { anthemTheme } from "./anthem";
 
 const registry: Record<string, ThemeModule> = {
     gallery: galleryTheme,
@@ -21,6 +22,7 @@ const registry: Record<string, ThemeModule> = {
     vivid: vividTheme,
     noir: noirTheme,
     chronicle: chronicleTheme,
+    anthem: anthemTheme,
 };
 
 export function getThemeModule(key: string): ThemeModule {

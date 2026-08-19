@@ -50,6 +50,10 @@ export interface Product {
     salePrice?: number | null;
     shippingPrice?: number | null;
     dominantColors?: Array<{ name: string; hex: string }> | null;
+    // Series/collection grouping (used for artwork filter chips, e.g. "Popular", "Icons & Pop")
+    series?: string[];
+    // Physical gallery locations this piece is also available through (badges on artwork cards)
+    gallerySource?: string[];
     // Nested taxonomy relations from API
     mediums?: Array<{ medium: { id: string; name: string; slug: string } }>;
     styles?: Array<{ artStyle: { id: string; name: string; slug: string } }>;
@@ -136,6 +140,9 @@ export interface ArtistProfile {
     artistStatement?: string | null;
     artistTagline?: string | null;
     studioProcessDescription?: string | null;
+    // Curated hero headline for statement-style hero sections (e.g. "Beautiful Chaos").
+    // When absent, themes should derive a short fallback from artistStatement/description/bio.
+    heroHeadline?: string | null;
     blogPosts?: { title: string; date: string; excerpt: string; imageUrl?: string | null; externalUrl?: string | null; source?: string | null; }[];
     book?: { title: string; description: string; imageUrl: string; publisher?: string; format?: string; isbn?: string; purchaseUrl?: string; purchaseLabel?: string; } | null;
     studioLocations?: { name?: string; address: string; city: string; state: string; zipCode?: string; directionsUrl?: string; }[];

@@ -78,6 +78,32 @@ export function getArtistName(artist: ArtistProfile): string {
     return artist.displayName ?? `${artist.firstName} ${artist.lastName}`.trim();
 }
 
+// Returns a 2-word stacked headline for statement-style heroes (e.g. ["Beautiful", "Chaos."]).
+// Priority: 1) a curated heroHeadline set by the artist/admin. 2) derived from the first two
+// words of whatever statement/description/bio text exists. 3) a safe generic fallback built
+// from art style/medium so the hero never renders empty or broken.
+export function getHeroHeadline(artist: ArtistProfile): string[] {
+    if (artist.heroHeadline) {
+        const words = artist.heroHeadline.trim().split(/\s+/).filter(Boolean);
+        if (words.length >= 2) return [words[0], words.slice(1).join(" ")];
+        if (words.length === 1) return [words[0], ""];
+    }
+
+    const source = artist.artistStatement || artist.description || artist.bio;
+    if (source) {
+        const words = source
+            .replace(/[^a-zA-Z0-9\s]/g, "")
+            .split(/\s+/)
+            .filter(Boolean);
+        if (words.length >= 2) {
+            return [words[0], `${words[1]}.`];
+        }
+    }
+
+    const fallback = artist.artStyle || artist.medium || artist.artisticMedium || "Original";
+    return [fallback.split(" ")[0], "Art."];
+}
+
 const MARKETPLACE_URL = 'https://www.artsdistrictusa.com';
 
 function slugify(text: string): string {
