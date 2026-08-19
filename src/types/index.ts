@@ -137,12 +137,12 @@ export interface ArtistProfile {
     artworks?: Product[];
 
     // Elite Template Specific Data
-    artistStatement?: string | null;
-    artistTagline?: string | null;
-    studioProcessDescription?: string | null;
     // Curated hero headline for statement-style hero sections (e.g. "Beautiful Chaos").
     // When absent, themes should derive a short fallback from artistStatement/description/bio.
     heroHeadline?: string | null;
+    artistStatement?: string | null;
+    artistTagline?: string | null;
+    studioProcessDescription?: string | null;
     blogPosts?: { title: string; date: string; excerpt: string; imageUrl?: string | null; externalUrl?: string | null; source?: string | null; }[];
     book?: { title: string; description: string; imageUrl: string; publisher?: string; format?: string; isbn?: string; purchaseUrl?: string; purchaseLabel?: string; } | null;
     studioLocations?: { name?: string; address: string; city: string; state: string; zipCode?: string; directionsUrl?: string; }[];

@@ -1,5 +1,14 @@
 import type { ArtistProfile, Product, LocalArtistResponse, ProductDetailResponse } from "@/types";
 import { cache } from "react";
+import { mockArtistData, mockArtworks } from "./mock-data";
+
+// TEMP: this sandbox's network policy blocks the real ADUSA API, so local theme-browsing
+// falls back to mock data instead of erroring out. Scoped to ONLY the "rocky-asbury" demo
+// slug and disabled in production builds, so it can never affect a real artist or a live
+// deployment even if this is left in by accident. Safe to delete once viewing real data
+// elsewhere (e.g. once this sandbox's restrictions don't apply).
+const MOCK_ARTIST_SLUG = "rocky-asbury";
+const USE_MOCK_DATA = process.env.NODE_ENV !== "production";
 
 const API_BASE = process.env.ARTIST_API_URL ?? "https://api.artdistrictusa.com/api";
 
@@ -43,6 +52,9 @@ export function artistCacheTag(slug: string): string {
 }
 
 export async function getArtistData(slug: string): Promise<LocalArtistResponse> {
+    if (USE_MOCK_DATA && slug === MOCK_ARTIST_SLUG) {
+        return mockArtistData;
+    }
     const res = await fetch(`${API_BASE}/local-artist/${encodeURIComponent(slug)}`, {
         next: { revalidate: 60, tags: [artistCacheTag(slug)] },
     });
@@ -56,6 +68,10 @@ export async function getProductBySlug(
     artistSlug: string,
     productSlug: string
 ): Promise<ProductDetailResponse> {
+    if (USE_MOCK_DATA && artistSlug === MOCK_ARTIST_SLUG) {
+        const product = mockArtworks.find((p) => p.slug === productSlug) ?? mockArtworks[0];
+        return { success: true, product };
+    }
     const res = await fetch(
         `${API_BASE}/artist/${encodeURIComponent(artistSlug)}/products/${encodeURIComponent(productSlug)}`,
         { next: { revalidate: 60, tags: [artistCacheTag(artistSlug)] } }
@@ -78,10 +94,12 @@ export function getArtistName(artist: ArtistProfile): string {
     return artist.displayName ?? `${artist.firstName} ${artist.lastName}`.trim();
 }
 
-// Returns a 2-word stacked headline for statement-style heroes (e.g. ["Beautiful", "Chaos."]).
-// Priority: 1) a curated heroHeadline set by the artist/admin. 2) derived from the first two
-// words of whatever statement/description/bio text exists. 3) a safe generic fallback built
-// from art style/medium so the hero never renders empty or broken.
+// Returns a 1-2 line stacked headline for statement-style heroes (e.g. ["Beautiful", "Chaos"]).
+// Priority: 1) a curated heroHeadline set by the artist/admin (best — e.g. Rocky's "Beautiful
+// Chaos", the opening words of his real GHL artist statement). 2) the artist's own name — a
+// guessed phrase pulled from bio/statement text reads awkward for most artists (e.g. derived
+// "Las Vegas." from a bio that opens with the artist's city), where the artist's name is
+// always safe, always on-brand, and needs no curation to look intentional.
 export function getHeroHeadline(artist: ArtistProfile): string[] {
     if (artist.heroHeadline) {
         const words = artist.heroHeadline.trim().split(/\s+/).filter(Boolean);
@@ -89,19 +107,11 @@ export function getHeroHeadline(artist: ArtistProfile): string[] {
         if (words.length === 1) return [words[0], ""];
     }
 
-    const source = artist.artistStatement || artist.description || artist.bio;
-    if (source) {
-        const words = source
-            .replace(/[^a-zA-Z0-9\s]/g, "")
-            .split(/\s+/)
-            .filter(Boolean);
-        if (words.length >= 2) {
-            return [words[0], `${words[1]}.`];
-        }
-    }
+    const name = getArtistName(artist).trim().split(/\s+/).filter(Boolean);
+    if (name.length >= 2) return [name[0], name.slice(1).join(" ")];
+    if (name.length === 1) return [name[0], ""];
 
-    const fallback = artist.artStyle || artist.medium || artist.artisticMedium || "Original";
-    return [fallback.split(" ")[0], "Art."];
+    return ["Original", "Art"];
 }
 
 const MARKETPLACE_URL = 'https://www.artsdistrictusa.com';
