@@ -58,7 +58,7 @@ export default function Carousel({
 
     return (
         <div
-            className={`relative w-full ${heightClassName} overflow-hidden ${overlay === "strip" ? "border-y-4 border-black" : "border-b-4 border-black"} bg-black`}
+            className={`relative w-full ${heightClassName} overflow-hidden ${overlay === "strip" ? "border-y-4 border-[#E9DFC9]" : "border-b-4 border-[#E9DFC9]"} bg-black`}
             onMouseEnter={pause}
             onMouseLeave={resume}
         >
@@ -84,7 +84,7 @@ export default function Carousel({
                         type="button"
                         aria-label="Previous image"
                         onClick={() => go(index - 1)}
-                        className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-20 bg-[#F7F4EC] text-black w-10 h-10 md:w-12 md:h-12 flex items-center justify-center border-2 border-black hover:bg-[#FFDC00] transition-colors"
+                        className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-20 bg-[#E9DFC9] text-[#0C0B09] w-10 h-10 md:w-12 md:h-12 flex items-center justify-center border-2 border-[#E9DFC9] hover:bg-[#C9A227] transition-colors"
                     >
                         <ChevronLeft size={22} />
                     </button>
@@ -92,7 +92,7 @@ export default function Carousel({
                         type="button"
                         aria-label="Next image"
                         onClick={() => go(index + 1)}
-                        className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-20 bg-[#F7F4EC] text-black w-10 h-10 md:w-12 md:h-12 flex items-center justify-center border-2 border-black hover:bg-[#FFDC00] transition-colors"
+                        className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-20 bg-[#E9DFC9] text-[#0C0B09] w-10 h-10 md:w-12 md:h-12 flex items-center justify-center border-2 border-[#E9DFC9] hover:bg-[#C9A227] transition-colors"
                     >
                         <ChevronRight size={22} />
                     </button>
@@ -104,7 +104,7 @@ export default function Carousel({
                                 type="button"
                                 aria-label={`Go to image ${i + 1}`}
                                 onClick={() => go(i)}
-                                className={`h-2 border border-black transition-all ${i === index ? "w-8 bg-[#FFDC00]" : "w-2 bg-[#F7F4EC]/80"}`}
+                                className={`h-2 border border-[#E9DFC9] transition-all ${i === index ? "w-8 bg-[#C9A227]" : "w-2 bg-[#E9DFC9]/70"}`}
                             />
                         ))}
                     </div>

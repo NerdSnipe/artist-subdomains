@@ -2,11 +2,10 @@ import localFont from "next/font/local";
 import { Inter } from "next/font/google";
 
 /**
- * Anthem's type system: the real Handel Gothic D Bold — the client's own font file, shared
- * with the Anthem Noir sibling theme — as the big, condensed, all-caps display face built
- * for short declarative statements ("BEAUTIFUL CHAOS."), paired with a clean, highly-legible
- * grotesk for everything else. No script/cursive anywhere — that was the one hard rule this
- * theme was built around.
+ * Anthem Noir's type system: the real Handel Gothic D Bold — the client's own font file —
+ * as the bold, geometric, all-caps display face, paired with a clean, highly-legible
+ * grotesk for everything else. No script/cursive anywhere — that was the one hard rule
+ * this theme family was built around.
  */
 export const display = localFont({
     src: "./fonts-local/HandelGothicDBold.otf",

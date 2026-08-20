@@ -2,25 +2,23 @@ import Image from "next/image";
 import type { ArtistProfile } from "@/types";
 import Reveal from "./Reveal";
 
-// Shared "Inside the Studio" section — process text + studio photos. Used on both the
-// homepage (prominent, per feedback: this is what makes an artist interesting) and the
-// About page, so the two never drift out of sync.
-export default function AnthemStudioSection({ artist, id }: { artist: ArtistProfile; id?: string }) {
+export default function AnthemNoirStudioSection({ artist, id }: { artist: ArtistProfile; id?: string }) {
     const studioImgs = artist.studioImages ?? [];
     if (!artist.studioProcessDescription && studioImgs.length === 0) return null;
 
-    // Studio copy often opens with a short all-caps label (e.g. "THE PAINTING PROCESS") —
-    // pull that out and render it as its own bold sub-headline instead of burying it in body text.
+    // Pull the leading "THE PAINTING PROCESS"-style label out of the body copy (if the source
+    // text opens with an all-caps run) so it renders as its own bold sub-headline rather than
+    // getting buried as the first few words of a paragraph.
     const raw = artist.studioProcessDescription ?? "";
     const capsMatch = raw.match(/^([A-Z][A-Z\s]{4,40}[A-Z])\s+([\s\S]*)$/);
     const subheadline = capsMatch ? capsMatch[1].trim() : "The Painting Process";
     const bodyText = capsMatch ? capsMatch[2].trim() : raw;
 
     return (
-        <section id={id} className={`max-w-[1500px] mx-auto px-5 md:px-10 py-20 md:py-28 ${id ? "scroll-mt-[100px]" : ""}`}>
-            <Reveal className="mb-10 border-b-4 border-black pb-5 flex items-end justify-between">
+        <section id={id} className="max-w-[1500px] mx-auto px-5 md:px-10 py-20 md:py-28 scroll-mt-[100px]">
+            <Reveal className="mb-10 border-b-4 border-[#E9DFC9] pb-5 flex items-end justify-between">
                 <div>
-                    <p className="text-[13px] font-bold tracking-[0.22em] uppercase text-[#E62828] mb-3">The Process</p>
+                    <p className="text-[13px] font-bold tracking-[0.22em] uppercase text-[#C9A227] mb-3">The Process</p>
                     <h2 className="font-[family-name:var(--font-display)] uppercase text-4xl md:text-6xl">Inside the Studio</h2>
                 </div>
             </Reveal>
@@ -28,15 +26,17 @@ export default function AnthemStudioSection({ artist, id }: { artist: ArtistProf
             <div className="grid grid-cols-1 md:grid-cols-[0.9fr_1.1fr] gap-10 md:gap-16 items-start">
                 {raw && (
                     <Reveal delay={60}>
-                        <p className="font-[family-name:var(--font-display)] uppercase text-2xl text-[#E62828] mb-4">{subheadline}</p>
-                        <p className="text-lg leading-relaxed text-black/80">{bodyText}</p>
+                        <h3 className="font-[family-name:var(--font-display)] uppercase text-2xl md:text-3xl mb-4 text-[#C9A227] tracking-wide">
+                            {subheadline}
+                        </h3>
+                        <p className="text-lg leading-relaxed text-[#E9DFC9]/80">{bodyText}</p>
                     </Reveal>
                 )}
                 {studioImgs.length > 0 && (
                     <div className="grid grid-cols-2 gap-4">
                         {studioImgs.map((src, i) => (
                             <Reveal key={i} delay={i * 60}>
-                                <div className="relative aspect-square border-2 border-black overflow-hidden">
+                                <div className="relative aspect-square border-2 border-[#E9DFC9] overflow-hidden">
                                     <Image src={src} alt={`Studio ${i + 1}`} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover" />
                                 </div>
                             </Reveal>

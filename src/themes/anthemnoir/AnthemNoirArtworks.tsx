@@ -7,10 +7,9 @@ import type { ThemePageProps } from "@/themes/types";
 import { getProductImageUrl } from "@/lib/artist-api";
 import Reveal from "./Reveal";
 
-// Preferred display order for series chips — anything not in this list is appended after.
 const SERIES_ORDER = ["Popular", "Teddy Series", "Icons & Pop", "Abstract Chaos", "New Release"];
 
-export default function AnthemArtworks({ artworks }: ThemePageProps) {
+export default function AnthemNoirArtworks({ artworks }: ThemePageProps) {
     const active = artworks.filter((a) => a.status === "active");
     const sold = artworks.filter((a) => a.status === "sold");
     const [filter, setFilter] = useState("All");
@@ -26,11 +25,11 @@ export default function AnthemArtworks({ artworks }: ThemePageProps) {
     const filtered = filter === "All" ? active : active.filter((a) => a.series?.includes(filter));
 
     return (
-        <div className="max-w-[1500px] mx-auto px-5 md:px-10 py-16 md:py-24">
-            <div className="border-b-4 border-black pb-6 mb-10">
-                <p className="text-[13px] font-bold tracking-[0.22em] uppercase text-[#E62828] mb-3">Portfolio</p>
+        <div className="max-w-[1600px] mx-auto px-5 md:px-10 py-16 md:py-24">
+            <div className="border-b-4 border-[#E9DFC9] pb-6 mb-10">
+                <p className="text-[13px] font-bold tracking-[0.22em] uppercase text-[#C9A227] mb-3">Portfolio</p>
                 <h1 className="font-[family-name:var(--font-display)] uppercase text-5xl md:text-7xl">Available Artwork</h1>
-                <p className="mt-3 text-sm text-black/60">{active.length} original work{active.length === 1 ? "" : "s"} available</p>
+                <p className="mt-3 text-sm text-[#E9DFC9]/60">{active.length} original work{active.length === 1 ? "" : "s"} available</p>
             </div>
 
             {chips.length > 1 && (
@@ -40,8 +39,8 @@ export default function AnthemArtworks({ artworks }: ThemePageProps) {
                             key={c}
                             type="button"
                             onClick={() => setFilter(c)}
-                            className={`text-xs font-bold uppercase tracking-widest px-4 py-2 border-2 border-black transition-colors ${
-                                filter === c ? "bg-black text-[#F7F4EC]" : "bg-transparent text-black hover:bg-black/5"
+                            className={`text-xs font-bold uppercase tracking-widest px-4 py-2 border-2 border-[#E9DFC9] transition-colors ${
+                                filter === c ? "bg-[#E9DFC9] text-[#0C0B09]" : "bg-transparent text-[#E9DFC9] hover:bg-[#E9DFC9]/10"
                             }`}
                         >
                             {c}
@@ -61,7 +60,7 @@ export default function AnthemArtworks({ artworks }: ThemePageProps) {
                         return (
                             <Reveal key={art.id} delay={Math.min(i, 8) * 50} className="break-inside-avoid mb-6 block">
                                 <Link href={`/artworks/${art.slug ?? art.id}`} className="group block">
-                                    <div className="relative w-full overflow-hidden border-2 border-black" style={{ aspectRatio: ratio }}>
+                                    <div className="relative w-full overflow-hidden border-2 border-[#E9DFC9]" style={{ aspectRatio: ratio }}>
                                         {img && (
                                             <Image
                                                 src={img}
@@ -76,7 +75,7 @@ export default function AnthemArtworks({ artworks }: ThemePageProps) {
                                                 {art.gallerySource.map((g) => (
                                                     <span
                                                         key={g}
-                                                        className="bg-black text-[#F7F4EC] text-[9px] font-bold uppercase tracking-wide px-2 py-1 border border-black"
+                                                        className="bg-[#0C0B09] text-[#E9DFC9] text-[9px] font-bold uppercase tracking-wide px-2 py-1 border border-[#E9DFC9]"
                                                     >
                                                         {g}
                                                     </span>
@@ -85,8 +84,8 @@ export default function AnthemArtworks({ artworks }: ThemePageProps) {
                                         )}
                                     </div>
                                     <p className="mt-3 font-[family-name:var(--font-display)] uppercase text-xl tracking-wide">{art.title}</p>
-                                    <p className="text-base font-bold text-[#E62828]">${art.price.toLocaleString()}</p>
-                                    <div className="mt-2 border-t border-black/30" />
+                                    <p className="text-base font-bold text-[#C9A227]">${art.price.toLocaleString()}</p>
+                                    <div className="mt-2 border-t border-[#E9DFC9]/40" />
                                 </Link>
                             </Reveal>
                         );
@@ -95,12 +94,12 @@ export default function AnthemArtworks({ artworks }: ThemePageProps) {
             )}
 
             {filtered.length === 0 && (
-                <p className="text-sm text-black/50 py-16 text-center">No pieces in this series right now — check back soon.</p>
+                <p className="text-sm text-[#E9DFC9]/50 py-16 text-center">No pieces in this series right now — check back soon.</p>
             )}
 
             {sold.length > 0 && (
                 <div className="mt-24">
-                    <h2 className="font-[family-name:var(--font-display)] uppercase text-3xl mb-8 border-b-4 border-black pb-4">
+                    <h2 className="font-[family-name:var(--font-display)] uppercase text-3xl mb-8 border-b-4 border-[#E9DFC9] pb-4">
                         Previously Sold
                     </h2>
                     <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
@@ -108,7 +107,7 @@ export default function AnthemArtworks({ artworks }: ThemePageProps) {
                             const img = getProductImageUrl(art);
                             return (
                                 <div key={art.id} className="opacity-60">
-                                    <div className="relative aspect-square border-2 border-black overflow-hidden mb-2">
+                                    <div className="relative aspect-square border-2 border-[#E9DFC9] overflow-hidden mb-2">
                                         {img && <Image src={img} alt={art.title} fill sizes="200px" className="object-cover grayscale" />}
                                     </div>
                                     <p className="text-[11px] font-bold uppercase truncate">{art.title}</p>

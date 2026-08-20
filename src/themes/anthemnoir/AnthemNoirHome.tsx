@@ -5,10 +5,10 @@ import { getArtistName, getHeroHeadline, getProductImageUrl } from "@/lib/artist
 import Reveal from "./Reveal";
 import Marquee from "./Marquee";
 import Carousel from "./Carousel";
-import AnthemStudioSection from "./AnthemStudioSection";
-import AnthemGallerySection from "./AnthemGallerySection";
+import AnthemNoirStudioSection from "./AnthemNoirStudioSection";
+import AnthemNoirGallerySection from "./AnthemNoirGallerySection";
 
-export default function AnthemHome({ artist, artworks }: ThemePageProps) {
+export default function AnthemNoirHome({ artist, artworks }: ThemePageProps) {
     const name = getArtistName(artist);
     const active = artworks.filter((a) => a.status === "active");
     const featured = active.slice(0, 6);
@@ -31,11 +31,11 @@ export default function AnthemHome({ artist, artworks }: ThemePageProps) {
         <div>
             <Carousel images={heroImages} alt={name} heightClassName="min-h-[92vh]" overlay="hero">
                 <div className="h-full flex items-end">
-                    <div className="max-w-[1500px] mx-auto w-full px-5 md:px-10 pb-14 md:pb-20">
-                        <p className="text-[13px] font-bold tracking-[0.22em] uppercase text-[#FFDC00] drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)] mb-4">
+                    <div className="max-w-[1600px] mx-auto w-full px-5 md:px-10 pb-14 md:pb-20">
+                        <p className="text-[13px] font-bold tracking-[0.22em] uppercase text-[#C9A227] drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)] mb-4">
                             {artist.artistTagline ?? "Contemporary Artist"} · {artist.location}
                         </p>
-                        <h1 className="font-[family-name:var(--font-display)] uppercase text-white drop-shadow-[0_4px_28px_rgba(0,0,0,0.9)] leading-[0.88] text-[15vw] md:text-[9vw] lg:text-[130px]">
+                        <h1 className="font-[family-name:var(--font-display)] uppercase text-[#E9DFC9] drop-shadow-[0_4px_28px_rgba(0,0,0,0.9)] leading-[0.88] text-[15vw] md:text-[9vw] lg:text-[130px]">
                             {headline[0]}
                             {headline[1] && (
                                 <>
@@ -47,13 +47,13 @@ export default function AnthemHome({ artist, artworks }: ThemePageProps) {
                         <div className="mt-8 flex flex-wrap items-center gap-4">
                             <Link
                                 href="/artworks"
-                                className="inline-block bg-[#FFDC00] text-black font-bold uppercase tracking-[0.1em] text-sm px-7 py-4 hover:bg-white transition-colors"
+                                className="inline-block bg-[#C9A227] text-[#0C0B09] font-bold uppercase tracking-[0.1em] text-sm px-7 py-4 hover:bg-[#E9DFC9] transition-colors"
                             >
                                 View the Collection
                             </Link>
                             <Link
                                 href="/contact#commission"
-                                className="inline-block border-2 border-white text-white font-bold uppercase tracking-[0.1em] text-sm px-7 py-4 backdrop-blur-[2px] hover:bg-white hover:text-black transition-colors"
+                                className="inline-block border-2 border-[#E9DFC9] text-[#E9DFC9] font-bold uppercase tracking-[0.1em] text-sm px-7 py-4 backdrop-blur-[2px] hover:bg-[#E9DFC9] hover:text-[#0C0B09] transition-colors"
                             >
                                 Commission a Piece
                             </Link>
@@ -64,15 +64,14 @@ export default function AnthemHome({ artist, artworks }: ThemePageProps) {
 
             {tags.length > 0 && <Marquee items={tags} />}
 
-            {/* ── Available Artwork (before About-style content, per feedback) ─────── */}
             {featured.length > 0 && (
                 <section className="max-w-[1500px] mx-auto px-5 md:px-10 py-20 md:py-28">
-                    <Reveal className="flex items-end justify-between mb-10 border-b-4 border-black pb-5">
+                    <Reveal className="flex items-end justify-between mb-10 border-b-4 border-[#E9DFC9] pb-5">
                         <div>
-                            <p className="text-[13px] font-bold tracking-[0.22em] uppercase text-[#E62828] mb-3">Original Work</p>
+                            <p className="text-[13px] font-bold tracking-[0.22em] uppercase text-[#C9A227] mb-3">Original Work</p>
                             <h2 className="font-[family-name:var(--font-display)] uppercase text-4xl md:text-6xl">Available Artwork</h2>
                         </div>
-                        <Link href="/artworks" className="hidden md:inline text-sm font-bold uppercase tracking-widest hover:text-[#E62828]">
+                        <Link href="/artworks" className="hidden md:inline text-sm font-bold uppercase tracking-widest hover:text-[#C9A227]">
                             View All →
                         </Link>
                     </Reveal>
@@ -82,7 +81,7 @@ export default function AnthemHome({ artist, artworks }: ThemePageProps) {
                             return (
                                 <Reveal key={art.id} delay={Math.min(i, 6) * 60}>
                                     <Link href={`/artworks/${art.slug ?? art.id}`} className="group block">
-                                        <div className="relative aspect-[4/5] bg-black overflow-hidden border-2 border-black">
+                                        <div className="relative aspect-[4/5] bg-black overflow-hidden border-2 border-[#E9DFC9]">
                                             {img && (
                                                 <Image
                                                     src={img}
@@ -94,21 +93,20 @@ export default function AnthemHome({ artist, artworks }: ThemePageProps) {
                                             )}
                                         </div>
                                         <p className="mt-3 font-bold uppercase text-sm tracking-wide">{art.title}</p>
-                                        <p className="text-xs text-black/60">${art.price.toLocaleString()}</p>
+                                        <p className="text-xs text-[#C9A227] font-bold">${art.price.toLocaleString()}</p>
                                     </Link>
                                 </Reveal>
                             );
                         })}
                     </div>
-                    <Link href="/artworks" className="md:hidden mt-8 inline-block text-sm font-bold uppercase tracking-widest hover:text-[#E62828]">
+                    <Link href="/artworks" className="md:hidden mt-8 inline-block text-sm font-bold uppercase tracking-widest hover:text-[#C9A227]">
                         View All →
                     </Link>
                 </section>
             )}
 
-            {/* ── Preamble ───────────────────────────────────────────────── */}
             {artist.description && (
-                <section className="max-w-[1000px] mx-auto px-5 md:px-10 py-20 md:py-28 text-center border-t-4 border-black">
+                <section className="max-w-[1000px] mx-auto px-5 md:px-10 py-20 md:py-28 text-center border-t-4 border-[#E9DFC9]">
                     <Reveal>
                         <p className="font-[family-name:var(--font-display)] uppercase text-3xl md:text-5xl leading-[1.15]">
                             {artist.studioSubtitle ??
@@ -118,30 +116,37 @@ export default function AnthemHome({ artist, artworks }: ThemePageProps) {
                 </section>
             )}
 
-            {/* ── Quote ──────────────────────────────────────────────────── */}
             {artist.artistStatement && (
-                <section className="relative border-y-4 border-black py-24 md:py-32 overflow-hidden">
+                <section className="relative border-y-4 border-[#E9DFC9] py-24 md:py-32 overflow-hidden">
                     {artist.profilePhoto && (
                         <>
                             <Image src={artist.profilePhoto} alt={name} fill sizes="100vw" className="object-cover" />
-                            <div className="absolute inset-0 bg-black/85" />
+                            <div className="absolute inset-0 bg-[#0C0B09]/85" />
                         </>
                     )}
-                    {!artist.profilePhoto && <div className="absolute inset-0 bg-black" />}
+                    {!artist.profilePhoto && <div className="absolute inset-0 bg-[#E9DFC9]" />}
                     <Reveal className="relative max-w-[1150px] mx-auto px-5 md:px-10 text-center">
-                        <p className="font-[family-name:var(--font-display)] uppercase text-2xl md:text-3xl lg:text-[32px] leading-[1.35] text-[#F7F4EC] drop-shadow-[0_2px_16px_rgba(0,0,0,0.8)]">
+                        <p
+                            className={`font-[family-name:var(--font-display)] uppercase text-2xl md:text-3xl lg:text-[32px] leading-[1.35] ${
+                                artist.profilePhoto ? "text-[#E9DFC9] drop-shadow-[0_2px_16px_rgba(0,0,0,0.8)]" : "text-[#0C0B09]"
+                            }`}
+                        >
                             &ldquo;{artist.artistStatement}&rdquo;
                         </p>
-                        <p className="mt-8 text-sm font-bold tracking-[0.2em] uppercase text-[#FFDC00]">— {name}</p>
+                        <p
+                            className={`mt-8 text-sm font-bold tracking-[0.2em] uppercase ${
+                                artist.profilePhoto ? "text-[#C9A227]" : "text-[#8A6D1F]"
+                            }`}
+                        >
+                            — {name}
+                        </p>
                     </Reveal>
                 </section>
             )}
 
-            {/* ── Inside the Studio ─────────────────────────────────────── */}
-            <AnthemStudioSection artist={artist} />
+            <AnthemNoirStudioSection artist={artist} />
 
-            {/* ── Gallery Representations ───────────────────────────────── */}
-            <AnthemGallerySection artist={artist} />
+            <AnthemNoirGallerySection artist={artist} />
         </div>
     );
 }
