@@ -20,7 +20,7 @@ export default function AnthemContact({ artist }: ThemePageProps) {
     useEffect(() => {
         if (typeof window === "undefined" || !acceptsCommissions) return;
         const checkHash = () => {
-            if (window.location.hash === "#commission") setIsCommission(true);
+            setIsCommission(window.location.hash === "#commission");
         };
         checkHash();
         window.addEventListener("hashchange", checkHash);
@@ -71,8 +71,8 @@ export default function AnthemContact({ artist }: ThemePageProps) {
                                     <button
                                         type="button"
                                         onClick={() => setIsCommission(false)}
-                                        className={`flex-1 text-xs font-bold uppercase tracking-widest px-4 py-3 border-2 border-black transition-colors ${
-                                            !isCommission ? "bg-black text-[#F7F4EC]" : "bg-transparent hover:bg-black/5"
+                                        className={`flex-1 text-xs font-bold uppercase tracking-widest px-4 py-3 border-2 transition-colors ${
+                                            !isCommission ? "bg-[#C9A227] border-[#C9A227] text-black" : "bg-transparent border-black hover:bg-black/5"
                                         }`}
                                     >
                                         General Inquiry
@@ -80,8 +80,8 @@ export default function AnthemContact({ artist }: ThemePageProps) {
                                     <button
                                         type="button"
                                         onClick={() => setIsCommission(true)}
-                                        className={`flex-1 text-xs font-bold uppercase tracking-widest px-4 py-3 border-2 border-black transition-colors ${
-                                            isCommission ? "bg-black text-[#F7F4EC]" : "bg-transparent hover:bg-black/5"
+                                        className={`flex-1 text-xs font-bold uppercase tracking-widest px-4 py-3 border-2 transition-colors ${
+                                            isCommission ? "bg-[#C9A227] border-[#C9A227] text-black" : "bg-transparent border-black hover:bg-black/5"
                                         }`}
                                     >
                                         Commission a Piece

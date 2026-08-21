@@ -1,10 +1,20 @@
 import Image from "next/image";
+import { Instagram, Facebook, Music2 } from "lucide-react";
 import type { ArtistProfile } from "@/types";
 import Reveal from "./Reveal";
 
+const SOCIAL_BRANDS = [
+    { key: "instagram" as const, Icon: Instagram, label: "Instagram", bg: "#E1306C" },
+    { key: "facebook" as const, Icon: Facebook, label: "Facebook", bg: "#1877F2" },
+    { key: "tiktok" as const, Icon: Music2, label: "TikTok", bg: "#25F4EE" },
+];
+
 export default function AnthemNoirGallerySection({ artist, id }: { artist: ArtistProfile; id?: string }) {
     const galleries = artist.galleries ?? [];
-    if (galleries.length === 0) return null;
+    const socials = SOCIAL_BRANDS.map((s) => ({ ...s, href: artist[s.key] })).filter(
+        (s): s is (typeof SOCIAL_BRANDS)[number] & { href: string } => !!s.href
+    );
+    if (galleries.length === 0 && socials.length === 0) return null;
 
     return (
         <section id={id} className="border-t-4 border-[#E9DFC9] bg-[#0C0B09] scroll-mt-[100px]">
@@ -14,6 +24,7 @@ export default function AnthemNoirGallerySection({ artist, id }: { artist: Artis
                     <h2 className="font-[family-name:var(--font-display)] uppercase text-4xl md:text-6xl">Gallery Representations</h2>
                 </Reveal>
 
+                {galleries.length > 0 && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {galleries.map((g, i) => (
                         <Reveal key={i} delay={i * 100}>
@@ -52,6 +63,34 @@ export default function AnthemNoirGallerySection({ artist, id }: { artist: Artis
                         </Reveal>
                     ))}
                 </div>
+                )}
+
+                {socials.length > 0 && (
+                    <Reveal delay={galleries.length * 100 + 100} className={galleries.length > 0 ? "mt-16 pt-12 border-t-2 border-[#E9DFC9]/30" : ""}>
+                        <p className="text-lg md:text-xl mb-6 max-w-[560px]">
+                            If you&apos;d like to see more of my artwork and studio life, look me up and follow along on:
+                        </p>
+                        <div className="flex flex-wrap gap-4">
+                            {socials.map(({ key, Icon, label, bg, href }) => (
+                                <a
+                                    key={key}
+                                    href={href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-3 pr-5 border-2 border-[#E9DFC9] hover:border-[#C9A227] transition-colors"
+                                >
+                                    <span
+                                        className="w-11 h-11 flex items-center justify-center shrink-0"
+                                        style={{ backgroundColor: bg }}
+                                    >
+                                        <Icon size={20} className="text-white" strokeWidth={2} />
+                                    </span>
+                                    <span className="text-sm font-bold uppercase tracking-wide">{label}</span>
+                                </a>
+                            ))}
+                        </div>
+                    </Reveal>
+                )}
             </div>
         </section>
     );

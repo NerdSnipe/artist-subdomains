@@ -2,17 +2,24 @@
 
 import { useMemo, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import type { ThemePageProps } from "@/themes/types";
 import { getProductImageUrl } from "@/lib/artist-api";
 import Reveal from "./Reveal";
+import AnthemNoirArtworkCard from "./AnthemNoirArtworkCard";
 
 const SERIES_ORDER = ["Popular", "Teddy Series", "Icons & Pop", "Abstract Chaos", "New Release"];
+
+// Every physical location Rocky's work can be sold through. Only "Artist Studio" has any
+// pieces tagged today (Daniel hasn't built the per-piece gallery assignment yet) — the other
+// two are Rocky's real represented galleries (see the About page's Gallery Representations),
+// shown here ready to go the moment that per-piece data exists.
+const GALLERY_SOURCES = ["Artist Studio", "Conrad West Gallery", "Art Center Gallery"];
 
 export default function AnthemNoirArtworks({ artworks }: ThemePageProps) {
     const active = artworks.filter((a) => a.status === "active");
     const sold = artworks.filter((a) => a.status === "sold");
     const [filter, setFilter] = useState("All");
+    const [source, setSource] = useState("All Gallery Sources");
 
     const chips = useMemo(() => {
         const found = new Set<string>();
@@ -22,7 +29,8 @@ export default function AnthemNoirArtworks({ artworks }: ThemePageProps) {
         return ["All", ...known, ...extra];
     }, [active]);
 
-    const filtered = filter === "All" ? active : active.filter((a) => a.series?.includes(filter));
+    const bySeries = filter === "All" ? active : active.filter((a) => a.series?.includes(filter));
+    const filtered = source === "All Gallery Sources" ? bySeries : bySeries.filter((a) => a.gallerySource?.includes(source));
 
     return (
         <div className="max-w-[1600px] mx-auto px-5 md:px-10 py-16 md:py-24">
@@ -32,69 +40,58 @@ export default function AnthemNoirArtworks({ artworks }: ThemePageProps) {
                 <p className="mt-3 text-sm text-[#E9DFC9]/60">{active.length} original work{active.length === 1 ? "" : "s"} available</p>
             </div>
 
-            {chips.length > 1 && (
-                <div className="flex flex-wrap gap-3 mb-12">
-                    {chips.map((c) => (
-                        <button
-                            key={c}
-                            type="button"
-                            onClick={() => setFilter(c)}
-                            className={`text-xs font-bold uppercase tracking-widest px-4 py-2 border-2 border-[#E9DFC9] transition-colors ${
-                                filter === c ? "bg-[#E9DFC9] text-[#0C0B09]" : "bg-transparent text-[#E9DFC9] hover:bg-[#E9DFC9]/10"
-                            }`}
-                        >
-                            {c}
-                        </button>
-                    ))}
-                </div>
-            )}
+            <div className="flex flex-wrap items-center justify-between gap-4 mb-12">
+                {chips.length > 1 ? (
+                    <div className="flex flex-wrap gap-3">
+                        {chips.map((c) => (
+                            <button
+                                key={c}
+                                type="button"
+                                onClick={() => setFilter(c)}
+                                className={`text-xs font-bold uppercase tracking-widest px-4 py-2 border-2 border-[#E9DFC9] transition-colors ${
+                                    filter === c ? "bg-[#E9DFC9] text-[#0C0B09]" : "bg-transparent text-[#E9DFC9] hover:bg-[#E9DFC9]/10"
+                                }`}
+                            >
+                                {c}
+                            </button>
+                        ))}
+                    </div>
+                ) : (
+                    <div />
+                )}
+
+                <label className="text-xs font-bold uppercase tracking-widest">
+                    <span className="sr-only">Gallery Source</span>
+                    <select
+                        value={source}
+                        onChange={(e) => setSource(e.target.value)}
+                        className="bg-transparent border-2 border-[#E9DFC9] px-4 py-2 text-[#E9DFC9] uppercase tracking-widest focus:outline-none"
+                    >
+                        <option className="bg-[#0C0B09]">All Gallery Sources</option>
+                        {GALLERY_SOURCES.map((s) => (
+                            <option key={s} className="bg-[#0C0B09]">
+                                {s}
+                            </option>
+                        ))}
+                    </select>
+                </label>
+            </div>
 
             {/* Masonry: CSS columns + each card's aspect-ratio matched to the artwork's real
                 physical proportions (not a forced square), so taller/wider pieces naturally
                 stagger like the marketplace grid instead of all lining up in even rows. */}
             {filtered.length > 0 && (
                 <div className="columns-2 md:columns-3 gap-6 [column-fill:_balance]">
-                    {filtered.map((art, i) => {
-                        const img = getProductImageUrl(art);
-                        const ratio = art.dimensions ? `${art.dimensions.width} / ${art.dimensions.height}` : "1 / 1";
-                        return (
-                            <Reveal key={art.id} delay={Math.min(i, 8) * 50} className="break-inside-avoid mb-6 block">
-                                <Link href={`/artworks/${art.slug ?? art.id}`} className="group block">
-                                    <div className="relative w-full overflow-hidden border-2 border-[#E9DFC9]" style={{ aspectRatio: ratio }}>
-                                        {img && (
-                                            <Image
-                                                src={img}
-                                                alt={art.title}
-                                                fill
-                                                sizes="(max-width: 768px) 50vw, 33vw"
-                                                className="object-cover transition-transform duration-500 group-hover:scale-105"
-                                            />
-                                        )}
-                                        {art.gallerySource && art.gallerySource.length > 0 && (
-                                            <div className="absolute top-2 left-2 flex flex-wrap gap-1 max-w-[90%]">
-                                                {art.gallerySource.map((g) => (
-                                                    <span
-                                                        key={g}
-                                                        className="bg-[#0C0B09] text-[#E9DFC9] text-[9px] font-bold uppercase tracking-wide px-2 py-1 border border-[#E9DFC9]"
-                                                    >
-                                                        {g}
-                                                    </span>
-                                                ))}
-                                            </div>
-                                        )}
-                                    </div>
-                                    <p className="mt-3 font-[family-name:var(--font-display)] uppercase text-xl tracking-wide">{art.title}</p>
-                                    <p className="text-base font-bold text-[#C9A227]">${art.price.toLocaleString()}</p>
-                                    <div className="mt-2 border-t border-[#E9DFC9]/40" />
-                                </Link>
-                            </Reveal>
-                        );
-                    })}
+                    {filtered.map((art, i) => (
+                        <Reveal key={art.id} delay={Math.min(i, 8) * 50} className="break-inside-avoid mb-6 block">
+                            <AnthemNoirArtworkCard art={art} priority={i < 3} />
+                        </Reveal>
+                    ))}
                 </div>
             )}
 
             {filtered.length === 0 && (
-                <p className="text-sm text-[#E9DFC9]/50 py-16 text-center">No pieces in this series right now — check back soon.</p>
+                <p className="text-sm text-[#E9DFC9]/50 py-16 text-center">No pieces match that filter right now — check back soon.</p>
             )}
 
             {sold.length > 0 && (

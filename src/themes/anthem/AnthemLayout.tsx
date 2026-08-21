@@ -8,14 +8,14 @@ import type { ThemeLayoutProps } from "@/themes/types";
 import { getArtistName, marketplaceArtistUrl } from "@/lib/artist-api";
 import { fontVariables } from "./fonts";
 
-const NAV_LINKS = [
+const BASE_NAV_LINKS = [
     { href: "/", label: "Home" },
     { href: "/artworks", label: "Portfolio" },
     { href: "/about", label: "Artist Story" },
     { href: "/about#studio", label: "In the Studio" },
     { href: "/about#representations", label: "Representations" },
-    { href: "/contact#commission", label: "Commission" },
 ];
+const COMMISSION_LINK = { href: "/contact#commission", label: "Commission" };
 
 const FOOTER_LINKS = [
     { href: "/", label: "Home" },
@@ -31,6 +31,9 @@ export default function AnthemLayout({ children, artist, domain }: ThemeLayoutPr
     const name = getArtistName(artist);
     const profileUrl = artist.slug ? marketplaceArtistUrl(artist.slug) : null;
     const isHome = pathname === "/";
+    // Never point visitors at a Commission nav item if the artist has said they don't take them.
+    const acceptsCommissions = Boolean(artist.acceptsCommissions) && artist.acceptsCommissions !== "no";
+    const NAV_LINKS = acceptsCommissions ? [...BASE_NAV_LINKS, COMMISSION_LINK] : BASE_NAV_LINKS;
 
     useEffect(() => setMenuOpen(false), [pathname]);
 
@@ -61,7 +64,7 @@ export default function AnthemLayout({ children, artist, domain }: ThemeLayoutPr
             <header
                 className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
                     overlay
-                        ? "bg-gradient-to-b from-black/75 via-black/35 to-transparent border-b-0"
+                        ? "bg-gradient-to-b from-black/88 via-black/48 to-transparent border-b-0"
                         : "bg-[#F7F4EC]/95 backdrop-blur-sm border-b-4 border-black"
                 }`}
             >

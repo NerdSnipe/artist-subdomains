@@ -10,14 +10,14 @@ import { fontVariables } from "./fonts";
 
 // Anchors: "In the Studio" and "Representations" point at sections living on the About
 // ("Artist Story") page rather than being their own routes.
-const NAV_LINKS = [
+const BASE_NAV_LINKS = [
     { href: "/", label: "Home" },
     { href: "/artworks", label: "Portfolio" },
     { href: "/about", label: "Artist Story" },
     { href: "/about#studio", label: "In the Studio" },
     { href: "/about#representations", label: "Representations" },
-    { href: "/contact#commission", label: "Commission" },
 ];
+const COMMISSION_LINK = { href: "/contact#commission", label: "Commission" };
 
 const FOOTER_LINKS = [
     { href: "/", label: "Home" },
@@ -33,6 +33,9 @@ export default function AnthemNoirLayout({ children, artist, domain }: ThemeLayo
     const name = getArtistName(artist);
     const profileUrl = artist.slug ? marketplaceArtistUrl(artist.slug) : null;
     const isHome = pathname === "/";
+    // Never point visitors at a Commission nav item if the artist has said they don't take them.
+    const acceptsCommissions = Boolean(artist.acceptsCommissions) && artist.acceptsCommissions !== "no";
+    const NAV_LINKS = acceptsCommissions ? [...BASE_NAV_LINKS, COMMISSION_LINK] : BASE_NAV_LINKS;
 
     useEffect(() => setMenuOpen(false), [pathname]);
 
@@ -60,7 +63,7 @@ export default function AnthemNoirLayout({ children, artist, domain }: ThemeLayo
             <header
                 className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
                     overlay
-                        ? "bg-gradient-to-b from-black/70 via-black/25 to-transparent border-b-0"
+                        ? "bg-gradient-to-b from-black/85 via-black/45 to-transparent border-b-0"
                         : "bg-[#0C0B09]/95 backdrop-blur-sm border-b-4 border-[#E9DFC9]"
                 }`}
             >

@@ -7,6 +7,7 @@ import Marquee from "./Marquee";
 import Carousel from "./Carousel";
 import AnthemNoirStudioSection from "./AnthemNoirStudioSection";
 import AnthemNoirGallerySection from "./AnthemNoirGallerySection";
+import AnthemNoirArtworkCard from "./AnthemNoirArtworkCard";
 
 export default function AnthemNoirHome({ artist, artworks }: ThemePageProps) {
     const name = getArtistName(artist);
@@ -32,7 +33,7 @@ export default function AnthemNoirHome({ artist, artworks }: ThemePageProps) {
             <Carousel images={heroImages} alt={name} heightClassName="min-h-[92vh]" overlay="hero">
                 <div className="h-full flex items-end">
                     <div className="max-w-[1600px] mx-auto w-full px-5 md:px-10 pb-14 md:pb-20">
-                        <p className="text-[13px] font-bold tracking-[0.22em] uppercase text-[#C9A227] drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)] mb-4">
+                        <p className="max-w-full md:max-w-[640px] text-[13px] font-bold tracking-[0.22em] uppercase text-[#C9A227] drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)] mb-4">
                             {artist.artistTagline ?? "Contemporary Artist"} · {artist.location}
                         </p>
                         <h1 className="font-[family-name:var(--font-display)] uppercase text-[#E9DFC9] drop-shadow-[0_4px_28px_rgba(0,0,0,0.9)] leading-[0.88] text-[15vw] md:text-[9vw] lg:text-[130px]">
@@ -68,39 +69,24 @@ export default function AnthemNoirHome({ artist, artworks }: ThemePageProps) {
                 <section className="max-w-[1500px] mx-auto px-5 md:px-10 py-20 md:py-28">
                     <Reveal className="flex items-end justify-between mb-10 border-b-4 border-[#E9DFC9] pb-5">
                         <div>
-                            <p className="text-[13px] font-bold tracking-[0.22em] uppercase text-[#C9A227] mb-3">Original Work</p>
+                            <p className="text-[13px] font-bold tracking-[0.22em] uppercase text-[#C9A227] mb-3">Original Fine Art Catalog</p>
                             <h2 className="font-[family-name:var(--font-display)] uppercase text-4xl md:text-6xl">Available Artwork</h2>
                         </div>
                         <Link href="/artworks" className="hidden md:inline text-sm font-bold uppercase tracking-widest hover:text-[#C9A227]">
-                            View All →
+                            Explore All My Artwork →
                         </Link>
                     </Reveal>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-                        {featured.map((art, i) => {
-                            const img = getProductImageUrl(art);
-                            return (
-                                <Reveal key={art.id} delay={Math.min(i, 6) * 60}>
-                                    <Link href={`/artworks/${art.slug ?? art.id}`} className="group block">
-                                        <div className="relative aspect-[4/5] bg-black overflow-hidden border-2 border-[#E9DFC9]">
-                                            {img && (
-                                                <Image
-                                                    src={img}
-                                                    alt={art.title}
-                                                    fill
-                                                    sizes="(max-width: 768px) 50vw, 33vw"
-                                                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                                                />
-                                            )}
-                                        </div>
-                                        <p className="mt-3 font-bold uppercase text-sm tracking-wide">{art.title}</p>
-                                        <p className="text-xs text-[#C9A227] font-bold">${art.price.toLocaleString()}</p>
-                                    </Link>
-                                </Reveal>
-                            );
-                        })}
+                    {/* Masonry, same treatment as the artworks page: full image visible (no forced
+                        crop), each card's aspect-ratio matched to its real physical proportions. */}
+                    <div className="columns-2 md:columns-3 gap-6 [column-fill:_balance]">
+                        {featured.map((art, i) => (
+                            <Reveal key={art.id} delay={Math.min(i, 6) * 60} className="break-inside-avoid mb-6 block">
+                                <AnthemNoirArtworkCard art={art} priority={i < 3} />
+                            </Reveal>
+                        ))}
                     </div>
                     <Link href="/artworks" className="md:hidden mt-8 inline-block text-sm font-bold uppercase tracking-widest hover:text-[#C9A227]">
-                        View All →
+                        Explore All My Artwork →
                     </Link>
                 </section>
             )}

@@ -3,9 +3,11 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { ShieldCheck, Ruler, Paintbrush, Calendar, Frame, PenLine, type LucideIcon } from "lucide-react";
 import type { ThemeArtworkDetailProps } from "@/themes/types";
 import { getProductImageUrl, marketplaceArtworkUrl } from "@/lib/artist-api";
 import Reveal from "./Reveal";
+import AnthemNoirArtworkCard from "./AnthemNoirArtworkCard";
 
 export default function AnthemNoirArtworkDetail({ artist, product, relatedProducts }: ThemeArtworkDetailProps) {
     const gallery = product.images?.length
@@ -19,11 +21,26 @@ export default function AnthemNoirArtworkDetail({ artist, product, relatedProduc
     // where the artist's connected payout (Stripe/PayPal) actually processes the sale.
     const artistSlug = product.artistSlug ?? artist.slug ?? "";
     const hasMarketplaceLink = product.status === "active" && !!artistSlug && !!product.slug;
+    const acceptsCommissions = Boolean(artist.acceptsCommissions) && artist.acceptsCommissions !== "no";
+    const firstName = artist.firstName || artist.displayName?.split(" ")[0] || "the artist";
 
     // Marketplace convention: always Height x Width x Depth.
     const dims = product.dimensions
-        ? `${product.dimensions.height} × ${product.dimensions.width}${product.dimensions.depth ? ` × ${product.dimensions.depth}` : ""} ${product.dimensions.unit === "inches" ? "in" : "cm"} (H×W×D)`
+        ? `${product.dimensions.height}" H × ${product.dimensions.width}" W${
+              product.dimensions.depth ? ` × ${product.dimensions.depth}" D` : ""
+          }`
         : null;
+
+    type InfoTile = { icon: LucideIcon; label: string; value: string; capitalize?: boolean };
+    const infoTiles = (
+        [
+            dims ? { icon: Ruler, label: "Dimensions", value: dims } : null,
+            product.medium ? { icon: Paintbrush, label: "Medium", value: product.medium } : null,
+            product.yearCreated ? { icon: Calendar, label: "Year Created", value: String(product.yearCreated) } : null,
+            product.isFramed !== undefined ? { icon: Frame, label: "Framed", value: product.isFramed ? "Yes" : "No" } : null,
+            product.signedLocation ? { icon: PenLine, label: "Signed", value: product.signedLocation, capitalize: true } : null,
+        ] as (InfoTile | null)[]
+    ).filter((t): t is InfoTile => t !== null);
 
     return (
         <div>
@@ -31,6 +48,15 @@ export default function AnthemNoirArtworkDetail({ artist, product, relatedProduc
                 <Reveal>
                     <div className="relative aspect-square border-2 border-[#E9DFC9] overflow-hidden mb-3">
                         {img && <Image src={img} alt={product.title} fill sizes="(max-width: 768px) 100vw, 60vw" className="object-cover" priority />}
+                        {product.gallerySource && product.gallerySource.length > 0 && (
+                            <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
+                                {product.gallerySource.map((g) => (
+                                    <span key={g} className="bg-[#0C0B09] text-[#E9DFC9] text-[10px] font-bold uppercase tracking-wide px-2.5 py-1.5 border border-[#E9DFC9]">
+                                        {g}
+                                    </span>
+                                ))}
+                            </div>
+                        )}
                     </div>
                     {gallery.length > 1 && (
                         <div className="flex gap-3">
@@ -58,56 +84,46 @@ export default function AnthemNoirArtworkDetail({ artist, product, relatedProduc
                     <h1 className="font-[family-name:var(--font-display)] uppercase text-4xl md:text-6xl mt-4 mb-2 leading-[0.95]">
                         {product.title}
                     </h1>
-                    <p className="text-2xl font-bold mb-6 text-[#C9A227]">${product.price.toLocaleString()}</p>
+                    <p className="text-3xl font-bold mb-5 text-[#C9A227]">${product.price.toLocaleString()}</p>
 
-                    <dl className="grid grid-cols-2 gap-y-3 text-sm border-y-4 border-[#E9DFC9] py-6 mb-6">
-                        {product.medium && (
-                            <>
-                                <dt className="font-bold uppercase tracking-wide">Medium</dt>
-                                <dd className="text-[#E9DFC9]/70">{product.medium}</dd>
-                            </>
-                        )}
-                        {dims && (
-                            <>
-                                <dt className="font-bold uppercase tracking-wide">Dimensions</dt>
-                                <dd className="text-[#E9DFC9]/70">{dims}</dd>
-                            </>
-                        )}
-                        {product.yearCreated && (
-                            <>
-                                <dt className="font-bold uppercase tracking-wide">Year</dt>
-                                <dd className="text-[#E9DFC9]/70">{product.yearCreated}</dd>
-                            </>
-                        )}
-                        {product.isFramed !== undefined && (
-                            <>
-                                <dt className="font-bold uppercase tracking-wide">Framed</dt>
-                                <dd className="text-[#E9DFC9]/70">{product.isFramed ? "Yes" : "No"}</dd>
-                            </>
-                        )}
-                        {product.signedLocation && (
-                            <>
-                                <dt className="font-bold uppercase tracking-wide">Signed</dt>
-                                <dd className="text-[#E9DFC9]/70 capitalize">{product.signedLocation}</dd>
-                            </>
-                        )}
-                        <dt className="font-bold uppercase tracking-wide">Status</dt>
-                        <dd className="text-[#E9DFC9]/70 capitalize">{product.status === "active" ? "Available" : product.status}</dd>
-                    </dl>
+                    {product.status === "active" && (
+                        <div className="flex items-start gap-2.5 mb-6 px-4 py-3 border border-[#2E5C3F] bg-[#12241A]">
+                            <ShieldCheck size={18} className="text-[#5FCE86] shrink-0 mt-0.5" />
+                            <p className="text-sm text-[#B9E7C6]">
+                                Original fine artwork, signed by {firstName}.{product.readyToHang ? " Ready to hang." : ""}
+                            </p>
+                        </div>
+                    )}
+
+                    {infoTiles.length > 0 && (
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
+                            {infoTiles.map(({ icon: Icon, label, value, capitalize }) => (
+                                <div key={label} className="border-2 border-[#E9DFC9]/30 px-3.5 py-3">
+                                    <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-[#E9DFC9]/50 mb-1.5">
+                                        <Icon size={13} />
+                                        {label}
+                                    </div>
+                                    <p className={`text-sm font-bold ${capitalize ? "capitalize" : ""}`}>{value}</p>
+                                </div>
+                            ))}
+                        </div>
+                    )}
 
                     {product.description && <p className="text-base leading-relaxed text-[#E9DFC9]/80 mb-6">{product.description}</p>}
 
                     {product.dominantColors && product.dominantColors.length > 0 && (
-                        <div className="flex items-center gap-3 mb-8">
-                            <span className="text-xs font-bold uppercase tracking-widest text-[#E9DFC9]/50">Palette</span>
-                            {product.dominantColors.map((c, i) => (
-                                <span
-                                    key={i}
-                                    className="w-6 h-6 rounded-full border-2 border-[#E9DFC9]"
-                                    style={{ backgroundColor: c.hex }}
-                                    title={`${c.name} — ${c.hex}`}
-                                />
-                            ))}
+                        <div className="mb-8">
+                            <p className="text-xs font-bold uppercase tracking-widest text-[#E9DFC9]/50 mb-3">Dominant Color Palette</p>
+                            <div className="flex items-center gap-3">
+                                {product.dominantColors.map((c, i) => (
+                                    <span
+                                        key={i}
+                                        className="w-8 h-8 rounded-full border-2 border-[#E9DFC9]"
+                                        style={{ backgroundColor: c.hex }}
+                                        title={`${c.name} — ${c.hex}`}
+                                    />
+                                ))}
+                            </div>
                         </div>
                     )}
 
@@ -135,10 +151,29 @@ export default function AnthemNoirArtworkDetail({ artist, product, relatedProduc
                         >
                             Ask a Question
                         </Link>
+                        {acceptsCommissions && (
+                            <Link
+                                href="/contact#commission"
+                                className="inline-block border-2 border-[#E9DFC9]/40 text-[#E9DFC9]/70 font-bold uppercase tracking-[0.1em] text-sm px-7 py-4 hover:border-[#E9DFC9] hover:text-[#E9DFC9] transition-colors text-center"
+                            >
+                                Commission a Similar Piece
+                            </Link>
+                        )}
                     </div>
-                    {product.shippingPrice != null && (
-                        <p className="mt-3 text-xs text-[#E9DFC9]/50">+ ${product.shippingPrice} shipping · Certificate of authenticity included</p>
-                    )}
+
+                    <ul className="mt-6 space-y-1.5">
+                        {[
+                            "Certificate of authenticity included",
+                            "Direct from the artist — 0% commission",
+                            "Secure payment via the marketplace",
+                            product.shippingPrice != null ? `Insured shipping — $${product.shippingPrice}` : "Insured shipping",
+                            "14-day return policy",
+                        ].map((line) => (
+                            <li key={line} className="text-xs text-[#E9DFC9]/45 flex items-center gap-2">
+                                <span className="text-[#C9A227]">✓</span> {line}
+                            </li>
+                        ))}
+                    </ul>
                 </Reveal>
             </div>
 
@@ -147,18 +182,10 @@ export default function AnthemNoirArtworkDetail({ artist, product, relatedProduc
                     <h2 className="font-[family-name:var(--font-display)] uppercase text-3xl mb-8 border-b-4 border-[#E9DFC9] pb-4">
                         More Work
                     </h2>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        {relatedProducts.slice(0, 4).map((art) => {
-                            const rImg = getProductImageUrl(art);
-                            return (
-                                <Link key={art.id} href={`/artworks/${art.slug ?? art.id}`} className="group block">
-                                    <div className="relative aspect-square border-2 border-[#E9DFC9] overflow-hidden">
-                                        {rImg && <Image src={rImg} alt={art.title} fill sizes="25vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />}
-                                    </div>
-                                    <p className="mt-2 text-xs font-bold uppercase truncate">{art.title}</p>
-                                </Link>
-                            );
-                        })}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 gap-y-10">
+                        {relatedProducts.slice(0, 4).map((art) => (
+                            <AnthemNoirArtworkCard key={art.id} art={art} />
+                        ))}
                     </div>
                 </section>
             )}
