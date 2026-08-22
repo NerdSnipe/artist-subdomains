@@ -153,7 +153,7 @@ export default function AnthemArtworkDetail({ artist, product, relatedProducts }
                         </Link>
                         {acceptsCommissions && (
                             <Link
-                                href="/contact#commission"
+                                href="/contact?tab=commission"
                                 className="inline-block border-2 border-black/30 text-black/70 font-bold uppercase tracking-[0.1em] text-sm px-7 py-4 hover:border-black hover:text-black transition-colors text-center"
                             >
                                 Commission a Similar Piece
