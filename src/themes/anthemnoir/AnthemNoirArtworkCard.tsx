@@ -46,7 +46,9 @@ export default function AnthemNoirArtworkCard({ art, priority = false }: { art: 
                 <p className="font-[family-name:var(--font-display)] uppercase text-2xl leading-[0.95] tracking-wide group-hover:text-[#C9A227] transition-colors">
                     {art.title}
                 </p>
-                <p className="mt-1.5 text-xl font-bold text-[#C9A227]">${art.price.toLocaleString()}</p>
+                {/* Deliberately brighter yellow, not the theme's usual gold — a dedicated "look
+                    here, this is the price" highlight, distinct from every other gold accent. */}
+                <p className="mt-1.5 text-xl font-bold text-[#FFDC00]">${art.price.toLocaleString()}</p>
                 {art.medium && <p className="mt-1 text-[11px] uppercase tracking-wide text-[#E9DFC9]/60">{art.medium}</p>}
                 {dims && <p className="text-[11px] text-[#E9DFC9]/40">{dims}</p>}
                 <div className="mt-2.5 border-t border-[#E9DFC9]/30" />

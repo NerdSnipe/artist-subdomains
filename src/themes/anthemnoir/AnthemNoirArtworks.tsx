@@ -2,35 +2,67 @@
 
 import { useMemo, useState } from "react";
 import Image from "next/image";
+import { SlidersHorizontal } from "lucide-react";
 import type { ThemePageProps } from "@/themes/types";
 import { getProductImageUrl } from "@/lib/artist-api";
 import Reveal from "./Reveal";
 import AnthemNoirArtworkCard from "./AnthemNoirArtworkCard";
 
-const SERIES_ORDER = ["Popular", "Teddy Series", "Icons & Pop", "Abstract Chaos", "New Release"];
+const SERIES_ORDER = ["Popular", "Teddy Series", "Icons & Pop", "Large Scale", "Abstract Chaos", "New Release"];
 
-// Every physical location Rocky's work can be sold through. Only "Artist Studio" has any
-// pieces tagged today (Daniel hasn't built the per-piece gallery assignment yet) — the other
-// two are Rocky's real represented galleries (see the About page's Gallery Representations),
-// shown here ready to go the moment that per-piece data exists.
-const GALLERY_SOURCES = ["Artist Studio", "Conrad West Gallery", "Art Center Gallery"];
+// Per-piece gallery assignment isn't wired up on the backend yet, so the selector below is
+// shown but disabled — fixed to "Artist Studio" (every piece defaults to that source today)
+// until that field exists in GHL. Ready to re-enable the moment per-piece data lands.
+type SortOption = "default" | "price-asc" | "price-desc";
 
 export default function AnthemNoirArtworks({ artworks }: ThemePageProps) {
     const active = artworks.filter((a) => a.status === "active");
     const sold = artworks.filter((a) => a.status === "sold");
     const [filter, setFilter] = useState("All");
-    const [source, setSource] = useState("All Gallery Sources");
+    const [sort, setSort] = useState<SortOption>("default");
 
-    const chips = useMemo(() => {
+    // Real series names, when the backend has resolved them.
+    const namedSeries = useMemo(() => {
         const found = new Set<string>();
         active.forEach((a) => a.series?.forEach((s) => found.add(s)));
         const known = SERIES_ORDER.filter((s) => found.has(s));
         const extra = [...found].filter((s) => !SERIES_ORDER.includes(s)).sort();
-        return ["All", ...known, ...extra];
+        return [...known, ...extra];
     }, [active]);
 
-    const bySeries = filter === "All" ? active : active.filter((a) => a.series?.includes(filter));
-    const filtered = source === "All Gallery Sources" ? bySeries : bySeries.filter((a) => a.gallerySource?.includes(source));
+    // Fallback: an artist can group work into series in GHL today, but the API only returns the
+    // raw seriesId — it doesn't resolve a name yet (unlike category, which does). Rather than
+    // hiding the filter entirely until that backend work lands, group by seriesId and label the
+    // groups generically ("Series 1", "Series 2"...) in first-appearance order, so the grouping
+    // an artist already did is at least usable. Swap to namedSeries automatically once real
+    // names start coming through.
+    const placeholderSeriesIds = useMemo(() => {
+        if (namedSeries.length > 0) return [];
+        const ids: string[] = [];
+        active.forEach((a) => {
+            if (a.seriesId && !ids.includes(a.seriesId)) ids.push(a.seriesId);
+        });
+        return ids;
+    }, [active, namedSeries]);
+
+    const chips =
+        namedSeries.length > 0
+            ? ["All", ...namedSeries]
+            : ["All", ...placeholderSeriesIds.map((_, i) => `Series ${i + 1}`)];
+
+    const bySeries =
+        filter === "All"
+            ? active
+            : namedSeries.length > 0
+              ? active.filter((a) => a.series?.includes(filter))
+              : active.filter((a) => a.seriesId === placeholderSeriesIds[chips.indexOf(filter) - 1]);
+
+    const filtered = useMemo(() => {
+        if (sort === "default") return bySeries;
+        const arr = [...bySeries];
+        arr.sort((a, b) => (sort === "price-asc" ? a.price - b.price : b.price - a.price));
+        return arr;
+    }, [bySeries, sort]);
 
     return (
         <div className="max-w-[1600px] mx-auto px-5 md:px-10 py-16 md:py-24">
@@ -40,15 +72,17 @@ export default function AnthemNoirArtworks({ artworks }: ThemePageProps) {
                 <p className="mt-3 text-sm text-[#E9DFC9]/60">{active.length} original work{active.length === 1 ? "" : "s"} available</p>
             </div>
 
-            <div className="flex flex-wrap items-center justify-between gap-4 mb-12">
+            {/* Everything grouped in one bordered bar — chips on the left (scrolls if it overflows),
+                filter icon + the two selects on the right — per reference. */}
+            <div className="flex flex-wrap items-center justify-between gap-4 mb-12 border-2 border-[#E9DFC9] px-4 py-3">
                 {chips.length > 1 ? (
-                    <div className="flex flex-wrap gap-3">
+                    <div className="flex flex-nowrap gap-3 overflow-x-auto">
                         {chips.map((c) => (
                             <button
                                 key={c}
                                 type="button"
                                 onClick={() => setFilter(c)}
-                                className={`text-xs font-bold uppercase tracking-widest px-4 py-2 border-2 border-[#E9DFC9] transition-colors ${
+                                className={`shrink-0 text-xs font-bold uppercase tracking-widest px-4 py-2 border-2 border-[#E9DFC9] transition-colors ${
                                     filter === c ? "bg-[#E9DFC9] text-[#0C0B09]" : "bg-transparent text-[#E9DFC9] hover:bg-[#E9DFC9]/10"
                                 }`}
                             >
@@ -60,21 +94,35 @@ export default function AnthemNoirArtworks({ artworks }: ThemePageProps) {
                     <div />
                 )}
 
-                <label className="text-xs font-bold uppercase tracking-widest">
-                    <span className="sr-only">Gallery Source</span>
-                    <select
-                        value={source}
-                        onChange={(e) => setSource(e.target.value)}
-                        className="bg-transparent border-2 border-[#E9DFC9] px-4 py-2 text-[#E9DFC9] uppercase tracking-widest focus:outline-none"
-                    >
-                        <option className="bg-[#0C0B09]">All Gallery Sources</option>
-                        {GALLERY_SOURCES.map((s) => (
-                            <option key={s} className="bg-[#0C0B09]">
-                                {s}
-                            </option>
-                        ))}
-                    </select>
-                </label>
+                <div className="flex flex-wrap items-center gap-3 shrink-0">
+                    <SlidersHorizontal size={16} className="text-[#E9DFC9]/50 hidden sm:block" />
+                    <label className="text-xs font-bold uppercase tracking-widest">
+                        <span className="sr-only">Gallery Source</span>
+                        {/* Disabled until per-piece gallery assignment exists on the backend — see the
+                            comment above. Fixed to "Artist Studio", not clickable. */}
+                        <select
+                            value="Artist Studio"
+                            disabled
+                            aria-disabled="true"
+                            title="Filtering by gallery source is coming soon"
+                            className="bg-transparent border-2 border-[#E9DFC9]/30 px-4 py-2 text-[#E9DFC9]/40 uppercase tracking-widest cursor-not-allowed focus:outline-none"
+                        >
+                            <option className="bg-[#0C0B09]">Artist Studio</option>
+                        </select>
+                    </label>
+                    <label className="text-xs font-bold uppercase tracking-widest">
+                        <span className="sr-only">Sort</span>
+                        <select
+                            value={sort}
+                            onChange={(e) => setSort(e.target.value as SortOption)}
+                            className="bg-transparent border-2 border-[#E9DFC9] px-4 py-2 text-[#E9DFC9] uppercase tracking-widest focus:outline-none"
+                        >
+                            <option className="bg-[#0C0B09]" value="default">Sort: Default</option>
+                            <option className="bg-[#0C0B09]" value="price-asc">Price: Low to High</option>
+                            <option className="bg-[#0C0B09]" value="price-desc">Price: High to Low</option>
+                        </select>
+                    </label>
+                </div>
             </div>
 
             {/* Masonry: CSS columns + each card's aspect-ratio matched to the artwork's real
@@ -105,7 +153,7 @@ export default function AnthemNoirArtworks({ artworks }: ThemePageProps) {
                             return (
                                 <div key={art.id} className="opacity-60">
                                     <div className="relative aspect-square border-2 border-[#E9DFC9] overflow-hidden mb-2">
-                                        {img && <Image src={img} alt={art.title} fill sizes="200px" className="object-cover grayscale" />}
+                                        {img && <Image src={img} alt={art.title} fill sizes="200px" className="object-cover" />}
                                     </div>
                                     <p className="text-[11px] font-bold uppercase truncate">{art.title}</p>
                                 </div>

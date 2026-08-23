@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Instagram, Facebook, Music2 } from "lucide-react";
 import type { ArtistProfile } from "@/types";
+import { marketplaceArtistUrl } from "@/lib/artist-api";
 import Reveal from "./Reveal";
 
 const SOCIAL_BRANDS = [
@@ -14,7 +15,8 @@ export default function AnthemNoirGallerySection({ artist, id }: { artist: Artis
     const socials = SOCIAL_BRANDS.map((s) => ({ ...s, href: artist[s.key] })).filter(
         (s): s is (typeof SOCIAL_BRANDS)[number] & { href: string } => !!s.href
     );
-    if (galleries.length === 0 && socials.length === 0) return null;
+    const marketplaceUrl = artist.slug ? marketplaceArtistUrl(artist.slug) : null;
+    if (galleries.length === 0 && socials.length === 0 && !marketplaceUrl) return null;
 
     return (
         <section id={id} className="border-t-4 border-[#E9DFC9] bg-[#0C0B09] scroll-mt-[100px]">
@@ -65,7 +67,7 @@ export default function AnthemNoirGallerySection({ artist, id }: { artist: Artis
                 </div>
                 )}
 
-                {socials.length > 0 && (
+                {(socials.length > 0 || marketplaceUrl) && (
                     <Reveal delay={galleries.length * 100 + 100} className={galleries.length > 0 ? "mt-16 pt-12 border-t-2 border-[#E9DFC9]/30" : ""}>
                         <p className="text-lg md:text-xl mb-6 max-w-[560px]">
                             If you&apos;d like to see more of my artwork and studio life, look me up and follow along on:
@@ -88,6 +90,22 @@ export default function AnthemNoirGallerySection({ artist, id }: { artist: Artis
                                     <span className="text-sm font-bold uppercase tracking-wide">{label}</span>
                                 </a>
                             ))}
+                            {marketplaceUrl && (
+                                // ADUSA marketplace profile — icon is the marketplace's own favicon until
+                                // there's a dedicated brand mark to swap in.
+                                <a
+                                    href={marketplaceUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-3 pr-5 border-2 border-[#E9DFC9] hover:border-[#C9A227] transition-colors"
+                                >
+                                    <span className="w-11 h-11 flex items-center justify-center shrink-0 bg-[#0C0B09] border border-[#E9DFC9]/40">
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                                        <img src="https://www.artsdistrictusa.com/favicon.ico" alt="" width={22} height={22} />
+                                    </span>
+                                    <span className="text-sm font-bold uppercase tracking-wide">ADUSA</span>
+                                </a>
+                            )}
                         </div>
                     </Reveal>
                 )}

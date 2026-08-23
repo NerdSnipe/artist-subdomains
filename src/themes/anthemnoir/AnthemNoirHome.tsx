@@ -33,8 +33,16 @@ export default function AnthemNoirHome({ artist, artworks }: ThemePageProps) {
             <Carousel images={heroImages} alt={name} heightClassName="min-h-[92vh]" overlay="hero">
                 <div className="h-full flex items-end">
                     <div className="max-w-[1600px] mx-auto w-full px-5 md:px-10 pb-14 md:pb-20">
-                        <p className="max-w-full md:max-w-[640px] text-[13px] font-bold tracking-[0.22em] uppercase text-[#C9A227] drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)] mb-4">
-                            {artist.artistTagline ?? "Contemporary Artist"} · {artist.location}
+                        <p className="max-w-full md:max-w-[640px] mb-4">
+                            {/* A plain `inline` span (not inline-block) makes the browser paint the
+                                background per line instead of one big rectangle — box-decoration-break:
+                                clone gives each line matching padding front and back, so the block reads
+                                like a deliberate staircase following the text instead of a slab behind it. */}
+                            <span
+                                className="[box-decoration-break:clone] [-webkit-box-decoration-break:clone] bg-black/50 px-3 py-1.5 text-[13px] font-bold tracking-[0.22em] uppercase text-[#C9A227]"
+                            >
+                                {artist.artistTagline ?? "Contemporary Artist"} · {artist.location}
+                            </span>
                         </p>
                         <h1 className="font-[family-name:var(--font-display)] uppercase text-[#E9DFC9] drop-shadow-[0_4px_28px_rgba(0,0,0,0.9)] leading-[0.88] text-[15vw] md:text-[9vw] lg:text-[130px]">
                             {headline[0]}
@@ -53,7 +61,7 @@ export default function AnthemNoirHome({ artist, artworks }: ThemePageProps) {
                                 View the Collection
                             </Link>
                             <Link
-                                href="/contact#commission"
+                                href="/contact?tab=commission"
                                 className="inline-block border-2 border-[#E9DFC9] text-[#E9DFC9] font-bold uppercase tracking-[0.1em] text-sm px-7 py-4 backdrop-blur-[2px] hover:bg-[#E9DFC9] hover:text-[#0C0B09] transition-colors"
                             >
                                 Commission a Piece
@@ -85,7 +93,7 @@ export default function AnthemNoirHome({ artist, artworks }: ThemePageProps) {
                             </Reveal>
                         ))}
                     </div>
-                    <Link href="/artworks" className="md:hidden mt-8 inline-block text-sm font-bold uppercase tracking-widest hover:text-[#C9A227]">
+                    <Link href="/artworks" className="mt-8 block text-right text-sm font-bold uppercase tracking-widest text-[#C9A227] hover:text-[#E9DFC9]">
                         Explore All My Artwork →
                     </Link>
                 </section>

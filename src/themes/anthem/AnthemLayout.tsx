@@ -15,14 +15,7 @@ const BASE_NAV_LINKS = [
     { href: "/about#studio", label: "In the Studio" },
     { href: "/about#representations", label: "Representations" },
 ];
-const COMMISSION_LINK = { href: "/contact#commission", label: "Commission" };
-
-const FOOTER_LINKS = [
-    { href: "/", label: "Home" },
-    { href: "/artworks", label: "Portfolio" },
-    { href: "/about", label: "Artist Story" },
-    { href: "/contact", label: "Contact" },
-];
+const COMMISSION_LINK = { href: "/contact?tab=commission", label: "Commission" };
 
 export default function AnthemLayout({ children, artist, domain }: ThemeLayoutProps) {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -34,6 +27,9 @@ export default function AnthemLayout({ children, artist, domain }: ThemeLayoutPr
     // Never point visitors at a Commission nav item if the artist has said they don't take them.
     const acceptsCommissions = Boolean(artist.acceptsCommissions) && artist.acceptsCommissions !== "no";
     const NAV_LINKS = acceptsCommissions ? [...BASE_NAV_LINKS, COMMISSION_LINK] : BASE_NAV_LINKS;
+    // Footer mirrors the header nav (same conditional Commission link) plus a plain Contact link,
+    // so the two never drift out of sync when acceptsCommissions changes.
+    const FOOTER_LINKS = [...NAV_LINKS, { href: "/contact", label: "Contact" }];
 
     useEffect(() => setMenuOpen(false), [pathname]);
 
@@ -162,13 +158,21 @@ export default function AnthemLayout({ children, artist, domain }: ThemeLayoutPr
                     </nav>
 
                     <div className="md:text-right">
-                        {socials.length > 0 && (
-                            <div className="flex gap-4 md:justify-end mb-4">
+                        {(socials.length > 0 || profileUrl) && (
+                            <div className="flex items-center gap-4 md:justify-end mb-4">
                                 {socials.map(({ href, Icon, label }) => (
                                     <a key={href} href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className="text-[#F7F4EC]/80 hover:text-[#FFDC00] transition-colors">
                                         <Icon size={18} strokeWidth={1.75} />
                                     </a>
                                 ))}
+                                {profileUrl && (
+                                    // ADUSA marketplace profile — icon is the marketplace's own favicon until
+                                    // there's a dedicated brand mark to swap in.
+                                    <a href={profileUrl} target="_blank" rel="noopener noreferrer" aria-label="ARTSDistrictUSA Marketplace" className="opacity-80 hover:opacity-100 transition-opacity">
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                                        <img src="https://www.artsdistrictusa.com/favicon.ico" alt="" width={18} height={18} />
+                                    </a>
+                                )}
                             </div>
                         )}
                         <p className="text-[11px] text-[#F7F4EC]/60 tracking-wide">

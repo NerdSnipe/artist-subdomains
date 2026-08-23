@@ -84,7 +84,7 @@ export default function AnthemNoirArtworkDetail({ artist, product, relatedProduc
                     <h1 className="font-[family-name:var(--font-display)] uppercase text-4xl md:text-6xl mt-4 mb-2 leading-[0.95]">
                         {product.title}
                     </h1>
-                    <p className="text-3xl font-bold mb-5 text-[#C9A227]">${product.price.toLocaleString()}</p>
+                    <p className="text-3xl font-bold mb-5 text-[#FFDC00]">${product.price.toLocaleString()}</p>
 
                     {product.status === "active" && (
                         <div className="flex items-start gap-2.5 mb-6 px-4 py-3 border border-[#2E5C3F] bg-[#12241A]">
@@ -153,7 +153,7 @@ export default function AnthemNoirArtworkDetail({ artist, product, relatedProduc
                         </Link>
                         {acceptsCommissions && (
                             <Link
-                                href="/contact#commission"
+                                href="/contact?tab=commission"
                                 className="inline-block border-2 border-[#E9DFC9]/40 text-[#E9DFC9]/70 font-bold uppercase tracking-[0.1em] text-sm px-7 py-4 hover:border-[#E9DFC9] hover:text-[#E9DFC9] transition-colors text-center"
                             >
                                 Commission a Similar Piece
