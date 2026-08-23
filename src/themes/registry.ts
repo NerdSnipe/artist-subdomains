@@ -1,4 +1,6 @@
 import type { ThemeModule } from "@/themes/types";
+import { anthemTheme } from "./anthem";
+import { anthemnoirTheme } from "./anthemnoir";
 import { galleryTheme } from "./gallery";
 import { studioTheme } from "./studio";
 import { marketTheme } from "./market";
@@ -9,10 +11,11 @@ import { luminaryTheme } from "./luminary";
 import { vividTheme } from "./vivid";
 import { noirTheme } from "./noir";
 import { chronicleTheme } from "./chronicle";
-import { anthemTheme } from "./anthem";
-import { anthemnoirTheme } from "./anthemnoir";
+
 
 const registry: Record<string, ThemeModule> = {
+    anthem: anthemTheme,
+    anthemnoir: anthemnoirTheme,
     gallery: galleryTheme,
     studio: studioTheme,
     market: marketTheme,
@@ -23,8 +26,6 @@ const registry: Record<string, ThemeModule> = {
     vivid: vividTheme,
     noir: noirTheme,
     chronicle: chronicleTheme,
-    anthem: anthemTheme,
-    anthemnoir: anthemnoirTheme,
 };
 
 export function getThemeModule(key: string): ThemeModule {
