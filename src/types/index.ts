@@ -51,11 +51,8 @@ export interface Product {
     shippingPrice?: number | null;
     dominantColors?: Array<{ name: string; hex: string }> | null;
     // Series/collection grouping (used for artwork filter chips, e.g. "Popular", "Icons & Pop")
-    series?: string[];
-    // Raw series reference from the API — populated as soon as an artist assigns a series in
-    // GHL, but not yet resolved to a name server-side (unlike categoryId -> category/categoryName).
-    // Themes can use this as a fallback grouping key while that resolution is pending.
     seriesId?: string | null;
+    seriesName?: string | null;
     // Physical gallery locations this piece is also available through (badges on artwork cards)
     gallerySource?: string[];
     // Nested taxonomy relations from API

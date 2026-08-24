@@ -21,41 +21,18 @@ export default function AnthemNoirArtworks({ artworks }: ThemePageProps) {
     const [filter, setFilter] = useState("All");
     const [sort, setSort] = useState<SortOption>("default");
 
-    // Real series names, when the backend has resolved them.
+    // Named series, in preferred display order.
     const namedSeries = useMemo(() => {
         const found = new Set<string>();
-        active.forEach((a) => a.series?.forEach((s) => found.add(s)));
+        active.forEach((a) => a.seriesName && found.add(a.seriesName));
         const known = SERIES_ORDER.filter((s) => found.has(s));
         const extra = [...found].filter((s) => !SERIES_ORDER.includes(s)).sort();
         return [...known, ...extra];
     }, [active]);
 
-    // Fallback: an artist can group work into series in GHL today, but the API only returns the
-    // raw seriesId — it doesn't resolve a name yet (unlike category, which does). Rather than
-    // hiding the filter entirely until that backend work lands, group by seriesId and label the
-    // groups generically ("Series 1", "Series 2"...) in first-appearance order, so the grouping
-    // an artist already did is at least usable. Swap to namedSeries automatically once real
-    // names start coming through.
-    const placeholderSeriesIds = useMemo(() => {
-        if (namedSeries.length > 0) return [];
-        const ids: string[] = [];
-        active.forEach((a) => {
-            if (a.seriesId && !ids.includes(a.seriesId)) ids.push(a.seriesId);
-        });
-        return ids;
-    }, [active, namedSeries]);
+    const chips = ["All", ...namedSeries];
 
-    const chips =
-        namedSeries.length > 0
-            ? ["All", ...namedSeries]
-            : ["All", ...placeholderSeriesIds.map((_, i) => `Series ${i + 1}`)];
-
-    const bySeries =
-        filter === "All"
-            ? active
-            : namedSeries.length > 0
-              ? active.filter((a) => a.series?.includes(filter))
-              : active.filter((a) => a.seriesId === placeholderSeriesIds[chips.indexOf(filter) - 1]);
+    const bySeries = filter === "All" ? active : active.filter((a) => a.seriesName === filter);
 
     const filtered = useMemo(() => {
         if (sort === "default") return bySeries;
