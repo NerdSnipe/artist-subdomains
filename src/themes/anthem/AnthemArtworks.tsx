@@ -52,24 +52,20 @@ export default function AnthemArtworks({ artworks }: ThemePageProps) {
             {/* Everything grouped in one bordered bar — chips on the left (scrolls if it overflows),
                 filter icon + the two selects on the right — per reference. */}
             <div className="flex flex-wrap items-center justify-between gap-4 mb-12 border-2 border-black px-4 py-3">
-                {chips.length > 1 ? (
-                    <div className="flex flex-nowrap gap-3 overflow-x-auto">
-                        {chips.map((c) => (
-                            <button
-                                key={c}
-                                type="button"
-                                onClick={() => setFilter(c)}
-                                className={`shrink-0 text-xs font-bold uppercase tracking-widest px-4 py-2 border-2 border-black transition-colors ${
-                                    filter === c ? "bg-black text-[#F7F4EC]" : "bg-transparent text-black hover:bg-black/5"
-                                }`}
-                            >
-                                {c}
-                            </button>
-                        ))}
-                    </div>
-                ) : (
-                    <div />
-                )}
+                <div className="flex flex-nowrap gap-3 overflow-x-auto">
+                    {chips.map((c) => (
+                        <button
+                            key={c}
+                            type="button"
+                            onClick={() => setFilter(c)}
+                            className={`shrink-0 text-xs font-bold uppercase tracking-widest px-4 py-2 border-2 border-black transition-colors ${
+                                filter === c ? "bg-black text-[#F7F4EC]" : "bg-transparent text-black hover:bg-black/5"
+                            }`}
+                        >
+                            {c}
+                        </button>
+                    ))}
+                </div>
 
                 <div className="flex flex-wrap items-center gap-3 shrink-0">
                     <SlidersHorizontal size={16} className="text-black/50 hidden sm:block" />
