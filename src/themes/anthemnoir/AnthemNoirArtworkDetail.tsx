@@ -15,6 +15,9 @@ export default function AnthemNoirArtworkDetail({ artist, product, relatedProduc
         : [{ imageUrl: getProductImageUrl(product), caption: null as string | null }];
     const [activeImg, setActiveImg] = useState(0);
     const img = gallery[activeImg]?.imageUrl ?? getProductImageUrl(product);
+    // Real proportions (not a forced square) — matches the card treatment elsewhere, so a tall
+    // or wide piece is never cropped to fit a square box.
+    const ratio = product.dimensions ? `${product.dimensions.width} / ${product.dimensions.height}` : "1 / 1";
 
     // Sells through the ArtDistrictUSA marketplace, same as the other theme families — no
     // separate checkout funnel here, this just routes the buyer to the real product page
@@ -46,8 +49,8 @@ export default function AnthemNoirArtworkDetail({ artist, product, relatedProduc
         <div>
             <div className="max-w-[1600px] mx-auto px-5 md:px-10 py-10 md:py-16 grid grid-cols-1 md:grid-cols-[1.3fr_1fr] gap-10 md:gap-16">
                 <Reveal>
-                    <div className="relative aspect-square border-2 border-[#E9DFC9] overflow-hidden mb-3">
-                        {img && <Image src={img} alt={product.title} fill sizes="(max-width: 768px) 100vw, 60vw" className="object-cover" priority />}
+                    <div className="relative border-2 border-[#E9DFC9] overflow-hidden mb-3 bg-black" style={{ aspectRatio: ratio }}>
+                        {img && <Image src={img} alt={product.title} fill sizes="(max-width: 768px) 100vw, 60vw" className="object-contain" priority />}
                         {product.gallerySource && product.gallerySource.length > 0 && (
                             <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
                                 {product.gallerySource.map((g) => (
@@ -73,6 +76,17 @@ export default function AnthemNoirArtworkDetail({ artist, product, relatedProduc
                                     <Image src={g.imageUrl} alt={g.caption ?? product.title} fill sizes="80px" className="object-cover" />
                                 </button>
                             ))}
+                        </div>
+                    )}
+                    {product.youtubeVideoId && (
+                        <div className="relative mt-3 aspect-video border-2 border-[#E9DFC9] overflow-hidden">
+                            <iframe
+                                src={`https://www.youtube.com/embed/${product.youtubeVideoId}`}
+                                title={`${product.title} — video`}
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                                className="absolute inset-0 w-full h-full"
+                            />
                         </div>
                     )}
                 </Reveal>

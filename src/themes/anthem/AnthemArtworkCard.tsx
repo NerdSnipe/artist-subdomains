@@ -16,6 +16,9 @@ export default function AnthemArtworkCard({ art, priority = false }: { art: Prod
 
     return (
         <Link href={`/artworks/${art.slug ?? art.id}`} className="group block">
+            {/* object-contain (not cover) — the container is sized to the artwork's real
+                proportions, but the source photo's own crop/framing can still differ slightly,
+                so contain is what actually guarantees the whole piece is always visible. */}
             <div className="relative w-full overflow-hidden border-2 border-black bg-black" style={{ aspectRatio: ratio }}>
                 {img && (
                     <Image
@@ -23,7 +26,7 @@ export default function AnthemArtworkCard({ art, priority = false }: { art: Prod
                         alt={art.title}
                         fill
                         sizes="(max-width: 768px) 50vw, 33vw"
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="object-contain transition-transform duration-500 group-hover:scale-105"
                         priority={priority}
                     />
                 )}
