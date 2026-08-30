@@ -50,9 +50,6 @@ export interface Product {
     salePrice?: number | null;
     shippingPrice?: number | null;
     dominantColors?: Array<{ name: string; hex: string }> | null;
-    // Related YouTube video (e.g. a process/making-of video) — 11-char video ID, embed at
-    // https://www.youtube.com/embed/{youtubeVideoId}
-    youtubeVideoId?: string | null;
     // Series/collection grouping (used for artwork filter chips, e.g. "Popular", "Icons & Pop")
     seriesId?: string | null;
     seriesName?: string | null;
@@ -63,8 +60,8 @@ export interface Product {
     styles?: Array<{ artStyle: { id: string; name: string; slug: string } }>;
     subjects?: Array<{ subject: { id: string; name: string; slug: string } }>;
     materials?: Array<{ material: { id: string; name: string; slug: string } }>;
-    // Optional per-artwork video (currently only entered via GHL's native "Related Video"
-    // product field, which stores just the YouTube video ID — no themes have rendered it yet).
+    // Optional per-artwork video, entered via GHL's native "Related Video" product field —
+    // stores just the 11-char YouTube video ID, embed at https://www.youtube.com/embed/{id}
     youtubeVideoId?: string | null;
 }
 
