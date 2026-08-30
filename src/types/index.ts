@@ -63,6 +63,9 @@ export interface Product {
     styles?: Array<{ artStyle: { id: string; name: string; slug: string } }>;
     subjects?: Array<{ subject: { id: string; name: string; slug: string } }>;
     materials?: Array<{ material: { id: string; name: string; slug: string } }>;
+    // Optional per-artwork video (currently only entered via GHL's native "Related Video"
+    // product field, which stores just the YouTube video ID — no themes have rendered it yet).
+    youtubeVideoId?: string | null;
 }
 
 export interface ArtistProfile {

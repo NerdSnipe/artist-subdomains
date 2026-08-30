@@ -80,11 +80,17 @@ export default function Carousel({
 
             {count > 1 && (
                 <>
+                    {/* Hero mode has bottom-anchored text of unpredictable height (headline +
+                        tagline + CTAs) — a vertically-centered arrow can land right on top of it
+                        on shorter viewports. Anchoring near the top keeps the arrows clear of
+                        that zone always, regardless of how tall the text block ends up. */}
                     <button
                         type="button"
                         aria-label="Previous image"
                         onClick={() => go(index - 1)}
-                        className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-20 bg-[#E9DFC9] text-[#0C0B09] w-10 h-10 md:w-12 md:h-12 flex items-center justify-center border-2 border-[#E9DFC9] hover:bg-[#C9A227] transition-colors"
+                        className={`absolute left-3 md:left-6 z-20 bg-[#E9DFC9] text-[#0C0B09] w-10 h-10 md:w-12 md:h-12 flex items-center justify-center border-2 border-[#E9DFC9] hover:bg-[#C9A227] transition-colors ${
+                            overlay === "hero" ? "top-6 md:top-8" : "top-1/2 -translate-y-1/2"
+                        }`}
                     >
                         <ChevronLeft size={22} />
                     </button>
@@ -92,7 +98,9 @@ export default function Carousel({
                         type="button"
                         aria-label="Next image"
                         onClick={() => go(index + 1)}
-                        className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-20 bg-[#E9DFC9] text-[#0C0B09] w-10 h-10 md:w-12 md:h-12 flex items-center justify-center border-2 border-[#E9DFC9] hover:bg-[#C9A227] transition-colors"
+                        className={`absolute right-3 md:right-6 z-20 bg-[#E9DFC9] text-[#0C0B09] w-10 h-10 md:w-12 md:h-12 flex items-center justify-center border-2 border-[#E9DFC9] hover:bg-[#C9A227] transition-colors ${
+                            overlay === "hero" ? "top-6 md:top-8" : "top-1/2 -translate-y-1/2"
+                        }`}
                     >
                         <ChevronRight size={22} />
                     </button>
