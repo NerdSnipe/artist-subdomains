@@ -245,6 +245,32 @@ export default function ObsidianArtworkDetail({
                 </div>
             </div>
 
+            {/* Process video */}
+            {product.youtubeVideoId && (
+                <section className="border-t border-[#c9a96e]/10 py-16 px-6 md:px-12">
+                    <div className="flex items-center gap-6 mb-12 max-w-7xl mx-auto">
+                        <span className="h-px flex-1 bg-[#c9a96e]/10" />
+                        <h2 className="text-[10px] tracking-[0.4em] uppercase text-[#c9a96e]/60 font-light">
+                            In The Studio
+                        </h2>
+                        <span className="h-px flex-1 bg-[#c9a96e]/10" />
+                    </div>
+
+                    <div className="max-w-7xl mx-auto">
+                        <div className="relative w-full aspect-video overflow-hidden rounded-sm border border-white/10 bg-white/[0.02]">
+                            <iframe
+                                src={`https://www.youtube.com/embed/${product.youtubeVideoId}`}
+                                title={`${product.title} — video`}
+                                className="absolute inset-0 w-full h-full"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowFullScreen
+                                loading="lazy"
+                            />
+                        </div>
+                    </div>
+                </section>
+            )}
+
             {/* Related works */}
             {relatedProducts.length > 0 && (
                 <section className="border-t border-[#c9a96e]/10 mt-0 py-16 px-6 md:px-12">

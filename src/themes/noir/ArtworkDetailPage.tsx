@@ -355,6 +355,35 @@ export default function NoirArtworkDetailPage({
                 </div>
             </div>
 
+            {/* Process video */}
+            {product.youtubeVideoId && (
+                <section className="border-t border-[#1a1a1a] py-16 px-6 md:px-12">
+                    <div className="flex items-center gap-6 mb-10 max-w-7xl mx-auto">
+                        <span className="h-px flex-1 bg-[#a8884a]/10" />
+                        <h2
+                            className="text-[8px] tracking-[0.5em] uppercase text-[#a8884a]/60"
+                            style={{ fontFamily: "'Courier New', monospace" }}
+                        >
+                            The Making Of
+                        </h2>
+                        <span className="h-px flex-1 bg-[#a8884a]/10" />
+                    </div>
+
+                    <div className="max-w-7xl mx-auto">
+                        <div className="relative w-full aspect-video overflow-hidden bg-[#111] border border-[#2a2a2a]">
+                            <iframe
+                                src={`https://www.youtube.com/embed/${product.youtubeVideoId}`}
+                                title={`${product.title} — video`}
+                                className="absolute inset-0 w-full h-full"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowFullScreen
+                                loading="lazy"
+                            />
+                        </div>
+                    </div>
+                </section>
+            )}
+
             {/* Related works */}
             {relatedProducts.length > 0 && (
                 <section className="border-t border-[#1a1a1a] py-16 px-6 md:px-12">

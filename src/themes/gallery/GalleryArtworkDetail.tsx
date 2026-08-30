@@ -121,6 +121,22 @@ export default function GalleryArtworkDetail({ artist, product, relatedProducts 
                 </div>
             </div>
 
+            {product.youtubeVideoId && (
+                <div className="mt-24 pt-12 border-t border-[#E3DCCE]">
+                    <SectionLabel className="mb-8">In the Studio</SectionLabel>
+                    <div className="relative w-full aspect-video overflow-hidden border border-[#E3DCCE] bg-[#F1ECE2]">
+                        <iframe
+                            src={`https://www.youtube.com/embed/${product.youtubeVideoId}`}
+                            title={`${product.title} — video`}
+                            className="absolute inset-0 w-full h-full"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowFullScreen
+                            loading="lazy"
+                        />
+                    </div>
+                </div>
+            )}
+
             {relatedProducts.length > 0 && (
                 <div className="mt-24 pt-12 border-t border-[#E3DCCE]">
                     <SectionLabel className="mb-8">More From This Collection</SectionLabel>

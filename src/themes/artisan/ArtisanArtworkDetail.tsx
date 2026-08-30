@@ -111,6 +111,26 @@ export default function ArtisanArtworkDetail({ artist, product, relatedProducts 
                     </Reveal>
                 </div>
 
+                {product.youtubeVideoId && (
+                    <div className="mt-24 border-t border-[var(--ink)]/10 pt-14">
+                        <Reveal>
+                            <h2 className="mb-8 text-2xl italic text-[var(--ink)]" style={{ fontFamily: "var(--font-display)" }}>
+                                In the Studio
+                            </h2>
+                            <div className="relative w-full aspect-video overflow-hidden bg-[var(--sand)]">
+                                <iframe
+                                    src={`https://www.youtube.com/embed/${product.youtubeVideoId}`}
+                                    title={`${product.title} — video`}
+                                    className="absolute inset-0 w-full h-full"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allowFullScreen
+                                    loading="lazy"
+                                />
+                            </div>
+                        </Reveal>
+                    </div>
+                )}
+
                 {relatedProducts.length > 0 && (
                     <div className="mt-24 border-t border-[var(--ink)]/10 pt-14">
                         <Reveal>

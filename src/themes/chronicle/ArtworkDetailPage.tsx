@@ -415,6 +415,38 @@ export default function ChronicleArtworkDetailPage({
                 </div>
             </div>
 
+            {/* ── Process Video ─────────────────────────────────────────────── */}
+            {product.youtubeVideoId && (
+                <section className="py-16 border-t border-stone-200">
+                    <div className="max-w-7xl mx-auto px-6 md:px-12">
+                        <RevealOnScroll>
+                            <p
+                                className="mb-6"
+                                style={{
+                                    fontFamily: MONO,
+                                    fontSize: "0.6rem",
+                                    letterSpacing: "0.18em",
+                                    textTransform: "uppercase",
+                                    color: "#6b7c6d",
+                                }}
+                            >
+                                The Process
+                            </p>
+                            <div className="relative w-full aspect-video overflow-hidden border border-stone-200">
+                                <iframe
+                                    src={`https://www.youtube.com/embed/${product.youtubeVideoId}`}
+                                    title={`${product.title} — video`}
+                                    className="absolute inset-0 w-full h-full"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allowFullScreen
+                                    loading="lazy"
+                                />
+                            </div>
+                        </RevealOnScroll>
+                    </div>
+                </section>
+            )}
+
             {/* ── Related Works ─────────────────────────────────────────────── */}
             {relatedActive.length > 0 && (
                 <section className="py-16 border-t border-stone-200">

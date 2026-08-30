@@ -50,6 +50,9 @@ export interface Product {
     salePrice?: number | null;
     shippingPrice?: number | null;
     dominantColors?: Array<{ name: string; hex: string }> | null;
+    // Related YouTube video (e.g. a process/making-of video) — 11-char video ID, embed at
+    // https://www.youtube.com/embed/{youtubeVideoId}
+    youtubeVideoId?: string | null;
     // Series/collection grouping (used for artwork filter chips, e.g. "Popular", "Icons & Pop")
     seriesId?: string | null;
     seriesName?: string | null;

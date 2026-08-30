@@ -28,8 +28,18 @@ export default function Carousel({
     overlay?: "hero" | "strip" | "none";
 }) {
     const [index, setIndex] = useState(0);
+    const [visible, setVisible] = useState(false);
     const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
     const count = images.length;
+
+    // Fade the active slide in on mount/change instead of cross-fading between all
+    // slides — only the active slide's <Image> is ever mounted (see below), so there's
+    // nothing to cross-fade from.
+    useEffect(() => {
+        setVisible(false);
+        const raf = requestAnimationFrame(() => setVisible(true));
+        return () => cancelAnimationFrame(raf);
+    }, [index]);
 
     const go = useCallback(
         (next: number) => {
@@ -62,15 +72,20 @@ export default function Carousel({
             onMouseEnter={pause}
             onMouseLeave={resume}
         >
-            {images.map((src, i) => (
-                <div
-                    key={src + i}
-                    className="absolute inset-0 transition-opacity duration-700 ease-out"
-                    style={{ opacity: i === index ? 1 : 0, pointerEvents: "none" }}
-                >
-                    <Image src={src} alt={`${alt} ${i + 1}`} fill sizes="100vw" className="object-cover" priority={i === 0} />
-                </div>
-            ))}
+            {/* Only the active slide is ever mounted — rendering all `images.length` slides
+                simultaneously (even at opacity 0) made every one of them eligible for Next.js
+                Image Optimization on first paint, since they all sit within the viewport.
+                For a full-bleed `100vw` hero that meant up to 4x the optimization cache writes
+                per artist site visit. Swapping which single <Image> is mounted (like the other
+                themes' hero carousels already do) keeps the same visual cross-fade while only
+                ever requesting the one slide actually being shown. */}
+            <div
+                key={index}
+                className="absolute inset-0 transition-opacity duration-700 ease-out"
+                style={{ opacity: visible ? 1 : 0, pointerEvents: "none" }}
+            >
+                <Image src={images[index]} alt={`${alt} ${index + 1}`} fill sizes="100vw" className="object-cover" priority={index === 0} />
+            </div>
 
             {overlay === "hero" && (
                 <div className="absolute inset-x-0 bottom-0 h-[50%] bg-gradient-to-t from-black/75 via-black/30 to-transparent pointer-events-none" />

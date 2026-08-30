@@ -177,6 +177,24 @@ export default function AnthemNoirArtworkDetail({ artist, product, relatedProduc
                 </Reveal>
             </div>
 
+            {product.youtubeVideoId && (
+                <section className="max-w-[1600px] mx-auto px-5 md:px-10 pb-20 md:pb-28">
+                    <h2 className="font-[family-name:var(--font-display)] uppercase text-3xl mb-8 border-b-4 border-[#E9DFC9] pb-4">
+                        The Process
+                    </h2>
+                    <div className="relative w-full aspect-video border-2 border-[#E9DFC9] overflow-hidden">
+                        <iframe
+                            src={`https://www.youtube.com/embed/${product.youtubeVideoId}`}
+                            title={`${product.title} — video`}
+                            className="absolute inset-0 w-full h-full"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowFullScreen
+                            loading="lazy"
+                        />
+                    </div>
+                </section>
+            )}
+
             {relatedProducts.length > 0 && (
                 <section className="max-w-[1600px] mx-auto px-5 md:px-10 pb-20 md:pb-28">
                     <h2 className="font-[family-name:var(--font-display)] uppercase text-3xl mb-8 border-b-4 border-[#E9DFC9] pb-4">

@@ -153,6 +153,26 @@ export default function EmberArtworkDetail({ artist, product, relatedProducts, d
                 </div>
             </div>
 
+            {product.youtubeVideoId && (
+                <div className="py-20 border-t" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+                    <div className="max-w-7xl mx-auto px-6 md:px-16">
+                        <h2 className="uppercase leading-none mb-12" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.8rem,4vw,2.6rem)", color: "#f6f1e8" }}>
+                            The Process
+                        </h2>
+                        <div className="relative w-full aspect-video overflow-hidden" style={{ backgroundColor: coal, border: "1px solid rgba(255,255,255,0.1)" }}>
+                            <iframe
+                                src={`https://www.youtube.com/embed/${product.youtubeVideoId}`}
+                                title={`${product.title} — video`}
+                                className="absolute inset-0 w-full h-full"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowFullScreen
+                                loading="lazy"
+                            />
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {related.length > 0 && (
                 <div className="py-20 border-t" style={{ backgroundColor: coal, borderColor: "rgba(255,255,255,0.08)" }}>
                     <div className="max-w-7xl mx-auto px-6 md:px-16">

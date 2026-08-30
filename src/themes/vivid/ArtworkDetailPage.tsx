@@ -192,6 +192,30 @@ export default function VividArtworkDetailPage({ artist, product, relatedProduct
                     </div>
                 </section>
 
+                {product.youtubeVideoId && (
+                    <section className="border-t border-white/10 py-14">
+                        <div className="max-w-[1400px] mx-auto px-5 md:px-10">
+                            <Reveal className="mb-7">
+                                <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 800, color: "var(--v-paper)" }} className="text-2xl md:text-3xl uppercase">
+                                    Behind the Work
+                                </h2>
+                            </Reveal>
+                            <Reveal delayMs={70}>
+                                <div className="relative w-full aspect-video overflow-hidden rounded-2xl" style={{ backgroundColor: "var(--v-ink-soft)" }}>
+                                    <iframe
+                                        src={`https://www.youtube.com/embed/${product.youtubeVideoId}`}
+                                        title={`${product.title} — video`}
+                                        className="absolute inset-0 w-full h-full"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                        allowFullScreen
+                                        loading="lazy"
+                                    />
+                                </div>
+                            </Reveal>
+                        </div>
+                    </section>
+                )}
+
                 {related.length > 0 && (
                     <section className="border-t border-white/10 py-14">
                         <div className="max-w-[1400px] mx-auto px-5 md:px-10">

@@ -188,6 +188,27 @@ export default function MarketArtworkDetail({ artist, product, relatedProducts, 
                 </Reveal>
             </div>
 
+            {product.youtubeVideoId && (
+                <div className="border-t border-[#e3d5c1] mt-16 pt-12">
+                    <p className="text-xs tracking-[0.25em] uppercase text-[#b2542e] font-semibold mb-2">
+                        In The Studio
+                    </p>
+                    <h2 className="font-[family-name:var(--market-font-display)] text-2xl text-[#241e19] mb-8">
+                        Watch The Process
+                    </h2>
+                    <div className="relative w-full aspect-video overflow-hidden ring-1 ring-[#241e19]/10">
+                        <iframe
+                            src={`https://www.youtube.com/embed/${product.youtubeVideoId}`}
+                            title={`${product.title} — video`}
+                            className="absolute inset-0 w-full h-full"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowFullScreen
+                            loading="lazy"
+                        />
+                    </div>
+                </div>
+            )}
+
             {relatedProducts.length > 0 && (
                 <div id="more-from-studio" className="border-t border-[#e3d5c1] mt-16 pt-12">
                     <p className="text-xs tracking-[0.25em] uppercase text-[#b2542e] font-semibold mb-2">

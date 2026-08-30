@@ -201,6 +201,29 @@ export default function LuminaryArtworkDetailPage({ artist, product, relatedProd
                 </div>
             </section>
 
+            {product.youtubeVideoId && (
+                <section className="relative mx-auto max-w-7xl px-6 py-10 md:px-10 md:py-16">
+                    <Reveal className="mb-8">
+                        <Kicker>Behind the Work</Kicker>
+                        <h2 className="mt-4 font-serif text-3xl italic text-[#3a3240]">The Process</h2>
+                    </Reveal>
+                    <Reveal delay={80}>
+                        <div className="bg-white p-3 shadow-[0_30px_70px_-20px_rgba(58,50,64,0.25)] sm:p-5">
+                            <div className="relative w-full aspect-video overflow-hidden bg-[#f6f3f1]">
+                                <iframe
+                                    src={`https://www.youtube.com/embed/${product.youtubeVideoId}`}
+                                    title={`${product.title} — video`}
+                                    className="absolute inset-0 w-full h-full"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allowFullScreen
+                                    loading="lazy"
+                                />
+                            </div>
+                        </div>
+                    </Reveal>
+                </section>
+            )}
+
             {relatedProducts.length > 0 && (
                 <section className="relative mx-auto max-w-7xl px-6 py-16 md:px-10 md:py-24">
                     <Reveal className="mb-10">

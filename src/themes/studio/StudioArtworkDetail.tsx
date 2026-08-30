@@ -147,6 +147,24 @@ export default function StudioArtworkDetail({ artist, product, relatedProducts }
                 </ScrollReveal>
             </div>
 
+            {product.youtubeVideoId && (
+                <div className="mx-auto max-w-7xl border-t border-neutral-800/60 px-6 py-14 md:px-10 md:py-16">
+                    <p className="mb-8 font-[family-name:var(--font-studio-condensed)] text-xs uppercase tracking-[0.4em] text-neutral-700">
+                        In the Studio
+                    </p>
+                    <div className="relative w-full aspect-video overflow-hidden border border-neutral-800/60 bg-neutral-950">
+                        <iframe
+                            src={`https://www.youtube.com/embed/${product.youtubeVideoId}`}
+                            title={`${product.title} — video`}
+                            className="absolute inset-0 w-full h-full"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowFullScreen
+                            loading="lazy"
+                        />
+                    </div>
+                </div>
+            )}
+
             {relatedProducts.length > 0 && (
                 <div className="mx-auto max-w-7xl border-t border-neutral-800/60 px-6 pb-20 pt-12 md:px-10">
                     <p className="mb-8 font-[family-name:var(--font-studio-condensed)] text-xs uppercase tracking-[0.4em] text-neutral-700">
