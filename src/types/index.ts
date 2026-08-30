@@ -72,7 +72,8 @@ export interface ArtistProfile {
     lastName: string;
     displayName?: string;
     email: string;
-    phone: string;
+    phone?: string;
+    hidePhone?: boolean;
     profilePhoto?: string | null;
     profilePhotoKey?: string | null;
     streetAddress?: string;
