@@ -4,6 +4,7 @@ import { BadgeCheck, BookOpen, MapPin, Quote } from "lucide-react";
 import type { ThemePageProps } from "@/themes/types";
 import { getArtistName } from "@/lib/artist-api";
 import ScrollReveal from "./ScrollReveal";
+import { sortByDateDesc } from "@/lib/cv-sort";
 
 export default function StudioAbout({ artist }: ThemePageProps) {
     const name = getArtistName(artist);
@@ -124,7 +125,7 @@ export default function StudioAbout({ artist }: ThemePageProps) {
                             Exhibitions
                         </p>
                         <div className="max-w-2xl space-y-4">
-                            {artist.exhibitions.map((ex, i) => (
+                            {sortByDateDesc(artist.exhibitions, (ex) => ex.year).map((ex, i) => (
                                 <div key={i} className="grid grid-cols-[70px_1fr] gap-6 border-b border-neutral-900 pb-4 text-sm">
                                     <span className="font-[family-name:var(--font-studio-condensed)] tracking-widest text-neutral-700">{ex.year}</span>
                                     <span className="font-[family-name:var(--font-studio-body)] font-light text-neutral-400">
@@ -150,12 +151,12 @@ export default function StudioAbout({ artist }: ThemePageProps) {
                             Press &amp; Publications
                         </p>
                         <div className="max-w-2xl space-y-4">
-                            {publications.map((p, i) => (
+                            {sortByDateDesc(publications, (p) => p.date).map((p, i) => (
                                 <div key={i} className="grid grid-cols-[70px_1fr] gap-6 border-b border-neutral-900 pb-4 text-sm">
-                                    <span className="font-[family-name:var(--font-studio-condensed)] tracking-widest text-neutral-700">{p.year}</span>
+                                    <span className="font-[family-name:var(--font-studio-condensed)] tracking-widest text-neutral-700">{p.date}</span>
                                     <span className="font-[family-name:var(--font-studio-body)] font-light text-neutral-400">
                                         {p.title}
-                                        {p.publication ? ` — ${p.publication}` : ""}
+                                        {p.description ? ` — ${p.description}` : ""}
                                     </span>
                                 </div>
                             ))}

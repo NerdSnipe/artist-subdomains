@@ -4,6 +4,7 @@ import { getArtistName } from "@/lib/artist-api";
 import { derivePalette } from "./color";
 import DynamicColorProvider from "./DynamicColorProvider";
 import Reveal from "./Reveal";
+import { sortByDateDesc } from "@/lib/cv-sort";
 
 export default function VividContactPage({ artist, artworks }: ThemePageProps) {
     const name = getArtistName(artist);
@@ -167,7 +168,7 @@ export default function VividContactPage({ artist, artworks }: ThemePageProps) {
                                 </p>
                             </Reveal>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                {artist.events.slice(0, 3).map((event, i) => (
+                                {sortByDateDesc(artist.events, (event) => event.startDate ?? event.date).slice(0, 3).map((event, i) => (
                                     <Reveal key={i} delayMs={Math.min(i * 60, 300)}>
                                         <div className="rounded-2xl p-6 border-t-4" style={{ borderColor: "var(--v-secondary)", backgroundColor: "var(--v-ink-soft)" }}>
                                             <p className="text-[10px] font-bold tracking-widest uppercase mb-3" style={{ color: "rgba(246,244,239,0.4)" }}>

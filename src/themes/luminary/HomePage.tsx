@@ -6,6 +6,7 @@ import { getArtistName, getProductImageUrl } from "@/lib/artist-api";
 import GlowBlob from "./GlowBlob";
 import Reveal from "./Reveal";
 import { Kicker, PillButton } from "./ui";
+import { sortByDateDesc } from "@/lib/cv-sort";
 
 export default function LuminaryHomePage({ artist, artworks }: ThemePageProps) {
     const name = getArtistName(artist);
@@ -20,7 +21,7 @@ export default function LuminaryHomePage({ artist, artworks }: ThemePageProps) {
     const bannerImg = bannerWork ? getProductImageUrl(bannerWork) : null;
 
     const posts = (artist.blogPosts ?? []).slice(0, 3);
-    const events = (artist.events ?? []).slice(0, 3);
+    const events = sortByDateDesc(artist.events ?? [], (event) => event.startDate ?? event.date).slice(0, 3);
     const location = [artist.city, artist.state].filter(Boolean).join(", ");
 
     return (

@@ -4,6 +4,7 @@ import { getArtistName } from "@/lib/artist-api";
 import Marquee from "./Marquee";
 import Reveal from "./Reveal";
 import { ink, coal, coalLight, smoke, smokeDark, emberMid, emberDeep, emberGradient } from "./palette";
+import { sortByDateDesc } from "@/lib/cv-sort";
 
 export default function EmberAbout({ artist, domain }: ThemePageProps) {
     const name = getArtistName(artist);
@@ -90,7 +91,7 @@ export default function EmberAbout({ artist, domain }: ThemePageProps) {
                             </h2>
                         </Reveal>
                         <div className="relative pl-8" style={{ borderLeft: "2px solid rgba(255,255,255,0.12)" }}>
-                            {artist.exhibitions.map((ex, i) => (
+                            {sortByDateDesc(artist.exhibitions, (ex) => ex.year).map((ex, i) => (
                                 <Reveal key={i} delayMs={Math.min(i, 6) * 60}>
                                     <div className="relative mb-10 last:mb-0">
                                         <div
@@ -130,12 +131,12 @@ export default function EmberAbout({ artist, domain }: ThemePageProps) {
                             </h2>
                         </Reveal>
                         <div className="space-y-6">
-                            {artist.publications.map((pub, i) => (
+                            {sortByDateDesc(artist.publications, (pub) => pub.date).map((pub, i) => (
                                 <div key={i} className="flex gap-8 pb-6 border-b" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
-                                    <span className="text-sm font-bold w-14 shrink-0 pt-0.5" style={{ color: emberMid }}>{pub.year}</span>
+                                    <span className="text-sm font-bold w-14 shrink-0 pt-0.5" style={{ color: emberMid }}>{pub.date}</span>
                                     <div>
                                         <p className="text-sm font-semibold" style={{ color: "#f6f1e8" }}>{pub.title}</p>
-                                        {pub.publication && <p className="text-xs mt-1 uppercase tracking-wide" style={{ color: smokeDark }}>{pub.publication}</p>}
+                                        {pub.description && <p className="text-xs mt-1 uppercase tracking-wide" style={{ color: smokeDark }}>{pub.description}</p>}
                                     </div>
                                 </div>
                             ))}
@@ -190,7 +191,7 @@ export default function EmberAbout({ artist, domain }: ThemePageProps) {
                             </h2>
                         </Reveal>
                         <div className="space-y-6">
-                            {artist.events.map((event, i) => {
+                            {sortByDateDesc(artist.events, (event) => event.startDate ?? event.date).map((event, i) => {
                                 const eventImg = event.imageUrl ?? event.image ?? null;
                                 const dateStr = event.startDate ?? event.date ?? null;
                                 return (

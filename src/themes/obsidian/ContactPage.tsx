@@ -2,6 +2,7 @@ import type { ThemePageProps } from "@/themes/types";
 import { getArtistName } from "@/lib/artist-api";
 import Image from "next/image";
 import VerifiedBadge from "./VerifiedBadge";
+import { sortByDateDesc } from "@/lib/cv-sort";
 
 interface SocialEntry {
     href: string;
@@ -247,7 +248,7 @@ export default function ObsidianContact({ artist }: ThemePageProps) {
                                     Upcoming
                                 </p>
                                 <div className="space-y-5">
-                                    {artist.events.slice(0, 3).map((event, i) => {
+                                    {sortByDateDesc(artist.events, (event) => event.startDate ?? event.date).slice(0, 3).map((event, i) => {
                                         const dateStr = event.startDate ?? event.date;
                                         return (
                                             <div

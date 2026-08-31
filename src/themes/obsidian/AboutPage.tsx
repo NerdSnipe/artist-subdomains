@@ -3,6 +3,7 @@ import type { ThemePageProps } from "@/themes/types";
 import { getArtistName } from "@/lib/artist-api";
 import VerifiedBadge from "./VerifiedBadge";
 import ScrollReveal from "./ScrollReveal";
+import { sortByDateDesc } from "@/lib/cv-sort";
 
 export default function ObsidianAbout({ artist }: ThemePageProps) {
     const name = getArtistName(artist);
@@ -183,7 +184,7 @@ export default function ObsidianAbout({ artist }: ThemePageProps) {
                             <div className="absolute left-[4.5rem] top-0 bottom-0 w-px bg-[#c9a96e]/15 hidden md:block" />
 
                             <div className="space-y-8">
-                                {artist.exhibitions.map((ex, i) => (
+                                {sortByDateDesc(artist.exhibitions, (ex) => ex.year).map((ex, i) => (
                                     <div key={i} className="flex gap-6 md:gap-10 group">
                                         <div className="md:w-16 shrink-0 text-right">
                                             <span className="text-[10px] tracking-[0.2em] text-[#c9a96e]/60 font-light">
@@ -275,21 +276,21 @@ export default function ObsidianAbout({ artist }: ThemePageProps) {
                         </div>
 
                         <div className="space-y-6">
-                            {artist.publications.map((pub, i) => (
+                            {sortByDateDesc(artist.publications, (pub) => pub.date).map((pub, i) => (
                                 <div
                                     key={i}
                                     className="flex gap-8 border-b border-[#1a1a1a] pb-6 group hover:border-[#c9a96e]/10 transition-colors duration-300"
                                 >
                                     <span className="text-[10px] tracking-[0.2em] text-[#c9a96e]/50 font-light w-12 shrink-0 pt-0.5">
-                                        {pub.year}
+                                        {pub.date}
                                     </span>
                                     <div>
                                         <p className="text-sm font-light text-[#c9c4be] tracking-wide">
                                             {pub.title}
                                         </p>
-                                        {pub.publication && (
+                                        {pub.description && (
                                             <p className="text-[10px] tracking-[0.15em] uppercase text-[#4a4540] mt-1">
-                                                {pub.publication}
+                                                {pub.description}
                                             </p>
                                         )}
                                     </div>

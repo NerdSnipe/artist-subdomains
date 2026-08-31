@@ -6,6 +6,7 @@ import HeroParallax from "./HeroParallax";
 import MarqueeStrip from "./MarqueeStrip";
 import HorizontalGallery from "./HorizontalGallery";
 import RevealOnScroll from "./RevealOnScroll";
+import { sortByDateDesc } from "@/lib/cv-sort";
 
 const MONO = "'IBM Plex Mono', monospace";
 const CORMORANT = "'Cormorant Garamond', serif";
@@ -330,7 +331,7 @@ export default function ChronicleHomePage({ artist, artworks }: ThemePageProps) 
                         </RevealOnScroll>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            {artist.events.slice(0, 3).map((event, i) => (
+                            {sortByDateDesc(artist.events, (event) => event.startDate ?? event.date).slice(0, 3).map((event, i) => (
                                 <RevealOnScroll key={i} delay={i * 80}>
                                     <article
                                         className="border-l-2 pl-6 py-2"

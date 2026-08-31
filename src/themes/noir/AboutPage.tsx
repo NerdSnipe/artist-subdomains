@@ -2,6 +2,7 @@ import Image from "next/image";
 import type { ThemePageProps } from "@/themes/types";
 import { getArtistName } from "@/lib/artist-api";
 import ScrollReveal from "./ScrollReveal";
+import { sortByDateDesc } from "@/lib/cv-sort";
 
 export default function NoirAboutPage({ artist }: ThemePageProps) {
     const name = getArtistName(artist);
@@ -108,7 +109,7 @@ export default function NoirAboutPage({ artist }: ThemePageProps) {
                             <div className="absolute left-0 top-0 bottom-0 w-px bg-gradient-to-b from-[#a8884a]/50 via-[#a8884a]/20 to-transparent" />
 
                             <div className="space-y-10">
-                                {artist.exhibitions.map((ex, i) => (
+                                {sortByDateDesc(artist.exhibitions, (ex) => ex.year).map((ex, i) => (
                                     <div key={i} className="relative group">
                                         {/* Gold dot */}
                                         <div className="absolute -left-8 top-1 w-2 h-2 rounded-full bg-[#a8884a]/60 group-hover:bg-[#a8884a] transition-colors duration-300 -translate-x-0.5" />
@@ -157,17 +158,17 @@ export default function NoirAboutPage({ artist }: ThemePageProps) {
                             <span className="h-px flex-1 bg-[#a8884a]/15" />
                         </div>
                         <div className="space-y-4">
-                            {artist.publications.map((pub, i) => (
+                            {sortByDateDesc(artist.publications, (pub) => pub.date).map((pub, i) => (
                                 <p
                                     key={i}
                                     className="text-xs text-[#6a6a6a] leading-relaxed"
                                     style={{ fontFamily: "'Courier New', monospace" }}
                                 >
-                                    <span className="text-[#a8884a]/70">{pub.year}</span>
+                                    <span className="text-[#a8884a]/70">{pub.date}</span>
                                     {" — "}
                                     <span className="italic text-[#8a8a8a]">{pub.title}</span>
-                                    {pub.publication && (
-                                        <span className="text-[#5a5a5a]">, {pub.publication}</span>
+                                    {pub.description && (
+                                        <span className="text-[#5a5a5a]">, {pub.description}</span>
                                     )}
                                 </p>
                             ))}
@@ -219,7 +220,7 @@ export default function NoirAboutPage({ artist }: ThemePageProps) {
                             <span className="h-px flex-1 bg-[#a8884a]/15" />
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {artist.events.map((event, i) => {
+                            {sortByDateDesc(artist.events, (event) => event.startDate ?? event.date).map((event, i) => {
                                 const dateStr = event.startDate ?? event.date ?? null;
                                 return (
                                     <div

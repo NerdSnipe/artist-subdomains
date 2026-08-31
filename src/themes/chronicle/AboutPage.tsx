@@ -2,6 +2,7 @@ import Image from "next/image";
 import type { ThemePageProps } from "@/themes/types";
 import { getArtistName } from "@/lib/artist-api";
 import RevealOnScroll from "./RevealOnScroll";
+import { sortByDateDesc } from "@/lib/cv-sort";
 
 const MONO = "'IBM Plex Mono', monospace";
 const CORMORANT = "'Cormorant Garamond', serif";
@@ -216,7 +217,7 @@ export default function ChronicleAboutPage({ artist }: ThemePageProps) {
                         </RevealOnScroll>
 
                         <div>
-                            {artist.exhibitions.map((ex, i) => (
+                            {sortByDateDesc(artist.exhibitions, (ex) => ex.year).map((ex, i) => (
                                 <RevealOnScroll key={i} delay={i * 60}>
                                     <div
                                         className="grid grid-cols-12 gap-4 py-6 border-b border-stone-100"
@@ -305,7 +306,7 @@ export default function ChronicleAboutPage({ artist }: ThemePageProps) {
                                 Publications &amp; Press
                             </p>
                         </RevealOnScroll>
-                        {artist.publications.map((pub, i) => (
+                        {sortByDateDesc(artist.publications, (pub) => pub.date).map((pub, i) => (
                             <RevealOnScroll key={i} delay={i * 50}>
                                 <div className="flex gap-6 py-5 border-b border-stone-100">
                                     <span
@@ -319,7 +320,7 @@ export default function ChronicleAboutPage({ artist }: ThemePageProps) {
                                             lineHeight: 1.1,
                                         }}
                                     >
-                                        {pub.year}
+                                        {pub.date}
                                     </span>
                                     <div>
                                         <p
@@ -331,7 +332,7 @@ export default function ChronicleAboutPage({ artist }: ThemePageProps) {
                                         >
                                             {pub.title}
                                         </p>
-                                        {pub.publication && (
+                                        {pub.description && (
                                             <p
                                                 style={{
                                                     fontFamily: BASKERVILLE,
@@ -341,7 +342,7 @@ export default function ChronicleAboutPage({ artist }: ThemePageProps) {
                                                     marginTop: "0.2rem",
                                                 }}
                                             >
-                                                {pub.publication}
+                                                {pub.description}
                                             </p>
                                         )}
                                     </div>

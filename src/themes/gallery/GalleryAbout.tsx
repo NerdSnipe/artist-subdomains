@@ -3,16 +3,17 @@ import type { ThemePageProps } from "@/themes/types";
 import { getArtistName } from "@/lib/artist-api";
 import ScrollReveal from "./ScrollReveal";
 import { PullQuote, SectionLabel, VerifiedBadge } from "./ui";
+import { sortByDateDesc } from "@/lib/cv-sort";
 
 export default function GalleryAbout({ artist }: ThemePageProps) {
     const name = getArtistName(artist);
     const portrait = artist.bioPhoto ?? artist.profilePhoto ?? null;
     const statement = artist.artistStatement ?? null;
     const bio = artist.bio ?? null;
-    const exhibitions = artist.exhibitions ?? [];
+    const exhibitions = sortByDateDesc(artist.exhibitions ?? [], (e) => e.year);
     const soloShows = exhibitions.filter((e) => e.type === "solo");
     const groupShows = exhibitions.filter((e) => e.type !== "solo");
-    const publications = artist.publications ?? [];
+    const publications = sortByDateDesc(artist.publications ?? [], (p) => p.date);
     const reviews = (artist.reviews ?? []).filter((r) => r.text?.trim());
     const galleries = artist.galleries ?? [];
     const studioImages = artist.studioImages ?? [];
@@ -97,7 +98,7 @@ export default function GalleryAbout({ artist }: ThemePageProps) {
                             <CvSection title="Group Exhibitions" items={groupShows.map((e) => ({ year: e.year, text: e.title, sub: e.location }))} />
                         )}
                         {publications.length > 0 && (
-                            <CvSection title="Publications" items={publications.map((p) => ({ year: p.year, text: p.title, sub: p.publication }))} />
+                            <CvSection title="Publications" items={publications.map((p) => ({ year: p.date ?? "", text: p.title, sub: p.description }))} />
                         )}
                     </div>
                 </ScrollReveal>

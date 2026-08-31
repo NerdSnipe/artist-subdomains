@@ -5,6 +5,7 @@ import { getArtistName } from "@/lib/artist-api";
 import GlowBlob from "./GlowBlob";
 import Reveal from "./Reveal";
 import { Kicker, PillButton } from "./ui";
+import { sortByDateDesc } from "@/lib/cv-sort";
 
 export default function LuminaryAboutPage({ artist }: ThemePageProps) {
     const name = getArtistName(artist);
@@ -173,7 +174,7 @@ export default function LuminaryAboutPage({ artist }: ThemePageProps) {
                         <h2 className="mt-4 font-serif text-3xl italic text-[#3a3240]">Exhibitions</h2>
                     </Reveal>
                     <div>
-                        {artist.exhibitions.map((ex, i) => (
+                        {sortByDateDesc(artist.exhibitions, (ex) => ex.year).map((ex, i) => (
                             <Reveal key={i} delay={(i % 6) * 60}>
                                 <div className="grid grid-cols-12 items-baseline gap-4 border-b border-[#3a3240]/10 py-6">
                                     <span className="col-span-3 font-serif text-2xl italic text-[#a9769f] sm:col-span-2">
@@ -203,14 +204,14 @@ export default function LuminaryAboutPage({ artist }: ThemePageProps) {
                         <h2 className="mt-4 font-serif text-3xl italic text-[#3a3240]">Publications</h2>
                     </Reveal>
                     <div>
-                        {artist.publications.map((pub, i) => (
+                        {sortByDateDesc(artist.publications, (pub) => pub.date).map((pub, i) => (
                             <Reveal key={i} delay={(i % 6) * 60}>
                                 <div className="flex gap-6 border-b border-[#3a3240]/10 py-5">
-                                    <span className="w-14 shrink-0 font-serif text-xl italic text-[#a9769f]">{pub.year}</span>
+                                    <span className="w-14 shrink-0 font-serif text-xl italic text-[#a9769f]">{pub.date}</span>
                                     <div>
                                         <p className="font-serif text-lg italic text-[#3a3240]">{pub.title}</p>
-                                        {pub.publication && (
-                                            <p className="mt-0.5 font-sans text-sm text-[#8a8189]">{pub.publication}</p>
+                                        {pub.description && (
+                                            <p className="mt-0.5 font-sans text-sm text-[#8a8189]">{pub.description}</p>
                                         )}
                                     </div>
                                 </div>

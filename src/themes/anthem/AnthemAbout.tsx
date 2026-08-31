@@ -4,6 +4,7 @@ import { getArtistName } from "@/lib/artist-api";
 import Reveal from "./Reveal";
 import AnthemStudioSection from "./AnthemStudioSection";
 import AnthemGallerySection from "./AnthemGallerySection";
+import { sortByDateDesc } from "@/lib/cv-sort";
 
 // Real GHL bio text is often authored as "<subtitle line>\nArtist Biography\n<body>" — when a
 // standalone "Artist Biography" line is present, pull it out so it can be styled as its own
@@ -87,9 +88,9 @@ export default function AnthemAbout({ artist }: ThemePageProps) {
                                 {/* Modest vertical timeline — gold year + diamond marker, deliberately kept
                                     small (not a giant display-font year) per explicit feedback. */}
                                 <div className="relative pl-7 border-l-2 border-black/15">
-                                    {/* Most recently entered first — matches how artists actually think about
+                                    {/* Most recent first — matches how artists actually think about
                                         their own CV (newest/current show up top). */}
-                                    {[...artist.exhibitions].reverse().map((ex, i) => (
+                                    {sortByDateDesc(artist.exhibitions, (ex) => ex.year).map((ex, i) => (
                                         <Reveal key={i} delay={Math.min(i, 6) * 60} className="relative pb-8 last:pb-0">
                                             <span className="absolute -left-[1.97rem] top-1.5 w-3 h-3 rotate-45 bg-[#C9A227] border border-black/30" />
                                             <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">

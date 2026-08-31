@@ -151,7 +151,8 @@ export interface ArtistProfile {
     blogPosts?: { title: string; date: string; excerpt: string; imageUrl?: string | null; externalUrl?: string | null; source?: string | null; }[];
     book?: { title: string; description: string; imageUrl: string; publisher?: string; format?: string; isbn?: string; purchaseUrl?: string; purchaseLabel?: string; } | null;
     studioLocations?: { name?: string; address: string; city: string; state: string; zipCode?: string; directionsUrl?: string; }[];
-    publications?: { year: string; title: string; publication?: string; }[];
+    publications?: { title: string; description?: string; url?: string; date?: string; photo?: string; photoKey?: string; }[];
+    awards?: { title: string; description?: string; organization?: string; year?: string; photo?: string; photoKey?: string; }[];
     soldArtworks?: { id?: string; title: string; image: string; dimensions?: string | { width: number; height: number; depth?: number }; year?: string; price?: number; medium?: string; status?: string; }[];
     carouselImages?: string[];
     studioImages?: string[];

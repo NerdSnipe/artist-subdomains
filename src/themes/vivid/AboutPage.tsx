@@ -6,6 +6,7 @@ import { derivePalette } from "./color";
 import DynamicColorProvider from "./DynamicColorProvider";
 import HorizontalScrollStrip from "./HorizontalScrollStrip";
 import Reveal from "./Reveal";
+import { sortByDateDesc } from "@/lib/cv-sort";
 
 export default function VividAboutPage({ artist, artworks }: ThemePageProps) {
     const name = getArtistName(artist);
@@ -145,7 +146,7 @@ export default function VividAboutPage({ artist, artworks }: ThemePageProps) {
                                 </p>
                             </Reveal>
                             <div>
-                                {artist.exhibitions.map((ex, i) => (
+                                {sortByDateDesc(artist.exhibitions, (ex) => ex.year).map((ex, i) => (
                                     <Reveal key={i} delayMs={Math.min(i * 50, 300)}>
                                         <div className="grid grid-cols-12 gap-4 py-6 border-b border-white/10">
                                             <div className="col-span-3 md:col-span-2">
@@ -270,17 +271,17 @@ export default function VividAboutPage({ artist, artworks }: ThemePageProps) {
                                 </p>
                             </Reveal>
                             <div className="max-w-3xl">
-                                {artist.publications.map((pub, i) => (
+                                {sortByDateDesc(artist.publications, (pub) => pub.date).map((pub, i) => (
                                     <Reveal key={i} delayMs={Math.min(i * 50, 300)}>
                                         <div className="flex gap-6 py-5 border-b border-white/10">
                                             <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, color: "var(--v-secondary)" }} className="text-xl md:text-2xl w-16 shrink-0 pt-0.5">
-                                                {pub.year}
+                                                {pub.date}
                                             </span>
                                             <div>
                                                 <p style={{ fontFamily: "var(--font-display)", fontWeight: 700, color: "var(--v-paper)" }} className="text-lg">
                                                     {pub.title}
                                                 </p>
-                                                {pub.publication && <p className="text-sm italic mt-0.5" style={{ color: "rgba(246,244,239,0.5)" }}>{pub.publication}</p>}
+                                                {pub.description && <p className="text-sm italic mt-0.5" style={{ color: "rgba(246,244,239,0.5)" }}>{pub.description}</p>}
                                             </div>
                                         </div>
                                     </Reveal>

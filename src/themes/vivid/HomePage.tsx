@@ -8,6 +8,7 @@ import HeroSlider from "./HeroSlider";
 import FeaturedGrid from "./FeaturedGrid";
 import HorizontalScrollStrip from "./HorizontalScrollStrip";
 import Reveal from "./Reveal";
+import { sortByDateDesc } from "@/lib/cv-sort";
 import Marquee from "./Marquee";
 
 export default function VividHomePage({ artist, artworks }: ThemePageProps) {
@@ -256,7 +257,7 @@ export default function VividHomePage({ artist, artworks }: ThemePageProps) {
                                 </h2>
                             </Reveal>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                {artist.events.slice(0, 3).map((event, i) => (
+                                {sortByDateDesc(artist.events, (event) => event.startDate ?? event.date).slice(0, 3).map((event, i) => (
                                     <Reveal key={i} delayMs={i * 80}>
                                         <div className="p-6 rounded-2xl border-t-4" style={{ borderColor: "var(--v-secondary)", backgroundColor: "var(--v-ink-soft)" }}>
                                             <p className="text-[10px] font-bold tracking-widest uppercase mb-3" style={{ color: "rgba(246,244,239,0.4)" }}>

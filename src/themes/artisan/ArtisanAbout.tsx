@@ -5,6 +5,7 @@ import type { ThemePageProps } from "@/themes/types";
 import { getArtistName } from "@/lib/artist-api";
 import { StudioFrame } from "./decor";
 import Reveal from "./Reveal";
+import { sortByDateDesc } from "@/lib/cv-sort";
 
 interface TimelineEntry {
     year: string;
@@ -20,20 +21,23 @@ export default function ArtisanAbout({ artist }: ThemePageProps) {
         (v): v is string => Boolean(v)
     );
 
-    const timeline: TimelineEntry[] = [
-        ...(artist.exhibitions ?? []).map((e) => ({
-            year: e.year,
-            label: e.title,
-            detail: [e.type === "solo" ? "Solo" : e.type === "group" ? "Group" : null, e.location].filter(Boolean).join(" — "),
-            kind: "exhibition" as const,
-        })),
-        ...(artist.publications ?? []).map((p) => ({
-            year: p.year,
-            label: p.title,
-            detail: p.publication,
-            kind: "publication" as const,
-        })),
-    ].sort((a, b) => (b.year > a.year ? 1 : -1));
+    const timeline: TimelineEntry[] = sortByDateDesc(
+        [
+            ...(artist.exhibitions ?? []).map((e) => ({
+                year: e.year,
+                label: e.title,
+                detail: [e.type === "solo" ? "Solo" : e.type === "group" ? "Group" : null, e.location].filter(Boolean).join(" — "),
+                kind: "exhibition" as const,
+            })),
+            ...(artist.publications ?? []).map((p) => ({
+                year: p.date ?? "",
+                label: p.title,
+                detail: p.description,
+                kind: "publication" as const,
+            })),
+        ],
+        (entry) => entry.year
+    );
 
     const studioImages = (artist.studioImages ?? []).slice(0, 4);
 

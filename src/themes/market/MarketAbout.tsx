@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import type { ThemePageProps } from "@/themes/types";
 import { getArtistName, marketplaceArtistUrl } from "@/lib/artist-api";
 import Reveal from "./Reveal";
+import { sortByDateDesc } from "@/lib/cv-sort";
 
 export default function MarketAbout({ artist, domain }: ThemePageProps) {
     const name = getArtistName(artist);
@@ -110,7 +111,7 @@ export default function MarketAbout({ artist, domain }: ThemePageProps) {
                         </h2>
                     </Reveal>
                     <div className="space-y-0">
-                        {artist.exhibitions.map((ex, i) => (
+                        {sortByDateDesc(artist.exhibitions, (ex) => ex.year).map((ex, i) => (
                             <Reveal
                                 key={i}
                                 delay={i * 50}
@@ -138,15 +139,15 @@ export default function MarketAbout({ artist, domain }: ThemePageProps) {
                             </h2>
                         </Reveal>
                         <div className="space-y-4">
-                            {artist.publications.map((p, i) => (
+                            {sortByDateDesc(artist.publications, (p) => p.date).map((p, i) => (
                                 <Reveal
                                     key={i}
                                     delay={i * 50}
                                     className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4"
                                 >
-                                    <span className="text-sm text-[#8a7d6e] w-14 shrink-0">{p.year}</span>
+                                    <span className="text-sm text-[#8a7d6e] w-14 shrink-0">{p.date}</span>
                                     <span className="text-[#241e19] font-medium">{p.title}</span>
-                                    {p.publication && <span className="text-sm text-[#8a7d6e]">— {p.publication}</span>}
+                                    {p.description && <span className="text-sm text-[#8a7d6e]">— {p.description}</span>}
                                 </Reveal>
                             ))}
                         </div>
