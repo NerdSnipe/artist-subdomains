@@ -46,7 +46,7 @@ export default function ArtisanAbout({ artist }: ThemePageProps) {
                         <Reveal className="md:col-span-2">
                             <StudioFrame rotate={-1.5} className="mx-auto w-full max-w-xs md:mx-0">
                                 <div className="relative aspect-[3/4] w-full">
-                                    <Image src={artist.bioPhoto} alt={name} fill className="object-cover" />
+                                    <Image src={artist.bioPhoto} alt={name} fill sizes="(min-width: 768px) 40vw, 100vw" className="object-cover" />
                                 </div>
                             </StudioFrame>
                         </Reveal>
@@ -114,7 +114,7 @@ export default function ArtisanAbout({ artist }: ThemePageProps) {
                                     <Reveal key={src} delay={i * 90}>
                                         <StudioFrame rotate={i % 2 === 0 ? -1.5 : 1.5}>
                                             <div className="relative aspect-square w-full">
-                                                <Image src={src} alt={`${name} studio, view ${i + 1}`} fill className="object-cover" />
+                                                <Image src={src} alt={`${name} studio, view ${i + 1}`} fill sizes="(min-width: 640px) 25vw, 50vw" className="object-cover" />
                                             </div>
                                         </StudioFrame>
                                     </Reveal>
@@ -223,7 +223,7 @@ export default function ArtisanAbout({ artist }: ThemePageProps) {
                     <Reveal className="mx-auto grid max-w-3xl grid-cols-1 gap-8 px-6 sm:grid-cols-[auto_1fr] sm:items-center">
                         <StudioFrame rotate={-1.5} className="mx-auto w-40">
                             <div className="relative aspect-[3/4] w-full">
-                                <Image src={artist.book.imageUrl} alt={artist.book.title} fill className="object-cover" />
+                                <Image src={artist.book.imageUrl} alt={artist.book.title} fill sizes="160px" className="object-cover" />
                             </div>
                         </StudioFrame>
                         <div>

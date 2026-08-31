@@ -40,7 +40,7 @@ export default function LuminaryArtworkDetailPage({ artist, product, relatedProd
                         <div className="relative bg-white p-3 shadow-[0_30px_70px_-20px_rgba(58,50,64,0.25)] sm:p-5">
                             {imgUrl ? (
                                 <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#f6f3f1]">
-                                    <Image src={imgUrl} alt={product.title} fill className="object-contain" priority />
+                                    <Image src={imgUrl} alt={product.title} fill sizes="(min-width: 768px) 55vw, 100vw" className="object-contain" priority />
                                 </div>
                             ) : (
                                 <div className="flex aspect-[4/3] items-center justify-center bg-[#f6f3f1]">
@@ -63,6 +63,7 @@ export default function LuminaryArtworkDetailPage({ artist, product, relatedProd
                                                 src={img.imageUrl}
                                                 alt={img.caption ?? `${product.title} view ${i + 2}`}
                                                 fill
+                                                sizes="96px"
                                                 className="object-cover"
                                             />
                                         </div>
@@ -243,6 +244,7 @@ export default function LuminaryArtworkDetailPage({ artist, product, relatedProd
                                                         src={rImg}
                                                         alt={r.title}
                                                         fill
+                                                        sizes="(min-width: 768px) 25vw, 50vw"
                                                         className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                                                     />
                                                 ) : (

@@ -29,7 +29,7 @@ export default function ArtisanArtworkDetail({ artist, product, relatedProducts 
                         <StudioFrame rotate={-1} className="mx-auto w-full max-w-lg">
                             <div className="relative aspect-square w-full bg-[var(--sand)]">
                                 {imgUrl && (
-                                    <Image src={imgUrl} alt={product.title} fill className="object-contain" priority />
+                                    <Image src={imgUrl} alt={product.title} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-contain" priority />
                                 )}
                                 {product.status === "sold" && (
                                     <div className="absolute left-4 top-4 bg-[var(--ink)] px-3 py-1 text-xs uppercase tracking-wide text-[var(--paper)]">
@@ -150,6 +150,7 @@ export default function ArtisanArtworkDetail({ artist, product, relatedProducts 
                                                         src={rImg}
                                                         alt={r.title}
                                                         fill
+                                                        sizes="(min-width: 640px) 33vw, 50vw"
                                                         className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                                                     />
                                                 )}

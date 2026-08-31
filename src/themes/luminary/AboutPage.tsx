@@ -63,7 +63,7 @@ export default function LuminaryAboutPage({ artist }: ThemePageProps) {
                                 <GlowBlob className="-inset-8 -z-10" colors={["#f6e3fb", "#d7e6ff"]} opacity={0.55} />
                                 <div className="relative aspect-[4/5] w-full overflow-hidden bg-white p-3 shadow-[0_30px_60px_-15px_rgba(58,50,64,0.22)]">
                                     <div className="relative h-full w-full overflow-hidden bg-[#f6f3f1]">
-                                        <Image src={photo} alt={name} fill className="object-cover" />
+                                        <Image src={photo} alt={name} fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" />
                                     </div>
                                 </div>
                             </div>
@@ -127,7 +127,7 @@ export default function LuminaryAboutPage({ artist }: ThemePageProps) {
                             >
                                 <div className={`relative overflow-hidden bg-white p-1.5 shadow-[0_14px_30px_-18px_rgba(58,50,64,0.22)] ${i === 0 ? "aspect-[16/9]" : "aspect-square"}`}>
                                     <div className="relative h-full w-full overflow-hidden bg-[#f6f3f1]">
-                                        <Image src={imgUrl} alt={`${name} studio ${i + 1}`} fill className="object-cover" />
+                                        <Image src={imgUrl} alt={`${name} studio ${i + 1}`} fill sizes="(min-width: 768px) 33vw, 50vw" className="object-cover" />
                                     </div>
                                 </div>
                             </Reveal>
@@ -144,7 +144,7 @@ export default function LuminaryAboutPage({ artist }: ThemePageProps) {
                         <div className="md:col-span-4">
                             <div className="relative aspect-[3/4] overflow-hidden bg-white p-3 shadow-[0_25px_50px_-15px_rgba(58,50,64,0.25)]">
                                 <div className="relative h-full w-full overflow-hidden bg-[#f6f3f1]">
-                                    <Image src={artist.book.imageUrl} alt={artist.book.title} fill className="object-cover" />
+                                    <Image src={artist.book.imageUrl} alt={artist.book.title} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover" />
                                 </div>
                             </div>
                         </div>
@@ -265,7 +265,7 @@ export default function LuminaryAboutPage({ artist }: ThemePageProps) {
                                     {g.photo && (
                                         <div className="relative mb-4 aspect-[3/2] overflow-hidden bg-white p-1.5 shadow-[0_14px_30px_-18px_rgba(58,50,64,0.2)]">
                                             <div className="relative h-full w-full overflow-hidden bg-[#f6f3f1]">
-                                                <Image src={g.photo} alt={g.name} fill className="object-cover" />
+                                                <Image src={g.photo} alt={g.name} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover" />
                                             </div>
                                         </div>
                                     )}

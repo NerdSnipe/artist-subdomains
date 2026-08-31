@@ -16,6 +16,7 @@ export default function NoirAboutPage({ artist }: ThemePageProps) {
                         src={profileImg}
                         alt={name}
                         fill
+                        sizes="100vw"
                         className="object-cover object-top"
                         priority
                     />
@@ -194,6 +195,7 @@ export default function NoirAboutPage({ artist }: ThemePageProps) {
                                         src={imgUrl}
                                         alt={`Studio ${i + 1}`}
                                         fill
+                                        sizes="(min-width: 768px) 33vw, 50vw"
                                         className="object-cover opacity-60 group-hover:opacity-90 group-hover:scale-105 transition-all duration-700"
                                     />
                                     <div className="absolute inset-0 border border-[#a8884a]/0 group-hover:border-[#a8884a]/20 transition-colors duration-500" />

@@ -146,6 +146,7 @@ export default function ArtworksBrowser({ artworks }: Props) {
                                             src={imgUrl}
                                             alt={artwork.title}
                                             fill
+                                            sizes="(min-width: 1024px) 33vw, 50vw"
                                             className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                                         />
                                     ) : (
@@ -223,6 +224,7 @@ export default function ArtworksBrowser({ artworks }: Props) {
                                                 src={imgUrl}
                                                 alt={artwork.title}
                                                 fill
+                                                sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
                                                 className="object-cover grayscale opacity-40"
                                             />
                                         ) : (

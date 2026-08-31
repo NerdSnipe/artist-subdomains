@@ -180,7 +180,7 @@ export default function VividHomePage({ artist, artworks }: ThemePageProps) {
                             <Reveal className="grid grid-cols-1 md:grid-cols-12 gap-10 items-center">
                                 <div className="md:col-span-4">
                                     <div className="relative aspect-[3/4] overflow-hidden rounded-2xl" style={{ backgroundColor: "var(--v-ink-soft)", boxShadow: "0 30px 60px -20px var(--v-glow)" }}>
-                                        <Image src={artist.book.imageUrl} alt={artist.book.title} fill className="object-cover" />
+                                        <Image src={artist.book.imageUrl} alt={artist.book.title} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover" />
                                     </div>
                                 </div>
                                 <div className="md:col-span-8">

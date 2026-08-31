@@ -43,7 +43,7 @@ export default function ArtisanArtworks({ artworks }: ThemePageProps) {
                                 return (
                                     <div key={artwork.id} className="opacity-60 grayscale">
                                         <div className="relative aspect-square w-full overflow-hidden bg-[var(--sand)]">
-                                            {img && <Image src={img} alt={artwork.title} fill className="object-cover" />}
+                                            {img && <Image src={img} alt={artwork.title} fill sizes="(min-width: 768px) 16vw, (min-width: 640px) 25vw, 33vw" className="object-cover" />}
                                         </div>
                                         <p className="mt-1.5 truncate text-[0.7rem] text-[var(--ink-soft)]">{artwork.title}</p>
                                     </div>

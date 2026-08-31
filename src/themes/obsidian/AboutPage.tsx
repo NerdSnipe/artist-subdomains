@@ -38,6 +38,7 @@ export default function ObsidianAbout({ artist }: ThemePageProps) {
                                 src={photo}
                                 alt={name}
                                 fill
+                                sizes="(min-width: 1024px) 50vw, 100vw"
                                 className="object-cover"
                                 priority
                             />
@@ -230,7 +231,7 @@ export default function ObsidianAbout({ artist }: ThemePageProps) {
 
                         <div className="flex flex-col md:flex-row gap-10 items-center rounded-sm border border-white/10 bg-white/[0.02] backdrop-blur-xl p-8 md:p-10">
                             <div className="relative w-36 md:w-44 aspect-[3/4] shrink-0 shadow-[0_30px_60px_-20px_rgba(0,0,0,0.6)]">
-                                <Image src={artist.book.imageUrl} alt={artist.book.title} fill className="object-cover" />
+                                <Image src={artist.book.imageUrl} alt={artist.book.title} fill sizes="176px" className="object-cover" />
                                 <div className="absolute inset-0 border border-[#c9a96e]/20" />
                             </div>
                             <div className="text-center md:text-left">
@@ -317,7 +318,7 @@ export default function ObsidianAbout({ artist }: ThemePageProps) {
                                     <>
                                         {post.imageUrl && (
                                             <div className="relative w-20 h-20 shrink-0 bg-[#111] overflow-hidden">
-                                                <Image src={post.imageUrl} alt={post.title} fill className="object-cover" />
+                                                <Image src={post.imageUrl} alt={post.title} fill sizes="80px" className="object-cover" />
                                             </div>
                                         )}
                                         <div>
@@ -421,6 +422,7 @@ export default function ObsidianAbout({ artist }: ThemePageProps) {
                                         src={img}
                                         alt={`Studio ${i + 1}`}
                                         fill
+                                        sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
                                         className="object-cover group-hover:scale-105 transition-transform duration-700"
                                     />
                                     <div className="absolute inset-0 bg-[#0a0a0a]/20 group-hover:bg-transparent transition-colors duration-500" />

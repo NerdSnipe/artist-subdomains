@@ -124,7 +124,7 @@ export default function ObsidianContact({ artist }: ThemePageProps) {
                                                 key={i}
                                                 className="relative w-14 h-14 shrink-0 bg-[#111] overflow-hidden border border-white/10"
                                             >
-                                                <Image src={img} alt={`${name} social ${i + 1}`} fill className="object-cover" />
+                                                <Image src={img} alt={`${name} social ${i + 1}`} fill sizes="56px" className="object-cover" />
                                             </div>
                                         ))}
                                     </div>

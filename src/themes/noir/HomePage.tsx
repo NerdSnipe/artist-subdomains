@@ -52,6 +52,7 @@ export default function NoirHomePage({ artist, artworks }: ThemePageProps) {
                                             src={imgUrl}
                                             alt={artwork.title}
                                             fill
+                                            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                                             className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                                         />
                                     ) : (
@@ -171,6 +172,7 @@ export default function NoirHomePage({ artist, artworks }: ThemePageProps) {
                                     src={imgUrl}
                                     alt={`Studio ${i + 1}`}
                                     fill
+                                    sizes="256px"
                                     className="object-cover opacity-50 hover:opacity-80 transition-opacity duration-500"
                                 />
                             </div>

@@ -59,6 +59,7 @@ export default function ObsidianArtworks({ artist, artworks, domain }: ThemePage
                                                 src={work.image}
                                                 alt={work.title}
                                                 fill
+                                                sizes="80px"
                                                 className="object-cover grayscale-[0.3] opacity-80 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-500"
                                             />
                                         </div>

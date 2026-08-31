@@ -131,6 +131,7 @@ export default function LuminaryArtworksPage({ artworks }: ThemePageProps) {
                                                         src={img}
                                                         alt={work.title}
                                                         fill
+                                                        sizes="(min-width: 768px) 33vw, 50vw"
                                                         className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                                                     />
                                                 ) : (
@@ -188,7 +189,7 @@ export default function LuminaryArtworksPage({ artworks }: ThemePageProps) {
                                     <div key={work.id} className="group">
                                         <div className="relative aspect-square overflow-hidden bg-[#f6f3f1] grayscale-[0.3]">
                                             {img ? (
-                                                <Image src={img} alt={work.title} fill className="object-cover opacity-70" />
+                                                <Image src={img} alt={work.title} fill sizes="(min-width: 768px) 16vw, (min-width: 640px) 25vw, 33vw" className="object-cover opacity-70" />
                                             ) : (
                                                 <div className="absolute inset-0 bg-[#f0ebe9]" />
                                             )}

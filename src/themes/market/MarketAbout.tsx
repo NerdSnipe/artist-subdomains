@@ -17,7 +17,7 @@ export default function MarketAbout({ artist, domain }: ThemePageProps) {
                         <Reveal className="md:col-span-2">
                             <div className="relative aspect-[4/5]">
                                 <div className="absolute -inset-3 border border-[#b2542e]/40 -z-10" />
-                                <Image src={artist.profilePhoto} alt={name} fill className="object-cover" />
+                                <Image src={artist.profilePhoto} alt={name} fill sizes="(min-width: 768px) 40vw, 100vw" className="object-cover" />
                             </div>
                         </Reveal>
                     )}
@@ -90,7 +90,7 @@ export default function MarketAbout({ artist, domain }: ThemePageProps) {
                                         key={src + i}
                                         className={`relative overflow-hidden ${i === 0 ? "col-span-2 aspect-[16/10]" : "aspect-square"}`}
                                     >
-                                        <Image src={src} alt={`${name} studio process ${i + 1}`} fill className="object-cover" />
+                                        <Image src={src} alt={`${name} studio process ${i + 1}`} fill sizes={i === 0 ? "(min-width: 768px) 50vw, 100vw" : "(min-width: 768px) 25vw, 50vw"} className="object-cover" />
                                     </div>
                                 ))}
                             </Reveal>

@@ -82,6 +82,7 @@ export default function HeroCarousel({ artworks, artist }: Props) {
                         src={imgUrl}
                         alt={slide.title}
                         fill
+                        sizes="100vw"
                         className="object-cover"
                         priority
                         style={{

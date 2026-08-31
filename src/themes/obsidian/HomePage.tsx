@@ -24,6 +24,7 @@ export default function ObsidianHome({ artist, artworks, domain }: ThemePageProp
                             src={heroImage}
                             alt={name}
                             fill
+                            sizes="100vw"
                             className="object-cover obsidian-kenburns"
                             priority
                         />
@@ -117,6 +118,7 @@ export default function ObsidianHome({ artist, artworks, domain }: ThemePageProp
                                                 src={imgUrl}
                                                 alt={artwork.title}
                                                 fill
+                                                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                                                 className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                                             />
                                         ) : (
@@ -216,6 +218,7 @@ export default function ObsidianHome({ artist, artworks, domain }: ThemePageProp
                                         src={src}
                                         alt={`${name} gallery image ${i + 1}`}
                                         fill
+                                        sizes="(min-width: 1024px) 24vw, (min-width: 640px) 38vw, 70vw"
                                         className="object-cover"
                                     />
                                 </div>
@@ -244,6 +247,7 @@ export default function ObsidianHome({ artist, artworks, domain }: ThemePageProp
                                         src={artist.book.imageUrl}
                                         alt={artist.book.title}
                                         fill
+                                        sizes="224px"
                                         className="object-cover"
                                     />
                                     <div className="absolute inset-0 border border-[#c9a96e]/20" />

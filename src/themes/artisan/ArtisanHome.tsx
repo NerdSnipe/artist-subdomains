@@ -79,7 +79,7 @@ export default function ArtisanHome({ artist, artworks }: ThemePageProps) {
                         <Reveal delay={150} className="mx-auto w-full max-w-sm md:mx-0">
                             <StudioFrame rotate={-1.5} className="w-full">
                                 <div className="relative aspect-[4/5] w-full">
-                                    <Image src={heroImage} alt={name} fill className="object-cover" priority />
+                                    <Image src={heroImage} alt={name} fill sizes="(min-width: 768px) 45vw, 100vw" className="object-cover" priority />
                                 </div>
                             </StudioFrame>
                         </Reveal>
@@ -128,6 +128,7 @@ export default function ArtisanHome({ artist, artworks }: ThemePageProps) {
                                                         src={img}
                                                         alt={artwork.title}
                                                         fill
+                                                        sizes={i === 0 ? "(min-width: 640px) 50vw, 100vw" : "(min-width: 640px) 25vw, 50vw"}
                                                         className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                                                     />
                                                 )}
@@ -182,7 +183,7 @@ export default function ArtisanHome({ artist, artworks }: ThemePageProps) {
                                             className={i === 0 && studioImages.length > 1 ? "col-span-2" : ""}
                                         >
                                             <div className={`relative w-full ${i === 0 && studioImages.length > 1 ? "aspect-[16/10]" : "aspect-square"}`}>
-                                                <Image src={src} alt={`${name} studio, view ${i + 1}`} fill className="object-cover" />
+                                                <Image src={src} alt={`${name} studio, view ${i + 1}`} fill sizes={i === 0 && studioImages.length > 1 ? "448px" : "224px"} className="object-cover" />
                                             </div>
                                         </StudioFrame>
                                     ))}

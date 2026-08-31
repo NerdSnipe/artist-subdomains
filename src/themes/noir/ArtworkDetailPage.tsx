@@ -41,6 +41,7 @@ export default function NoirArtworkDetailPage({
                         src={imgUrl}
                         alt={product.title}
                         fill
+                        sizes="100vw"
                         className="object-cover"
                         priority
                     />
@@ -93,6 +94,7 @@ export default function NoirArtworkDetailPage({
                                 src={imgUrl}
                                 alt={product.title}
                                 fill
+                                sizes="(min-width: 1024px) 55vw, 100vw"
                                 className="object-contain"
                                 priority
                             />
@@ -117,6 +119,7 @@ export default function NoirArtworkDetailPage({
                                         src={img.imageUrl}
                                         alt={img.caption ?? `${product.title} view ${i + 2}`}
                                         fill
+                                        sizes="80px"
                                         className="object-cover opacity-60 hover:opacity-100 transition-opacity duration-300"
                                     />
                                 </div>
@@ -413,6 +416,7 @@ export default function NoirArtworkDetailPage({
                                                 src={rImg}
                                                 alt={r.title}
                                                 fill
+                                                sizes="(min-width: 768px) 25vw, 50vw"
                                                 className="object-cover group-hover:scale-105 transition-transform duration-700"
                                             />
                                         ) : (
