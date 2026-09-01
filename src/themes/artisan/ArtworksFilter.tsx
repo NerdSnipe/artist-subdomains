@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Product } from "@/types";
 import { getProductImageUrl } from "@/lib/artist-api";
+import { getEffectiveDimensions } from "@/lib/product-dimensions";
 
 export default function ArtworksFilter({ artworks }: { artworks: Product[] }) {
     const [active, setActive] = useState<string>("All");
@@ -49,6 +50,7 @@ export default function ArtworksFilter({ artworks }: { artworks: Product[] }) {
                 <div className="grid grid-cols-2 gap-5 sm:grid-cols-3">
                     {visible.map((artwork) => {
                         const img = getProductImageUrl(artwork);
+                        const dims = getEffectiveDimensions(artwork);
                         return (
                             <Link key={artwork.id} href={`/artworks/${artwork.slug ?? artwork.id}`} className="group block">
                                 <div className="relative aspect-[4/5] w-full overflow-hidden bg-[var(--sand)]">
@@ -63,9 +65,9 @@ export default function ArtworksFilter({ artworks }: { artworks: Product[] }) {
                                     )}
                                 </div>
                                 <p className="mt-3 text-sm text-[var(--ink)]">{artwork.title}</p>
-                                {artwork.dimensions && (
+                                {dims && (
                                     <p className="text-xs text-[var(--ink-soft)]">
-                                        {artwork.dimensions.width}&Prime; × {artwork.dimensions.height}&Prime;
+                                        {dims.width}&Prime; × {dims.height}&Prime;
                                     </p>
                                 )}
                                 <p className="text-sm text-[var(--clay-dark)]">${artwork.price.toLocaleString()}</p>

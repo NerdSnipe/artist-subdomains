@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import type { ThemeArtworkDetailProps } from "@/themes/types";
 import { getProductImageUrl, marketplaceArtworkUrl } from "@/lib/artist-api";
+import { getEffectiveDimensions } from "@/lib/product-dimensions";
 import ArtworkGallery from "./ArtworkGallery";
 import { SectionLabel, WallLabel } from "./ui";
 
@@ -20,10 +21,11 @@ function getAllImageUrls(product: ThemeArtworkDetailProps["product"]): string[] 
 export default function GalleryArtworkDetail({ artist, product, relatedProducts }: ThemeArtworkDetailProps) {
     const images = getAllImageUrls(product);
     const artistSlug = product.artistSlug ?? artist.slug ?? "";
-    const dimensions = product.dimensions
-        ? `${product.dimensions.width} × ${product.dimensions.height}${
-              product.dimensions.depth ? ` × ${product.dimensions.depth}` : ""
-          } ${product.dimensions.unit === "inches" ? "in" : "cm"}`
+    const effDims = getEffectiveDimensions(product);
+    const dimensions = effDims
+        ? `${effDims.width} × ${effDims.height}${
+              effDims.depth ? ` × ${effDims.depth}` : ""
+          } ${effDims.unit === "inches" ? "in" : "cm"}`
         : null;
 
     return (

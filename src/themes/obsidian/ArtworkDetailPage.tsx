@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ThemeArtworkDetailProps } from "@/themes/types";
 import { getProductImageUrl, marketplaceArtworkUrl } from "@/lib/artist-api";
+import { getEffectiveDimensions } from "@/lib/product-dimensions";
 
 export default function ObsidianArtworkDetail({
     artist,
@@ -10,6 +11,7 @@ export default function ObsidianArtworkDetail({
     domain,
 }: ThemeArtworkDetailProps) {
     const imgUrl = getProductImageUrl(product);
+    const dims = getEffectiveDimensions(product);
     const artistSlug = product.artistSlug ?? artist.slug ?? "";
     const medium = product.medium ?? product.mediums?.[0]?.medium?.name;
     const styles = product.styles?.map((s) => s.artStyle?.name).filter(Boolean) as string[] ?? [];
@@ -124,15 +126,15 @@ export default function ObsidianArtworkDetail({
                             </div>
                         )}
 
-                        {product.dimensions && (
+                        {dims && (
                             <div className="flex gap-4">
                                 <span className="text-[9px] tracking-[0.3em] uppercase text-[#3a3530] w-24 shrink-0 pt-0.5">
                                     Dimensions
                                 </span>
                                 <span className="text-xs text-[#8a8278] font-light">
-                                    {product.dimensions.width} × {product.dimensions.height}
-                                    {product.dimensions.depth ? ` × ${product.dimensions.depth}` : ""}{" "}
-                                    {product.dimensions.unit}
+                                    {dims.width} × {dims.height}
+                                    {dims.depth ? ` × ${dims.depth}` : ""}{" "}
+                                    {dims.unit}
                                 </span>
                             </div>
                         )}

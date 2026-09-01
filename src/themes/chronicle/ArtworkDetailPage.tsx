@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ThemeArtworkDetailProps } from "@/themes/types";
 import { getArtistName, getProductImageUrl, marketplaceArtworkUrl } from "@/lib/artist-api";
+import { getEffectiveDimensions } from "@/lib/product-dimensions";
 import ArtworkImageGallery from "./ArtworkImageGallery";
 import HorizontalGallery from "./HorizontalGallery";
 import RevealOnScroll from "./RevealOnScroll";
@@ -17,6 +18,7 @@ export default function ChronicleArtworkDetailPage({
     const name = getArtistName(artist);
     const artistSlug = product.artistSlug ?? artist.slug ?? "";
     const canPurchase = product.status === "active" && !!artistSlug && !!product.slug;
+    const dims = getEffectiveDimensions(product);
 
     const mediumNames = product.mediums?.map((m) => m.medium?.name).filter(Boolean) as string[] ?? (product.medium ? [product.medium] : []);
     const styleNames = product.styles?.map((s) => s.artStyle?.name).filter(Boolean) as string[] ?? [];
@@ -128,12 +130,12 @@ export default function ChronicleArtworkDetailPage({
                                             <dd style={{ fontFamily: BASKERVILLE, fontSize: "0.85rem", color: "#1c1917" }}>{mediumNames.join(", ")}</dd>
                                         </>
                                     )}
-                                    {product.dimensions && (
+                                    {dims && (
                                         <>
                                             <dt style={{ fontFamily: MONO, fontSize: "0.58rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "#9ca3af" }}>Dimensions</dt>
                                             <dd style={{ fontFamily: MONO, fontSize: "0.75rem", color: "#1c1917" }}>
-                                                {product.dimensions.width} × {product.dimensions.height}
-                                                {product.dimensions.depth ? ` × ${product.dimensions.depth}` : ""} {product.dimensions.unit}
+                                                {dims.width} × {dims.height}
+                                                {dims.depth ? ` × ${dims.depth}` : ""} {dims.unit}
                                             </dd>
                                         </>
                                     )}

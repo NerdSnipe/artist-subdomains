@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ShieldCheck, Ruler, Paintbrush, Calendar, Frame, PenLine, type LucideIcon } from "lucide-react";
 import type { ThemeArtworkDetailProps } from "@/themes/types";
 import { getProductImageUrl, marketplaceArtworkUrl } from "@/lib/artist-api";
+import { getEffectiveDimensions } from "@/lib/product-dimensions";
 import Reveal from "./Reveal";
 import AnthemNoirArtworkCard from "./AnthemNoirArtworkCard";
 
@@ -15,9 +16,10 @@ export default function AnthemNoirArtworkDetail({ artist, product, relatedProduc
         : [{ imageUrl: getProductImageUrl(product), caption: null as string | null }];
     const [activeImg, setActiveImg] = useState(0);
     const img = gallery[activeImg]?.imageUrl ?? getProductImageUrl(product);
+    const effDims = getEffectiveDimensions(product);
     // Real proportions (not a forced square) — matches the card treatment elsewhere, so a tall
     // or wide piece is never cropped to fit a square box.
-    const ratio = product.dimensions ? `${product.dimensions.width} / ${product.dimensions.height}` : "1 / 1";
+    const ratio = effDims ? `${effDims.width} / ${effDims.height}` : "1 / 1";
 
     // Sells through the ArtDistrictUSA marketplace, same as the other theme families — no
     // separate checkout funnel here, this just routes the buyer to the real product page
@@ -28,9 +30,9 @@ export default function AnthemNoirArtworkDetail({ artist, product, relatedProduc
     const firstName = artist.firstName || artist.displayName?.split(" ")[0] || "the artist";
 
     // Marketplace convention: always Height x Width x Depth.
-    const dims = product.dimensions
-        ? `${product.dimensions.height}" H × ${product.dimensions.width}" W${
-              product.dimensions.depth ? ` × ${product.dimensions.depth}" D` : ""
+    const dims = effDims
+        ? `${effDims.height}" H × ${effDims.width}" W${
+              effDims.depth ? ` × ${effDims.depth}" D` : ""
           }`
         : null;
 

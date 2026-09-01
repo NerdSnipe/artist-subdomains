@@ -3,10 +3,12 @@ import Link from "next/link";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import type { ThemeArtworkDetailProps } from "@/themes/types";
 import { getProductImageUrl, marketplaceArtworkUrl } from "@/lib/artist-api";
+import { getEffectiveDimensions } from "@/lib/product-dimensions";
 import ScrollReveal from "./ScrollReveal";
 
 export default function StudioArtworkDetail({ artist, product, relatedProducts }: ThemeArtworkDetailProps) {
     const imgUrl = getProductImageUrl(product);
+    const dims = getEffectiveDimensions(product);
     const artistSlug = product.artistSlug ?? artist.slug ?? "";
     const gallery = product.images?.length ? product.images : [];
     const tags = [
@@ -90,10 +92,10 @@ export default function StudioArtworkDetail({ artist, product, relatedProducts }
                 </ScrollReveal>
 
                 <ScrollReveal delayMs={100} className="space-y-5 border-l border-neutral-800/60 pl-8">
-                    {product.dimensions && (
+                    {dims && (
                         <p className="font-[family-name:var(--font-studio-body)] text-sm font-light text-neutral-500">
-                            {product.dimensions.width} × {product.dimensions.height}
-                            {product.dimensions.depth ? ` × ${product.dimensions.depth}` : ""} {product.dimensions.unit}
+                            {dims.width} × {dims.height}
+                            {dims.depth ? ` × ${dims.depth}` : ""} {dims.unit}
                         </p>
                     )}
                     <div className="flex flex-wrap gap-2">

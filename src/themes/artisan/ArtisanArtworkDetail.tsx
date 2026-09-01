@@ -3,11 +3,13 @@ import Link from "next/link";
 import { ArrowLeft, ArrowUpRight, Ruler, Sparkles } from "lucide-react";
 import type { ThemeArtworkDetailProps } from "@/themes/types";
 import { getProductImageUrl, marketplaceArtworkUrl } from "@/lib/artist-api";
+import { getEffectiveDimensions } from "@/lib/product-dimensions";
 import { StudioFrame } from "./decor";
 import Reveal from "./Reveal";
 
 export default function ArtisanArtworkDetail({ artist, product, relatedProducts }: ThemeArtworkDetailProps) {
     const imgUrl = getProductImageUrl(product);
+    const dims = getEffectiveDimensions(product);
     const artistSlug = product.artistSlug ?? artist.slug ?? "";
     const materials = product.materials?.map((m) => m.material?.name).filter(Boolean) as string[] ?? [];
     const mediums = product.mediums?.map((m) => m.medium?.name).filter(Boolean) as string[] ?? (product.medium ? [product.medium] : []);
@@ -68,11 +70,11 @@ export default function ArtisanArtworkDetail({ artist, product, relatedProducts 
                             </div>
                         )}
 
-                        {product.dimensions && (
+                        {dims && (
                             <div className="mt-5 flex items-center gap-2 text-sm text-[var(--ink-soft)]">
                                 <Ruler size={15} className="text-[var(--clay)]" />
-                                {product.dimensions.width}&Prime; × {product.dimensions.height}&Prime;
-                                {product.dimensions.depth ? ` × ${product.dimensions.depth}\u2033` : ""}
+                                {dims.width}&Prime; × {dims.height}&Prime;
+                                {dims.depth ? ` × ${dims.depth}\u2033` : ""}
                             </div>
                         )}
 

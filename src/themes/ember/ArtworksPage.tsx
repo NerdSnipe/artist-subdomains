@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import type { ThemePageProps } from "@/themes/types";
 import { getArtistName, getProductImageUrl } from "@/lib/artist-api";
+import { getEffectiveDimensions } from "@/lib/product-dimensions";
 import Reveal from "./Reveal";
 import { ink, coal, coalLight, smoke, smokeDark, emberMid, emberGradient } from "./palette";
 
@@ -92,6 +93,7 @@ export default function EmberArtworks({ artist, artworks, domain }: ThemePagePro
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
                         {filtered.map((artwork, i) => {
                             const img = getProductImageUrl(artwork);
+                            const dims = getEffectiveDimensions(artwork);
                             return (
                                 <Reveal key={artwork.id} delayMs={(i % 6) * 60}>
                                     <Link href={`/artworks/${artwork.slug ?? artwork.id}`} className="group block">
@@ -119,9 +121,9 @@ export default function EmberArtworks({ artist, artworks, domain }: ThemePagePro
                                                         <p className="text-sm font-bold" style={{ color: "#f6f1e8" }}>
                                                             {artwork.status === "sold" ? "Sold" : `$${artwork.price.toLocaleString()}`}
                                                         </p>
-                                                        {artwork.dimensions && (
+                                                        {dims && (
                                                             <p className="text-xs mt-0.5" style={{ color: "#d8cfc4" }}>
-                                                                {artwork.dimensions.width}&Prime; &times; {artwork.dimensions.height}&Prime;
+                                                                {dims.width}&Prime; &times; {dims.height}&Prime;
                                                             </p>
                                                         )}
                                                     </div>

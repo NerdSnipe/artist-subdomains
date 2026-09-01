@@ -3,11 +3,13 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import type { ThemeArtworkDetailProps } from "@/themes/types";
 import { getArtistName, getProductImageUrl, marketplaceArtworkUrl } from "@/lib/artist-api";
+import { getEffectiveDimensions } from "@/lib/product-dimensions";
 import { ink, coal, coalLight, smoke, smokeDark, emberMid, emberGradient, emberGradientSteep } from "./palette";
 
 export default function EmberArtworkDetail({ artist, product, relatedProducts, domain }: ThemeArtworkDetailProps) {
     const name = getArtistName(artist);
     const imgUrl = getProductImageUrl(product);
+    const dims = getEffectiveDimensions(product);
     const canPurchase = product.status === "active" && !!product.artistSlug && !!product.slug;
 
     const mediumNames = product.mediums?.map((m) => m.medium?.name).filter(Boolean) as string[] ?? (product.medium ? [product.medium] : []);
@@ -94,10 +96,10 @@ export default function EmberArtworkDetail({ artist, product, relatedProducts, d
                         )}
 
                         <div className="space-y-4 mb-8 pb-8 border-b" style={{ borderColor: "rgba(255,255,255,0.1)" }}>
-                            {product.dimensions && (
+                            {dims && (
                                 <DetailRow label="Size">
-                                    {product.dimensions.width}&Prime; &times; {product.dimensions.height}&Prime;
-                                    {product.dimensions.depth ? ` × ${product.dimensions.depth}″` : ""} {product.dimensions.unit === "cm" ? "cm" : "in"}
+                                    {dims.width}&Prime; &times; {dims.height}&Prime;
+                                    {dims.depth ? ` × ${dims.depth}″` : ""} {dims.unit === "cm" ? "cm" : "in"}
                                 </DetailRow>
                             )}
                             {product.isOriginal !== undefined && (

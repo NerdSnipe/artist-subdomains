@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Product } from "@/types";
 import { getProductImageUrl } from "@/lib/artist-api";
+import { getEffectiveDimensions } from "@/lib/product-dimensions";
 
 // The one artwork-card design used everywhere a grid of pieces appears — homepage, the
 // artworks/portfolio page, and the "More Work" strip on a single artwork's detail page.
@@ -9,9 +10,10 @@ import { getProductImageUrl } from "@/lib/artist-api";
 // row so a browsing collector never has to click through just to check size or palette.
 export default function AnthemNoirArtworkCard({ art, priority = false }: { art: Product; priority?: boolean }) {
     const img = getProductImageUrl(art);
-    const ratio = art.dimensions ? `${art.dimensions.width} / ${art.dimensions.height}` : "1 / 1";
-    const dims = art.dimensions
-        ? `${art.dimensions.height}" H × ${art.dimensions.width}" W${art.dimensions.depth ? ` × ${art.dimensions.depth}" D` : ""}`
+    const effDims = getEffectiveDimensions(art);
+    const ratio = effDims ? `${effDims.width} / ${effDims.height}` : "1 / 1";
+    const dims = effDims
+        ? `${effDims.height}" H × ${effDims.width}" W${effDims.depth ? ` × ${effDims.depth}" D` : ""}`
         : null;
 
     return (

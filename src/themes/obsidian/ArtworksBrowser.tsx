@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState, useMemo } from "react";
 import type { Product } from "@/types";
 import { getProductImageUrl } from "@/lib/artist-api";
+import { getEffectiveDimensions } from "@/lib/product-dimensions";
 
 interface Props {
     artworks: Product[];
@@ -134,6 +135,7 @@ export default function ArtworksBrowser({ artworks, domain }: Props) {
                     {active.map((artwork) => {
                         const imgUrl = getProductImageUrl(artwork);
                         const medium = artwork.medium ?? artwork.mediums?.[0]?.medium?.name;
+                        const dims = getEffectiveDimensions(artwork);
                         return (
                             <Link
                                 key={artwork.id}
@@ -162,9 +164,9 @@ export default function ArtworksBrowser({ artworks, domain }: Props) {
                                         {medium}
                                     </p>
                                 )}
-                                {artwork.dimensions && (
+                                {dims && (
                                     <p className="text-[9px] tracking-[0.1em] text-[#3a3530] mb-1">
-                                        {artwork.dimensions.width} × {artwork.dimensions.height} {artwork.dimensions.unit}
+                                        {dims.width} × {dims.height} {dims.unit}
                                     </p>
                                 )}
                                 <p className="text-xs text-[#8a8278] font-thin">

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowLeft, ExternalLink, Frame, PackageCheck, PenLine, Ruler, Truck } from "lucide-react";
 import type { ThemeArtworkDetailProps } from "@/themes/types";
 import { marketplaceArtworkUrl } from "@/lib/artist-api";
+import { getEffectiveDimensions } from "@/lib/product-dimensions";
 import Gallery from "./Gallery";
 import ProductCard from "./ProductCard";
 import Reveal from "./Reveal";
@@ -13,6 +14,7 @@ function taxonomyList(items?: Array<{ name: string; id: string }> | null) {
 export default function MarketArtworkDetail({ artist, product, relatedProducts, domain }: ThemeArtworkDetailProps) {
     const artistSlug = product.artistSlug ?? artist.slug ?? "";
     const isSold = product.status === "sold";
+    const dims = getEffectiveDimensions(product);
     const dominant = product.dominantColors?.slice(0, 6) ?? [];
 
     const mediums = taxonomyList(product.mediums?.map((m) => m.medium));
@@ -115,14 +117,14 @@ export default function MarketArtworkDetail({ artist, product, relatedProducts, 
 
                     {/* Commerce facts */}
                     <div className="grid grid-cols-2 gap-x-6 gap-y-4 py-6 border-t border-[#e3d5c1]">
-                        {product.dimensions && (
+                        {dims && (
                             <div className="flex items-start gap-2.5">
                                 <Ruler size={16} className="text-[#b2542e] mt-0.5 shrink-0" />
                                 <div>
                                     <p className="text-[10px] tracking-[0.15em] uppercase text-[#8a7d6e] mb-0.5">Dimensions</p>
                                     <p className="text-sm text-[#241e19] font-medium">
-                                        {product.dimensions.width}″ × {product.dimensions.height}″
-                                        {product.dimensions.depth ? ` × ${product.dimensions.depth}″` : ""}
+                                        {dims.width}″ × {dims.height}″
+                                        {dims.depth ? ` × ${dims.depth}″` : ""}
                                     </p>
                                 </div>
                             </div>

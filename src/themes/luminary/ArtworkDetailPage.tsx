@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import type { ThemeArtworkDetailProps } from "@/themes/types";
 import { getArtistName, getProductImageUrl, marketplaceArtworkUrl } from "@/lib/artist-api";
+import { getEffectiveDimensions } from "@/lib/product-dimensions";
 import GlowBlob from "./GlowBlob";
 import Reveal from "./Reveal";
 import { Kicker, PaletteDots, PillButton } from "./ui";
@@ -12,6 +13,7 @@ export default function LuminaryArtworkDetailPage({ artist, product, relatedProd
     const name = getArtistName(artist);
     const artistSlug = product.artistSlug ?? artist.slug ?? "";
     const canPurchase = product.status === "active" && !!artistSlug && !!product.slug;
+    const dims = getEffectiveDimensions(product);
 
     const images = [...(product.images ?? [])].sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
     const mediumNames = product.mediums?.map((m) => m.medium?.name).filter(Boolean) as string[] ?? (product.medium ? [product.medium] : []);
@@ -133,12 +135,12 @@ export default function LuminaryArtworkDetailPage({ artist, product, relatedProd
 
                         {/* Specifications */}
                         <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-4 border-t border-[#3a3240]/10 pt-8">
-                            {product.dimensions && (
+                            {dims && (
                                 <>
                                     <dt className="font-sans text-[11px] uppercase tracking-[0.14em] text-[#a39aa0]">Dimensions</dt>
                                     <dd className="font-sans text-sm text-[#3a3240]">
-                                        {product.dimensions.width} × {product.dimensions.height}
-                                        {product.dimensions.depth ? ` × ${product.dimensions.depth}` : ""} {product.dimensions.unit}
+                                        {dims.width} × {dims.height}
+                                        {dims.depth ? ` × ${dims.depth}` : ""} {dims.unit}
                                     </dd>
                                 </>
                             )}

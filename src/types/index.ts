@@ -12,6 +12,22 @@ export interface ProductImage {
     image?: string;
 }
 
+export interface ProductSize {
+    id: string;
+    label: string;               // "Original" for sizes[0]; e.g. "8×10" for variants
+    width: number | null;
+    height: number | null;
+    depth: number | null;        // omit from display if null
+    unit: string;                // may be mixed-case ("Inches") — always .toLowerCase() before display
+    price: number;
+    isAvailable: boolean;
+    displayOrder: number;        // sort ascending; 0 = original artwork
+    /** Price to order this size as a framed print. null = not offered for this size. */
+    printPriceFramed: number | null;
+    /** Price to order this size as a rolled/canvas print. null = not offered for this size. */
+    printPriceRolled: number | null;
+}
+
 export interface Product {
     id: string;
     accountId: string;
@@ -29,6 +45,8 @@ export interface Product {
     imageKey: string | null;
     // NEW: Multiple images support
     images: ProductImage[];
+    sizes?: ProductSize[];
+    /** @deprecated Legacy field — prefer sizes[0]. Use getEffectiveDimensions() instead of reading this directly. */
     dimensions: {
         width: number;
         height: number;

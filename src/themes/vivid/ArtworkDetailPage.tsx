@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ThemeArtworkDetailProps } from "@/themes/types";
 import { getArtistName, getProductImageUrl, marketplaceArtworkUrl } from "@/lib/artist-api";
+import { getEffectiveDimensions } from "@/lib/product-dimensions";
 import { derivePalette } from "./color";
 import DynamicColorProvider from "./DynamicColorProvider";
 import ArtworkImageSwitcher from "./ArtworkImageSwitcher";
@@ -12,6 +13,7 @@ export default function VividArtworkDetailPage({ artist, product, relatedProduct
     const artistSlug = product.artistSlug ?? artist.slug ?? "";
     const canPurchase = product.status === "active" && !!artistSlug && !!product.slug;
     const palette = derivePalette(product.dominantColors, product.id);
+    const dims = getEffectiveDimensions(product);
 
     const mediumNames = product.mediums?.map((m) => m.medium?.name).filter(Boolean) as string[] ?? (product.medium ? [product.medium] : []);
     const styleNames = product.styles?.map((s) => s.artStyle?.name).filter(Boolean) as string[] ?? [];
@@ -72,10 +74,10 @@ export default function VividArtworkDetailPage({ artist, product, relatedProduct
                                 </p>
                                 <dl className="grid grid-cols-2 gap-x-8 gap-y-5">
                                     {mediumNames.length > 0 && <Spec label="Medium" value={mediumNames.join(", ")} />}
-                                    {product.dimensions && (
+                                    {dims && (
                                         <Spec
                                             label="Dimensions"
-                                            value={`${product.dimensions.width} × ${product.dimensions.height}${product.dimensions.depth ? ` × ${product.dimensions.depth}` : ""} ${product.dimensions.unit}`}
+                                            value={`${dims.width} × ${dims.height}${dims.depth ? ` × ${dims.depth}` : ""} ${dims.unit}`}
                                         />
                                     )}
                                     {product.isOriginal !== undefined && <Spec label="Type" value={product.isOriginal ? "Original" : "Print / Reproduction"} />}
