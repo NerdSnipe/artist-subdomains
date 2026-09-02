@@ -157,6 +157,11 @@ export interface ArtistProfile {
         location: string;
         type?: 'solo' | 'group';
     }[];
+    milestones?: { date: string; title: string; description?: string }[];
+    careerNotes?: { date: string; title: string; note?: string }[];
+    achievements?: { date: string; title: string; organization?: string; description?: string }[];
+    trainings?: { date: string; title: string; institution?: string; description?: string }[];
+    miscEvents?: { date: string; title: string; description?: string }[];
     artworks?: Product[];
 
     // Elite Template Specific Data

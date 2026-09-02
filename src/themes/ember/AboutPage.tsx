@@ -121,6 +121,128 @@ export default function EmberAbout({ artist, domain }: ThemePageProps) {
                 </section>
             )}
 
+            {/* ── Milestones ───────────────────────────────────────────── */}
+            {artist.milestones && artist.milestones.length > 0 && (
+                <section className="py-24" style={{ backgroundColor: coal }}>
+                    <div className="max-w-4xl mx-auto px-6 md:px-16">
+                        <Reveal>
+                            <h2 className="uppercase leading-none mb-14" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(2rem,4.5vw,3rem)", color: "#f6f1e8" }}>
+                                Milestones
+                            </h2>
+                        </Reveal>
+                        <div className="space-y-6">
+                            {sortByDateDesc(artist.milestones, (m) => m.date).map((m, i) => (
+                                <div key={i} className="flex gap-8 pb-6 border-b" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+                                    <span className="text-sm font-bold w-20 shrink-0 pt-0.5" style={{ color: emberMid }}>{m.date}</span>
+                                    <div>
+                                        <p className="text-sm font-semibold" style={{ color: "#f6f1e8" }}>{m.title}</p>
+                                        {m.description && <p className="text-xs mt-1 uppercase tracking-wide" style={{ color: smokeDark }}>{m.description}</p>}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )}
+
+            {/* ── Career Notes ─────────────────────────────────────────── */}
+            {artist.careerNotes && artist.careerNotes.length > 0 && (
+                <section className="py-24">
+                    <div className="max-w-4xl mx-auto px-6 md:px-16">
+                        <Reveal>
+                            <h2 className="uppercase leading-none mb-14" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(2rem,4.5vw,3rem)", color: "#f6f1e8" }}>
+                                Career Notes
+                            </h2>
+                        </Reveal>
+                        <div className="space-y-6">
+                            {sortByDateDesc(artist.careerNotes, (n) => n.date).map((n, i) => (
+                                <div key={i} className="flex gap-8 pb-6 border-b" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+                                    <span className="text-sm font-bold w-20 shrink-0 pt-0.5" style={{ color: emberMid }}>{n.date}</span>
+                                    <div>
+                                        <p className="text-sm font-semibold" style={{ color: "#f6f1e8" }}>{n.title}</p>
+                                        {n.note && <p className="text-xs mt-1 uppercase tracking-wide" style={{ color: smokeDark }}>{n.note}</p>}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )}
+
+            {/* ── Achievements ─────────────────────────────────────────── */}
+            {artist.achievements && artist.achievements.length > 0 && (
+                <section className="py-24" style={{ backgroundColor: coal }}>
+                    <div className="max-w-4xl mx-auto px-6 md:px-16">
+                        <Reveal>
+                            <h2 className="uppercase leading-none mb-14" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(2rem,4.5vw,3rem)", color: "#f6f1e8" }}>
+                                Achievements
+                            </h2>
+                        </Reveal>
+                        <div className="space-y-6">
+                            {sortByDateDesc(artist.achievements, (a) => a.date).map((a, i) => (
+                                <div key={i} className="flex gap-8 pb-6 border-b" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+                                    <span className="text-sm font-bold w-20 shrink-0 pt-0.5" style={{ color: emberMid }}>{a.date}</span>
+                                    <div>
+                                        <p className="text-sm font-semibold" style={{ color: "#f6f1e8" }}>{a.title}</p>
+                                        {a.organization && <p className="text-xs uppercase font-bold tracking-widest mt-1" style={{ color: emberMid, letterSpacing: "0.1em" }}>{a.organization}</p>}
+                                        {a.description && <p className="text-xs mt-1 uppercase tracking-wide" style={{ color: smokeDark }}>{a.description}</p>}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )}
+
+            {/* ── Training ─────────────────────────────────────────────── */}
+            {artist.trainings && artist.trainings.length > 0 && (
+                <section className="py-24">
+                    <div className="max-w-4xl mx-auto px-6 md:px-16">
+                        <Reveal>
+                            <h2 className="uppercase leading-none mb-14" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(2rem,4.5vw,3rem)", color: "#f6f1e8" }}>
+                                Training
+                            </h2>
+                        </Reveal>
+                        <div className="space-y-6">
+                            {sortByDateDesc(artist.trainings, (t) => t.date).map((t, i) => (
+                                <div key={i} className="flex gap-8 pb-6 border-b" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+                                    <span className="text-sm font-bold w-20 shrink-0 pt-0.5" style={{ color: emberMid }}>{t.date}</span>
+                                    <div>
+                                        <p className="text-sm font-semibold" style={{ color: "#f6f1e8" }}>{t.title}</p>
+                                        {t.institution && <p className="text-xs uppercase font-bold tracking-widest mt-1" style={{ color: emberMid, letterSpacing: "0.1em" }}>{t.institution}</p>}
+                                        {t.description && <p className="text-xs mt-1 uppercase tracking-wide" style={{ color: smokeDark }}>{t.description}</p>}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )}
+
+            {/* ── Misc ─────────────────────────────────────────────────── */}
+            {artist.miscEvents && artist.miscEvents.length > 0 && (
+                <section className="py-24" style={{ backgroundColor: coal }}>
+                    <div className="max-w-4xl mx-auto px-6 md:px-16">
+                        <Reveal>
+                            <h2 className="uppercase leading-none mb-14" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(2rem,4.5vw,3rem)", color: "#f6f1e8" }}>
+                                Misc
+                            </h2>
+                        </Reveal>
+                        <div className="space-y-6">
+                            {sortByDateDesc(artist.miscEvents, (e) => e.date).map((e, i) => (
+                                <div key={i} className="flex gap-8 pb-6 border-b" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+                                    <span className="text-sm font-bold w-20 shrink-0 pt-0.5" style={{ color: emberMid }}>{e.date}</span>
+                                    <div>
+                                        <p className="text-sm font-semibold" style={{ color: "#f6f1e8" }}>{e.title}</p>
+                                        {e.description && <p className="text-xs mt-1 uppercase tracking-wide" style={{ color: smokeDark }}>{e.description}</p>}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )}
+
             {/* ── Publications ─────────────────────────────────────────── */}
             {artist.publications && artist.publications.length > 0 && (
                 <section className="py-24">

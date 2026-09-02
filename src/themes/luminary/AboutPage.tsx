@@ -196,6 +196,137 @@ export default function LuminaryAboutPage({ artist }: ThemePageProps) {
                 </section>
             )}
 
+            {/* ── Milestones ───────────────────────────────────────────────── */}
+            {artist.milestones && artist.milestones.length > 0 && (
+                <section className="mx-auto max-w-5xl px-6 py-16 md:px-10 md:py-24">
+                    <Reveal className="mb-10">
+                        <Kicker>Timeline</Kicker>
+                        <h2 className="mt-4 font-serif text-3xl italic text-[#3a3240]">Milestones</h2>
+                    </Reveal>
+                    <div>
+                        {sortByDateDesc(artist.milestones, (m) => m.date).map((m, i) => (
+                            <Reveal key={i} delay={(i % 6) * 60}>
+                                <div className="flex gap-6 border-b border-[#3a3240]/10 py-5">
+                                    <span className="w-20 shrink-0 font-serif text-xl italic text-[#a9769f]">{m.date}</span>
+                                    <div>
+                                        <p className="font-serif text-lg italic text-[#3a3240]">{m.title}</p>
+                                        {m.description && (
+                                            <p className="mt-0.5 font-sans text-sm text-[#8a8189]">{m.description}</p>
+                                        )}
+                                    </div>
+                                </div>
+                            </Reveal>
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            {/* ── Career Notes ─────────────────────────────────────────────── */}
+            {artist.careerNotes && artist.careerNotes.length > 0 && (
+                <section className="mx-auto max-w-5xl px-6 py-16 md:px-10 md:py-24">
+                    <Reveal className="mb-10">
+                        <Kicker>Timeline</Kicker>
+                        <h2 className="mt-4 font-serif text-3xl italic text-[#3a3240]">Career Notes</h2>
+                    </Reveal>
+                    <div>
+                        {sortByDateDesc(artist.careerNotes, (n) => n.date).map((n, i) => (
+                            <Reveal key={i} delay={(i % 6) * 60}>
+                                <div className="flex gap-6 border-b border-[#3a3240]/10 py-5">
+                                    <span className="w-20 shrink-0 font-serif text-xl italic text-[#a9769f]">{n.date}</span>
+                                    <div>
+                                        <p className="font-serif text-lg italic text-[#3a3240]">{n.title}</p>
+                                        {n.note && (
+                                            <p className="mt-0.5 font-sans text-sm text-[#8a8189]">{n.note}</p>
+                                        )}
+                                    </div>
+                                </div>
+                            </Reveal>
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            {/* ── Achievements ─────────────────────────────────────────────── */}
+            {artist.achievements && artist.achievements.length > 0 && (
+                <section className="mx-auto max-w-5xl px-6 py-16 md:px-10 md:py-24">
+                    <Reveal className="mb-10">
+                        <Kicker>Timeline</Kicker>
+                        <h2 className="mt-4 font-serif text-3xl italic text-[#3a3240]">Achievements</h2>
+                    </Reveal>
+                    <div>
+                        {sortByDateDesc(artist.achievements, (a) => a.date).map((a, i) => (
+                            <Reveal key={i} delay={(i % 6) * 60}>
+                                <div className="flex gap-6 border-b border-[#3a3240]/10 py-5">
+                                    <span className="w-20 shrink-0 font-serif text-xl italic text-[#a9769f]">{a.date}</span>
+                                    <div>
+                                        <p className="font-serif text-lg italic text-[#3a3240]">{a.title}</p>
+                                        {a.organization && (
+                                            <p className="mt-1 font-sans text-xs uppercase tracking-[0.14em] text-[#a39aa0]">{a.organization}</p>
+                                        )}
+                                        {a.description && (
+                                            <p className="mt-0.5 font-sans text-sm text-[#8a8189]">{a.description}</p>
+                                        )}
+                                    </div>
+                                </div>
+                            </Reveal>
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            {/* ── Training ─────────────────────────────────────────────────── */}
+            {artist.trainings && artist.trainings.length > 0 && (
+                <section className="mx-auto max-w-5xl px-6 py-16 md:px-10 md:py-24">
+                    <Reveal className="mb-10">
+                        <Kicker>Timeline</Kicker>
+                        <h2 className="mt-4 font-serif text-3xl italic text-[#3a3240]">Training</h2>
+                    </Reveal>
+                    <div>
+                        {sortByDateDesc(artist.trainings, (t) => t.date).map((t, i) => (
+                            <Reveal key={i} delay={(i % 6) * 60}>
+                                <div className="flex gap-6 border-b border-[#3a3240]/10 py-5">
+                                    <span className="w-20 shrink-0 font-serif text-xl italic text-[#a9769f]">{t.date}</span>
+                                    <div>
+                                        <p className="font-serif text-lg italic text-[#3a3240]">{t.title}</p>
+                                        {t.institution && (
+                                            <p className="mt-1 font-sans text-xs uppercase tracking-[0.14em] text-[#a39aa0]">{t.institution}</p>
+                                        )}
+                                        {t.description && (
+                                            <p className="mt-0.5 font-sans text-sm text-[#8a8189]">{t.description}</p>
+                                        )}
+                                    </div>
+                                </div>
+                            </Reveal>
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            {/* ── Misc ─────────────────────────────────────────────────────── */}
+            {artist.miscEvents && artist.miscEvents.length > 0 && (
+                <section className="mx-auto max-w-5xl px-6 py-16 md:px-10 md:py-24">
+                    <Reveal className="mb-10">
+                        <Kicker>Timeline</Kicker>
+                        <h2 className="mt-4 font-serif text-3xl italic text-[#3a3240]">Misc</h2>
+                    </Reveal>
+                    <div>
+                        {sortByDateDesc(artist.miscEvents, (e) => e.date).map((e, i) => (
+                            <Reveal key={i} delay={(i % 6) * 60}>
+                                <div className="flex gap-6 border-b border-[#3a3240]/10 py-5">
+                                    <span className="w-20 shrink-0 font-serif text-xl italic text-[#a9769f]">{e.date}</span>
+                                    <div>
+                                        <p className="font-serif text-lg italic text-[#3a3240]">{e.title}</p>
+                                        {e.description && (
+                                            <p className="mt-0.5 font-sans text-sm text-[#8a8189]">{e.description}</p>
+                                        )}
+                                    </div>
+                                </div>
+                            </Reveal>
+                        ))}
+                    </div>
+                </section>
+            )}
+
             {/* ── Publications ─────────────────────────────────────────────── */}
             {artist.publications && artist.publications.length > 0 && (
                 <section className="mx-auto max-w-5xl px-6 py-16 md:px-10 md:py-24">

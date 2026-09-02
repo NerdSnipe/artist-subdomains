@@ -218,6 +218,236 @@ export default function ObsidianAbout({ artist }: ThemePageProps) {
                 </ScrollReveal>
             )}
 
+            {/* Milestones */}
+            {artist.milestones && artist.milestones.length > 0 && (
+                <ScrollReveal>
+                    <section className="border-t border-[#c9a96e]/10 px-6 md:px-12 py-16 max-w-5xl mx-auto">
+                        <div className="flex items-center gap-6 mb-14">
+                            <span className="h-px flex-1 bg-[#c9a96e]/15" />
+                            <h3 className="text-[10px] tracking-[0.4em] uppercase text-[#c9a96e] font-light">
+                                Milestones
+                            </h3>
+                            <span className="h-px flex-1 bg-[#c9a96e]/15" />
+                        </div>
+
+                        <div className="relative">
+                            <div className="absolute left-[4.5rem] top-0 bottom-0 w-px bg-[#c9a96e]/15 hidden md:block" />
+
+                            <div className="space-y-8">
+                                {sortByDateDesc(artist.milestones, (m) => m.date).map((m, i) => (
+                                    <div key={i} className="flex gap-6 md:gap-10 group">
+                                        <div className="md:w-16 shrink-0 text-right">
+                                            <span className="text-[10px] tracking-[0.2em] text-[#c9a96e]/60 font-light">
+                                                {m.date}
+                                            </span>
+                                        </div>
+                                        <div className="hidden md:flex items-start justify-center w-8 shrink-0 relative">
+                                            <div className="w-2 h-2 rounded-full bg-[#c9a96e]/30 group-hover:bg-[#c9a96e] transition-colors duration-300 mt-1 z-10" />
+                                        </div>
+                                        <div className="flex-1 pb-6 border-b border-[#1a1a1a] group-hover:border-[#c9a96e]/10 transition-colors duration-300">
+                                            <p className="text-sm font-light text-[#d4cfc9] tracking-wide mb-1">
+                                                {m.title}
+                                            </p>
+                                            {m.description && (
+                                                <p className="text-[10px] tracking-[0.15em] uppercase text-[#4a4540]">
+                                                    {m.description}
+                                                </p>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+                </ScrollReveal>
+            )}
+
+            {/* Career Notes */}
+            {artist.careerNotes && artist.careerNotes.length > 0 && (
+                <ScrollReveal>
+                    <section className="border-t border-[#c9a96e]/10 px-6 md:px-12 py-16 max-w-5xl mx-auto">
+                        <div className="flex items-center gap-6 mb-14">
+                            <span className="h-px flex-1 bg-[#c9a96e]/15" />
+                            <h3 className="text-[10px] tracking-[0.4em] uppercase text-[#c9a96e] font-light">
+                                Career Notes
+                            </h3>
+                            <span className="h-px flex-1 bg-[#c9a96e]/15" />
+                        </div>
+
+                        <div className="relative">
+                            <div className="absolute left-[4.5rem] top-0 bottom-0 w-px bg-[#c9a96e]/15 hidden md:block" />
+
+                            <div className="space-y-8">
+                                {sortByDateDesc(artist.careerNotes, (n) => n.date).map((n, i) => (
+                                    <div key={i} className="flex gap-6 md:gap-10 group">
+                                        <div className="md:w-16 shrink-0 text-right">
+                                            <span className="text-[10px] tracking-[0.2em] text-[#c9a96e]/60 font-light">
+                                                {n.date}
+                                            </span>
+                                        </div>
+                                        <div className="hidden md:flex items-start justify-center w-8 shrink-0 relative">
+                                            <div className="w-2 h-2 rounded-full bg-[#c9a96e]/30 group-hover:bg-[#c9a96e] transition-colors duration-300 mt-1 z-10" />
+                                        </div>
+                                        <div className="flex-1 pb-6 border-b border-[#1a1a1a] group-hover:border-[#c9a96e]/10 transition-colors duration-300">
+                                            <p className="text-sm font-light text-[#d4cfc9] tracking-wide mb-1">
+                                                {n.title}
+                                            </p>
+                                            {n.note && (
+                                                <p className="text-[10px] tracking-[0.15em] uppercase text-[#4a4540]">
+                                                    {n.note}
+                                                </p>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+                </ScrollReveal>
+            )}
+
+            {/* Achievements */}
+            {artist.achievements && artist.achievements.length > 0 && (
+                <ScrollReveal>
+                    <section className="border-t border-[#c9a96e]/10 px-6 md:px-12 py-16 max-w-5xl mx-auto">
+                        <div className="flex items-center gap-6 mb-14">
+                            <span className="h-px flex-1 bg-[#c9a96e]/15" />
+                            <h3 className="text-[10px] tracking-[0.4em] uppercase text-[#c9a96e] font-light">
+                                Achievements
+                            </h3>
+                            <span className="h-px flex-1 bg-[#c9a96e]/15" />
+                        </div>
+
+                        <div className="relative">
+                            <div className="absolute left-[4.5rem] top-0 bottom-0 w-px bg-[#c9a96e]/15 hidden md:block" />
+
+                            <div className="space-y-8">
+                                {sortByDateDesc(artist.achievements, (a) => a.date).map((a, i) => (
+                                    <div key={i} className="flex gap-6 md:gap-10 group">
+                                        <div className="md:w-16 shrink-0 text-right">
+                                            <span className="text-[10px] tracking-[0.2em] text-[#c9a96e]/60 font-light">
+                                                {a.date}
+                                            </span>
+                                        </div>
+                                        <div className="hidden md:flex items-start justify-center w-8 shrink-0 relative">
+                                            <div className="w-2 h-2 rounded-full bg-[#c9a96e]/30 group-hover:bg-[#c9a96e] transition-colors duration-300 mt-1 z-10" />
+                                        </div>
+                                        <div className="flex-1 pb-6 border-b border-[#1a1a1a] group-hover:border-[#c9a96e]/10 transition-colors duration-300">
+                                            <p className="text-sm font-light text-[#d4cfc9] tracking-wide mb-1">
+                                                {a.title}
+                                            </p>
+                                            {a.organization && (
+                                                <p className="text-[10px] tracking-[0.15em] uppercase text-[#c9a96e]/40 mb-1">
+                                                    {a.organization}
+                                                </p>
+                                            )}
+                                            {a.description && (
+                                                <p className="text-[10px] tracking-[0.15em] uppercase text-[#4a4540]">
+                                                    {a.description}
+                                                </p>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+                </ScrollReveal>
+            )}
+
+            {/* Training */}
+            {artist.trainings && artist.trainings.length > 0 && (
+                <ScrollReveal>
+                    <section className="border-t border-[#c9a96e]/10 px-6 md:px-12 py-16 max-w-5xl mx-auto">
+                        <div className="flex items-center gap-6 mb-14">
+                            <span className="h-px flex-1 bg-[#c9a96e]/15" />
+                            <h3 className="text-[10px] tracking-[0.4em] uppercase text-[#c9a96e] font-light">
+                                Training
+                            </h3>
+                            <span className="h-px flex-1 bg-[#c9a96e]/15" />
+                        </div>
+
+                        <div className="relative">
+                            <div className="absolute left-[4.5rem] top-0 bottom-0 w-px bg-[#c9a96e]/15 hidden md:block" />
+
+                            <div className="space-y-8">
+                                {sortByDateDesc(artist.trainings, (t) => t.date).map((t, i) => (
+                                    <div key={i} className="flex gap-6 md:gap-10 group">
+                                        <div className="md:w-16 shrink-0 text-right">
+                                            <span className="text-[10px] tracking-[0.2em] text-[#c9a96e]/60 font-light">
+                                                {t.date}
+                                            </span>
+                                        </div>
+                                        <div className="hidden md:flex items-start justify-center w-8 shrink-0 relative">
+                                            <div className="w-2 h-2 rounded-full bg-[#c9a96e]/30 group-hover:bg-[#c9a96e] transition-colors duration-300 mt-1 z-10" />
+                                        </div>
+                                        <div className="flex-1 pb-6 border-b border-[#1a1a1a] group-hover:border-[#c9a96e]/10 transition-colors duration-300">
+                                            <p className="text-sm font-light text-[#d4cfc9] tracking-wide mb-1">
+                                                {t.title}
+                                            </p>
+                                            {t.institution && (
+                                                <p className="text-[10px] tracking-[0.15em] uppercase text-[#c9a96e]/40 mb-1">
+                                                    {t.institution}
+                                                </p>
+                                            )}
+                                            {t.description && (
+                                                <p className="text-[10px] tracking-[0.15em] uppercase text-[#4a4540]">
+                                                    {t.description}
+                                                </p>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+                </ScrollReveal>
+            )}
+
+            {/* Misc */}
+            {artist.miscEvents && artist.miscEvents.length > 0 && (
+                <ScrollReveal>
+                    <section className="border-t border-[#c9a96e]/10 px-6 md:px-12 py-16 max-w-5xl mx-auto">
+                        <div className="flex items-center gap-6 mb-14">
+                            <span className="h-px flex-1 bg-[#c9a96e]/15" />
+                            <h3 className="text-[10px] tracking-[0.4em] uppercase text-[#c9a96e] font-light">
+                                Misc
+                            </h3>
+                            <span className="h-px flex-1 bg-[#c9a96e]/15" />
+                        </div>
+
+                        <div className="relative">
+                            <div className="absolute left-[4.5rem] top-0 bottom-0 w-px bg-[#c9a96e]/15 hidden md:block" />
+
+                            <div className="space-y-8">
+                                {sortByDateDesc(artist.miscEvents, (e) => e.date).map((e, i) => (
+                                    <div key={i} className="flex gap-6 md:gap-10 group">
+                                        <div className="md:w-16 shrink-0 text-right">
+                                            <span className="text-[10px] tracking-[0.2em] text-[#c9a96e]/60 font-light">
+                                                {e.date}
+                                            </span>
+                                        </div>
+                                        <div className="hidden md:flex items-start justify-center w-8 shrink-0 relative">
+                                            <div className="w-2 h-2 rounded-full bg-[#c9a96e]/30 group-hover:bg-[#c9a96e] transition-colors duration-300 mt-1 z-10" />
+                                        </div>
+                                        <div className="flex-1 pb-6 border-b border-[#1a1a1a] group-hover:border-[#c9a96e]/10 transition-colors duration-300">
+                                            <p className="text-sm font-light text-[#d4cfc9] tracking-wide mb-1">
+                                                {e.title}
+                                            </p>
+                                            {e.description && (
+                                                <p className="text-[10px] tracking-[0.15em] uppercase text-[#4a4540]">
+                                                    {e.description}
+                                                </p>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+                </ScrollReveal>
+            )}
+
             {/* Published Book — luxury catalog item */}
             {artist.book && (
                 <ScrollReveal>

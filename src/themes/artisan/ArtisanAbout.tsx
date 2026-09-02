@@ -14,6 +14,13 @@ interface TimelineEntry {
     kind: "exhibition" | "publication";
 }
 
+// New optional CV-style sections (Milestones, Career Notes, Achievements, Training, Misc) all
+// share the same "date + title + optional secondary line + optional description" shape, so they
+// reuse the timeline section's exact visual treatment via this shared shape rather than
+// duplicating markup five times.
+type CvEntry = { date: string; title: string; secondary?: string; description?: string };
+type CvSection = { title: string; items: CvEntry[] };
+
 export default function ArtisanAbout({ artist }: ThemePageProps) {
     const name = getArtistName(artist);
 
@@ -40,6 +47,61 @@ export default function ArtisanAbout({ artist }: ThemePageProps) {
     );
 
     const studioImages = (artist.studioImages ?? []).slice(0, 4);
+
+    const cvSections: CvSection[] = ([
+        artist.milestones && artist.milestones.length > 0
+            ? {
+                  title: "Milestones",
+                  items: sortByDateDesc(artist.milestones, (m) => m.date).map((m) => ({
+                      date: m.date,
+                      title: m.title,
+                      description: m.description,
+                  })),
+              }
+            : null,
+        artist.careerNotes && artist.careerNotes.length > 0
+            ? {
+                  title: "Career Notes",
+                  items: sortByDateDesc(artist.careerNotes, (n) => n.date).map((n) => ({
+                      date: n.date,
+                      title: n.title,
+                      description: n.note,
+                  })),
+              }
+            : null,
+        artist.achievements && artist.achievements.length > 0
+            ? {
+                  title: "Achievements",
+                  items: sortByDateDesc(artist.achievements, (a) => a.date).map((a) => ({
+                      date: a.date,
+                      title: a.title,
+                      secondary: a.organization,
+                      description: a.description,
+                  })),
+              }
+            : null,
+        artist.trainings && artist.trainings.length > 0
+            ? {
+                  title: "Training",
+                  items: sortByDateDesc(artist.trainings, (t) => t.date).map((t) => ({
+                      date: t.date,
+                      title: t.title,
+                      secondary: t.institution,
+                      description: t.description,
+                  })),
+              }
+            : null,
+        artist.miscEvents && artist.miscEvents.length > 0
+            ? {
+                  title: "Misc",
+                  items: sortByDateDesc(artist.miscEvents, (e) => e.date).map((e) => ({
+                      date: e.date,
+                      title: e.title,
+                      description: e.description,
+                  })),
+              }
+            : null,
+    ] as Array<CvSection | null>).filter((s): s is CvSection => s !== null);
 
     return (
         <div className="bg-[var(--paper)]">
@@ -150,6 +212,29 @@ export default function ArtisanAbout({ artist }: ThemePageProps) {
                     </div>
                 </section>
             )}
+
+            {/* ---------- CV SECTIONS: milestones, career notes, achievements, training, misc ---------- */}
+            {cvSections.map((section) => (
+                <section key={section.title} className="mx-auto max-w-3xl px-6 py-16">
+                    <Reveal>
+                        <h2 className="mb-10 text-3xl italic text-[var(--ink)]" style={{ fontFamily: "var(--font-display)" }}>
+                            {section.title}
+                        </h2>
+                    </Reveal>
+                    <div className="space-y-0 divide-y divide-[var(--ink)]/10">
+                        {section.items.map((entry, i) => (
+                            <Reveal key={i} delay={Math.min(i * 40, 300)} className="flex gap-6 py-4">
+                                <span className="w-14 shrink-0 pt-0.5 text-sm text-[var(--clay-dark)]">{entry.date}</span>
+                                <div>
+                                    <p className="text-[var(--ink)]">{entry.title}</p>
+                                    {entry.secondary && <p className="text-sm text-[var(--ink-soft)]">{entry.secondary}</p>}
+                                    {entry.description && <p className="text-sm text-[var(--ink-soft)]">{entry.description}</p>}
+                                </div>
+                            </Reveal>
+                        ))}
+                    </div>
+                </section>
+            ))}
 
             {/* ---------- GALLERY REPRESENTATION ---------- */}
             {artist.galleries && artist.galleries.length > 0 && (

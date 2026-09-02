@@ -17,6 +17,11 @@ export default function GalleryAbout({ artist }: ThemePageProps) {
     const reviews = (artist.reviews ?? []).filter((r) => r.text?.trim());
     const galleries = artist.galleries ?? [];
     const studioImages = artist.studioImages ?? [];
+    const milestones = sortByDateDesc(artist.milestones ?? [], (m) => m.date);
+    const careerNotes = sortByDateDesc(artist.careerNotes ?? [], (n) => n.date);
+    const achievements = sortByDateDesc(artist.achievements ?? [], (a) => a.date);
+    const trainings = sortByDateDesc(artist.trainings ?? [], (t) => t.date);
+    const miscEvents = sortByDateDesc(artist.miscEvents ?? [], (e) => e.date);
 
     return (
         <div className="max-w-[1200px] mx-auto px-6 md:px-10 py-14 md:py-20">
@@ -99,6 +104,48 @@ export default function GalleryAbout({ artist }: ThemePageProps) {
                         )}
                         {publications.length > 0 && (
                             <CvSection title="Publications" items={publications.map((p) => ({ year: p.date ?? "", text: p.title, sub: p.description }))} />
+                        )}
+                    </div>
+                </ScrollReveal>
+            )}
+
+            {/* Milestones / Career Notes / Achievements / Training / Misc */}
+            {(milestones.length > 0 ||
+                careerNotes.length > 0 ||
+                achievements.length > 0 ||
+                trainings.length > 0 ||
+                miscEvents.length > 0) && (
+                <ScrollReveal className="mb-20 pt-16 border-t border-[#E3DCCE]">
+                    <SectionLabel className="mb-8">Career Timeline</SectionLabel>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12">
+                        {milestones.length > 0 && (
+                            <CvSection title="Milestones" items={milestones.map((m) => ({ year: m.date, text: m.title, sub: m.description }))} />
+                        )}
+                        {careerNotes.length > 0 && (
+                            <CvSection title="Career Notes" items={careerNotes.map((n) => ({ year: n.date, text: n.title, sub: n.note }))} />
+                        )}
+                        {achievements.length > 0 && (
+                            <CvSection
+                                title="Achievements"
+                                items={achievements.map((a) => ({
+                                    year: a.date,
+                                    text: a.title,
+                                    sub: [a.organization, a.description].filter(Boolean).join(" — "),
+                                }))}
+                            />
+                        )}
+                        {trainings.length > 0 && (
+                            <CvSection
+                                title="Training"
+                                items={trainings.map((t) => ({
+                                    year: t.date,
+                                    text: t.title,
+                                    sub: [t.institution, t.description].filter(Boolean).join(" — "),
+                                }))}
+                            />
+                        )}
+                        {miscEvents.length > 0 && (
+                            <CvSection title="Misc" items={miscEvents.map((e) => ({ year: e.date, text: e.title, sub: e.description }))} />
                         )}
                     </div>
                 </ScrollReveal>

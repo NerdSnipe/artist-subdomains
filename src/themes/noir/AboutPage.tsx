@@ -144,6 +144,272 @@ export default function NoirAboutPage({ artist }: ThemePageProps) {
                     </ScrollReveal>
                 )}
 
+                {/* Milestones — gold timeline */}
+                {artist.milestones && artist.milestones.length > 0 && (
+                    <ScrollReveal className="mb-20" delay={100}>
+                        <div className="flex items-center gap-6 mb-12">
+                            <span className="h-px flex-1 bg-[#a8884a]/15" />
+                            <h2
+                                className="text-[8px] tracking-[0.6em] uppercase text-[#a8884a]"
+                                style={{ fontFamily: "'Courier New', monospace" }}
+                            >
+                                Milestones
+                            </h2>
+                            <span className="h-px flex-1 bg-[#a8884a]/15" />
+                        </div>
+                        <div className="relative pl-8">
+                            <div className="absolute left-0 top-0 bottom-0 w-px bg-gradient-to-b from-[#a8884a]/50 via-[#a8884a]/20 to-transparent" />
+                            <div className="space-y-10">
+                                {sortByDateDesc(artist.milestones, (m) => m.date).map((m, i) => (
+                                    <div key={i} className="relative group">
+                                        <div className="absolute -left-8 top-1 w-2 h-2 rounded-full bg-[#a8884a]/60 group-hover:bg-[#a8884a] transition-colors duration-300 -translate-x-0.5" />
+                                        <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6">
+                                            <span
+                                                className="text-[10px] tracking-[0.4em] uppercase text-[#a8884a] shrink-0 w-14"
+                                                style={{ fontFamily: "'Courier New', monospace" }}
+                                            >
+                                                {m.date}
+                                            </span>
+                                            <div>
+                                                <p
+                                                    className="text-sm italic text-[#e8e8e8] mb-0.5"
+                                                    style={{ fontFamily: "'Playfair Display', serif" }}
+                                                >
+                                                    {m.title}
+                                                </p>
+                                                {m.description && (
+                                                    <p
+                                                        className="text-[9px] tracking-[0.2em] uppercase text-[#5a5a5a]"
+                                                        style={{ fontFamily: "'Courier New', monospace" }}
+                                                    >
+                                                        {m.description}
+                                                    </p>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </ScrollReveal>
+                )}
+
+                {/* Career Notes — gold timeline */}
+                {artist.careerNotes && artist.careerNotes.length > 0 && (
+                    <ScrollReveal className="mb-20" delay={100}>
+                        <div className="flex items-center gap-6 mb-12">
+                            <span className="h-px flex-1 bg-[#a8884a]/15" />
+                            <h2
+                                className="text-[8px] tracking-[0.6em] uppercase text-[#a8884a]"
+                                style={{ fontFamily: "'Courier New', monospace" }}
+                            >
+                                Career Notes
+                            </h2>
+                            <span className="h-px flex-1 bg-[#a8884a]/15" />
+                        </div>
+                        <div className="relative pl-8">
+                            <div className="absolute left-0 top-0 bottom-0 w-px bg-gradient-to-b from-[#a8884a]/50 via-[#a8884a]/20 to-transparent" />
+                            <div className="space-y-10">
+                                {sortByDateDesc(artist.careerNotes, (n) => n.date).map((n, i) => (
+                                    <div key={i} className="relative group">
+                                        <div className="absolute -left-8 top-1 w-2 h-2 rounded-full bg-[#a8884a]/60 group-hover:bg-[#a8884a] transition-colors duration-300 -translate-x-0.5" />
+                                        <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6">
+                                            <span
+                                                className="text-[10px] tracking-[0.4em] uppercase text-[#a8884a] shrink-0 w-14"
+                                                style={{ fontFamily: "'Courier New', monospace" }}
+                                            >
+                                                {n.date}
+                                            </span>
+                                            <div>
+                                                <p
+                                                    className="text-sm italic text-[#e8e8e8] mb-0.5"
+                                                    style={{ fontFamily: "'Playfair Display', serif" }}
+                                                >
+                                                    {n.title}
+                                                </p>
+                                                {n.note && (
+                                                    <p
+                                                        className="text-[9px] tracking-[0.2em] uppercase text-[#5a5a5a]"
+                                                        style={{ fontFamily: "'Courier New', monospace" }}
+                                                    >
+                                                        {n.note}
+                                                    </p>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </ScrollReveal>
+                )}
+
+                {/* Achievements — gold timeline */}
+                {artist.achievements && artist.achievements.length > 0 && (
+                    <ScrollReveal className="mb-20" delay={100}>
+                        <div className="flex items-center gap-6 mb-12">
+                            <span className="h-px flex-1 bg-[#a8884a]/15" />
+                            <h2
+                                className="text-[8px] tracking-[0.6em] uppercase text-[#a8884a]"
+                                style={{ fontFamily: "'Courier New', monospace" }}
+                            >
+                                Achievements
+                            </h2>
+                            <span className="h-px flex-1 bg-[#a8884a]/15" />
+                        </div>
+                        <div className="relative pl-8">
+                            <div className="absolute left-0 top-0 bottom-0 w-px bg-gradient-to-b from-[#a8884a]/50 via-[#a8884a]/20 to-transparent" />
+                            <div className="space-y-10">
+                                {sortByDateDesc(artist.achievements, (a) => a.date).map((a, i) => (
+                                    <div key={i} className="relative group">
+                                        <div className="absolute -left-8 top-1 w-2 h-2 rounded-full bg-[#a8884a]/60 group-hover:bg-[#a8884a] transition-colors duration-300 -translate-x-0.5" />
+                                        <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6">
+                                            <span
+                                                className="text-[10px] tracking-[0.4em] uppercase text-[#a8884a] shrink-0 w-14"
+                                                style={{ fontFamily: "'Courier New', monospace" }}
+                                            >
+                                                {a.date}
+                                            </span>
+                                            <div>
+                                                <p
+                                                    className="text-sm italic text-[#e8e8e8] mb-0.5"
+                                                    style={{ fontFamily: "'Playfair Display', serif" }}
+                                                >
+                                                    {a.title}
+                                                </p>
+                                                {a.organization && (
+                                                    <p
+                                                        className="text-[9px] tracking-[0.2em] uppercase text-[#5a5a5a]"
+                                                        style={{ fontFamily: "'Courier New', monospace" }}
+                                                    >
+                                                        {a.organization}
+                                                    </p>
+                                                )}
+                                                {a.description && (
+                                                    <p
+                                                        className="text-xs text-[#6a6a6a] mt-1 leading-relaxed"
+                                                        style={{ fontFamily: "'Courier New', monospace" }}
+                                                    >
+                                                        {a.description}
+                                                    </p>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </ScrollReveal>
+                )}
+
+                {/* Training — gold timeline */}
+                {artist.trainings && artist.trainings.length > 0 && (
+                    <ScrollReveal className="mb-20" delay={100}>
+                        <div className="flex items-center gap-6 mb-12">
+                            <span className="h-px flex-1 bg-[#a8884a]/15" />
+                            <h2
+                                className="text-[8px] tracking-[0.6em] uppercase text-[#a8884a]"
+                                style={{ fontFamily: "'Courier New', monospace" }}
+                            >
+                                Training
+                            </h2>
+                            <span className="h-px flex-1 bg-[#a8884a]/15" />
+                        </div>
+                        <div className="relative pl-8">
+                            <div className="absolute left-0 top-0 bottom-0 w-px bg-gradient-to-b from-[#a8884a]/50 via-[#a8884a]/20 to-transparent" />
+                            <div className="space-y-10">
+                                {sortByDateDesc(artist.trainings, (t) => t.date).map((t, i) => (
+                                    <div key={i} className="relative group">
+                                        <div className="absolute -left-8 top-1 w-2 h-2 rounded-full bg-[#a8884a]/60 group-hover:bg-[#a8884a] transition-colors duration-300 -translate-x-0.5" />
+                                        <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6">
+                                            <span
+                                                className="text-[10px] tracking-[0.4em] uppercase text-[#a8884a] shrink-0 w-14"
+                                                style={{ fontFamily: "'Courier New', monospace" }}
+                                            >
+                                                {t.date}
+                                            </span>
+                                            <div>
+                                                <p
+                                                    className="text-sm italic text-[#e8e8e8] mb-0.5"
+                                                    style={{ fontFamily: "'Playfair Display', serif" }}
+                                                >
+                                                    {t.title}
+                                                </p>
+                                                {t.institution && (
+                                                    <p
+                                                        className="text-[9px] tracking-[0.2em] uppercase text-[#5a5a5a]"
+                                                        style={{ fontFamily: "'Courier New', monospace" }}
+                                                    >
+                                                        {t.institution}
+                                                    </p>
+                                                )}
+                                                {t.description && (
+                                                    <p
+                                                        className="text-xs text-[#6a6a6a] mt-1 leading-relaxed"
+                                                        style={{ fontFamily: "'Courier New', monospace" }}
+                                                    >
+                                                        {t.description}
+                                                    </p>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </ScrollReveal>
+                )}
+
+                {/* Misc — gold timeline */}
+                {artist.miscEvents && artist.miscEvents.length > 0 && (
+                    <ScrollReveal className="mb-20" delay={100}>
+                        <div className="flex items-center gap-6 mb-12">
+                            <span className="h-px flex-1 bg-[#a8884a]/15" />
+                            <h2
+                                className="text-[8px] tracking-[0.6em] uppercase text-[#a8884a]"
+                                style={{ fontFamily: "'Courier New', monospace" }}
+                            >
+                                Misc
+                            </h2>
+                            <span className="h-px flex-1 bg-[#a8884a]/15" />
+                        </div>
+                        <div className="relative pl-8">
+                            <div className="absolute left-0 top-0 bottom-0 w-px bg-gradient-to-b from-[#a8884a]/50 via-[#a8884a]/20 to-transparent" />
+                            <div className="space-y-10">
+                                {sortByDateDesc(artist.miscEvents, (e) => e.date).map((e, i) => (
+                                    <div key={i} className="relative group">
+                                        <div className="absolute -left-8 top-1 w-2 h-2 rounded-full bg-[#a8884a]/60 group-hover:bg-[#a8884a] transition-colors duration-300 -translate-x-0.5" />
+                                        <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6">
+                                            <span
+                                                className="text-[10px] tracking-[0.4em] uppercase text-[#a8884a] shrink-0 w-14"
+                                                style={{ fontFamily: "'Courier New', monospace" }}
+                                            >
+                                                {e.date}
+                                            </span>
+                                            <div>
+                                                <p
+                                                    className="text-sm italic text-[#e8e8e8] mb-0.5"
+                                                    style={{ fontFamily: "'Playfair Display', serif" }}
+                                                >
+                                                    {e.title}
+                                                </p>
+                                                {e.description && (
+                                                    <p
+                                                        className="text-[9px] tracking-[0.2em] uppercase text-[#5a5a5a]"
+                                                        style={{ fontFamily: "'Courier New', monospace" }}
+                                                    >
+                                                        {e.description}
+                                                    </p>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </ScrollReveal>
+                )}
+
                 {/* Publications */}
                 {artist.publications && artist.publications.length > 0 && (
                     <ScrollReveal className="mb-20" delay={150}>

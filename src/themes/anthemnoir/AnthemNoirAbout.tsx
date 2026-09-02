@@ -15,9 +15,71 @@ function splitBio(bio: string): { subtitle: string | null; body: string } {
     return { subtitle: match[1].trim(), body: match[2].trim() };
 }
 
+// New optional CV-style sections (Milestones, Career Notes, Achievements, Training, Misc) all
+// share the same "date + title + optional secondary line + optional description" shape, so they
+// reuse the exhibitions timeline's exact visual treatment via this shared shape rather than
+// duplicating markup five times.
+type CvEntry = { date: string; title: string; secondary?: string; description?: string };
+type CvSection = { title: string; items: CvEntry[] };
+
 export default function AnthemNoirAbout({ artist }: ThemePageProps) {
     const name = getArtistName(artist);
     const { subtitle, body } = artist.bio ? splitBio(artist.bio) : { subtitle: null, body: "" };
+
+    const cvSections: CvSection[] = ([
+        artist.milestones && artist.milestones.length > 0
+            ? {
+                  title: "Milestones",
+                  items: sortByDateDesc(artist.milestones, (m) => m.date).map((m) => ({
+                      date: m.date,
+                      title: m.title,
+                      description: m.description,
+                  })),
+              }
+            : null,
+        artist.careerNotes && artist.careerNotes.length > 0
+            ? {
+                  title: "Career Notes",
+                  items: sortByDateDesc(artist.careerNotes, (n) => n.date).map((n) => ({
+                      date: n.date,
+                      title: n.title,
+                      description: n.note,
+                  })),
+              }
+            : null,
+        artist.achievements && artist.achievements.length > 0
+            ? {
+                  title: "Achievements",
+                  items: sortByDateDesc(artist.achievements, (a) => a.date).map((a) => ({
+                      date: a.date,
+                      title: a.title,
+                      secondary: a.organization,
+                      description: a.description,
+                  })),
+              }
+            : null,
+        artist.trainings && artist.trainings.length > 0
+            ? {
+                  title: "Training",
+                  items: sortByDateDesc(artist.trainings, (t) => t.date).map((t) => ({
+                      date: t.date,
+                      title: t.title,
+                      secondary: t.institution,
+                      description: t.description,
+                  })),
+              }
+            : null,
+        artist.miscEvents && artist.miscEvents.length > 0
+            ? {
+                  title: "Misc",
+                  items: sortByDateDesc(artist.miscEvents, (e) => e.date).map((e) => ({
+                      date: e.date,
+                      title: e.title,
+                      description: e.description,
+                  })),
+              }
+            : null,
+    ] as Array<CvSection | null>).filter((s): s is CvSection => s !== null);
     // A floated multi-line drop cap is what was making the first letter drift down into the
     // second line — different browsers resolve float + leading differently once the text wraps.
     // An enlarged inline first letter (no float) gets the same flourish without that bug.
@@ -135,6 +197,29 @@ export default function AnthemNoirAbout({ artist }: ThemePageProps) {
                     </div>
                 </section>
             )}
+
+            {cvSections.map((section) => (
+                <section key={section.title} className="border-t-4 border-[#E9DFC9] bg-[#0C0B09]">
+                    <div className="max-w-[1500px] mx-auto px-5 md:px-10 py-20 md:py-28">
+                        <h3 className="font-[family-name:var(--font-display)] uppercase text-3xl mb-6 border-b-4 border-[#E9DFC9] pb-3">
+                            {section.title}
+                        </h3>
+                        <div className="relative pl-7 border-l-2 border-[#E9DFC9]/20 max-w-2xl">
+                            {section.items.map((entry, i) => (
+                                <Reveal key={i} delay={Math.min(i, 6) * 60} className="relative pb-8 last:pb-0">
+                                    <span className="absolute -left-[1.97rem] top-1.5 w-3 h-3 rotate-45 bg-[#C9A227] border border-[#E9DFC9]/30" />
+                                    <span className="font-[family-name:var(--font-display)] text-lg text-[#C9A227]">
+                                        {entry.date}
+                                    </span>
+                                    <p className="mt-1 font-bold text-[#E9DFC9] text-sm">{entry.title}</p>
+                                    {entry.secondary && <p className="text-sm text-[#E9DFC9]/50">{entry.secondary}</p>}
+                                    {entry.description && <p className="mt-1 text-sm text-[#E9DFC9]/50">{entry.description}</p>}
+                                </Reveal>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            ))}
 
             <AnthemNoirGallerySection artist={artist} id="representations" />
         </div>

@@ -130,6 +130,143 @@ export default function MarketAbout({ artist, domain }: ThemePageProps) {
                 </section>
             )}
 
+            {artist.milestones && artist.milestones.length > 0 && (
+                <section className="max-w-4xl mx-auto px-6 py-20">
+                    <Reveal>
+                        <h2 className="font-[family-name:var(--market-font-display)] text-3xl text-[#241e19] mb-10">
+                            Milestones
+                        </h2>
+                    </Reveal>
+                    <div className="space-y-0">
+                        {sortByDateDesc(artist.milestones, (m) => m.date).map((m, i) => (
+                            <Reveal
+                                key={i}
+                                delay={i * 50}
+                                className="grid grid-cols-[4.5rem_1fr] gap-6 py-5 border-b border-[#e3d5c1]"
+                            >
+                                <span className="font-[family-name:var(--market-font-display)] text-lg text-[#b2542e]">
+                                    {m.date}
+                                </span>
+                                <div>
+                                    <p className="text-[#241e19] font-medium">{m.title}</p>
+                                    {m.description && <p className="text-sm text-[#8a7d6e] mt-0.5">{m.description}</p>}
+                                </div>
+                            </Reveal>
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            {artist.careerNotes && artist.careerNotes.length > 0 && (
+                <section className="max-w-4xl mx-auto px-6 py-20">
+                    <Reveal>
+                        <h2 className="font-[family-name:var(--market-font-display)] text-3xl text-[#241e19] mb-10">
+                            Career Notes
+                        </h2>
+                    </Reveal>
+                    <div className="space-y-0">
+                        {sortByDateDesc(artist.careerNotes, (n) => n.date).map((n, i) => (
+                            <Reveal
+                                key={i}
+                                delay={i * 50}
+                                className="grid grid-cols-[4.5rem_1fr] gap-6 py-5 border-b border-[#e3d5c1]"
+                            >
+                                <span className="font-[family-name:var(--market-font-display)] text-lg text-[#b2542e]">
+                                    {n.date}
+                                </span>
+                                <div>
+                                    <p className="text-[#241e19] font-medium">{n.title}</p>
+                                    {n.note && <p className="text-sm text-[#8a7d6e] mt-0.5">{n.note}</p>}
+                                </div>
+                            </Reveal>
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            {artist.achievements && artist.achievements.length > 0 && (
+                <section className="max-w-4xl mx-auto px-6 py-20">
+                    <Reveal>
+                        <h2 className="font-[family-name:var(--market-font-display)] text-3xl text-[#241e19] mb-10">
+                            Achievements
+                        </h2>
+                    </Reveal>
+                    <div className="space-y-0">
+                        {sortByDateDesc(artist.achievements, (a) => a.date).map((a, i) => (
+                            <Reveal
+                                key={i}
+                                delay={i * 50}
+                                className="grid grid-cols-[4.5rem_1fr] gap-6 py-5 border-b border-[#e3d5c1]"
+                            >
+                                <span className="font-[family-name:var(--market-font-display)] text-lg text-[#b2542e]">
+                                    {a.date}
+                                </span>
+                                <div>
+                                    <p className="text-[#241e19] font-medium">{a.title}</p>
+                                    {a.organization && <p className="text-sm text-[#8a7d6e] mt-0.5">{a.organization}</p>}
+                                    {a.description && <p className="text-sm text-[#8a7d6e] mt-0.5">{a.description}</p>}
+                                </div>
+                            </Reveal>
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            {artist.trainings && artist.trainings.length > 0 && (
+                <section className="max-w-4xl mx-auto px-6 py-20">
+                    <Reveal>
+                        <h2 className="font-[family-name:var(--market-font-display)] text-3xl text-[#241e19] mb-10">
+                            Training
+                        </h2>
+                    </Reveal>
+                    <div className="space-y-0">
+                        {sortByDateDesc(artist.trainings, (t) => t.date).map((t, i) => (
+                            <Reveal
+                                key={i}
+                                delay={i * 50}
+                                className="grid grid-cols-[4.5rem_1fr] gap-6 py-5 border-b border-[#e3d5c1]"
+                            >
+                                <span className="font-[family-name:var(--market-font-display)] text-lg text-[#b2542e]">
+                                    {t.date}
+                                </span>
+                                <div>
+                                    <p className="text-[#241e19] font-medium">{t.title}</p>
+                                    {t.institution && <p className="text-sm text-[#8a7d6e] mt-0.5">{t.institution}</p>}
+                                    {t.description && <p className="text-sm text-[#8a7d6e] mt-0.5">{t.description}</p>}
+                                </div>
+                            </Reveal>
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            {artist.miscEvents && artist.miscEvents.length > 0 && (
+                <section className="max-w-4xl mx-auto px-6 py-20">
+                    <Reveal>
+                        <h2 className="font-[family-name:var(--market-font-display)] text-3xl text-[#241e19] mb-10">
+                            Misc
+                        </h2>
+                    </Reveal>
+                    <div className="space-y-0">
+                        {sortByDateDesc(artist.miscEvents, (e) => e.date).map((e, i) => (
+                            <Reveal
+                                key={i}
+                                delay={i * 50}
+                                className="grid grid-cols-[4.5rem_1fr] gap-6 py-5 border-b border-[#e3d5c1]"
+                            >
+                                <span className="font-[family-name:var(--market-font-display)] text-lg text-[#b2542e]">
+                                    {e.date}
+                                </span>
+                                <div>
+                                    <p className="text-[#241e19] font-medium">{e.title}</p>
+                                    {e.description && <p className="text-sm text-[#8a7d6e] mt-0.5">{e.description}</p>}
+                                </div>
+                            </Reveal>
+                        ))}
+                    </div>
+                </section>
+            )}
+
             {artist.publications && artist.publications.length > 0 && (
                 <section className="bg-[#efe6d7] py-16">
                     <div className="max-w-4xl mx-auto px-6">

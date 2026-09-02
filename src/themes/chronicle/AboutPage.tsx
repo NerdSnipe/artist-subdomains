@@ -288,6 +288,359 @@ export default function ChronicleAboutPage({ artist }: ThemePageProps) {
                 </section>
             )}
 
+            {/* ── Milestones ────────────────────────────────────────────────── */}
+            {artist.milestones && artist.milestones.length > 0 && (
+                <section className="py-16 md:py-20 border-t border-stone-200">
+                    <div className="max-w-5xl mx-auto px-6 md:px-12">
+                        <RevealOnScroll>
+                            <p
+                                className="mb-10"
+                                style={{
+                                    fontFamily: MONO,
+                                    fontSize: "0.6rem",
+                                    letterSpacing: "0.2em",
+                                    textTransform: "uppercase",
+                                    color: "#6b7c6d",
+                                }}
+                            >
+                                Milestones
+                            </p>
+                        </RevealOnScroll>
+                        {sortByDateDesc(artist.milestones, (m) => m.date).map((m, i) => (
+                            <RevealOnScroll key={i} delay={i * 50}>
+                                <div className="flex gap-6 py-5 border-b border-stone-100">
+                                    <span
+                                        style={{
+                                            fontFamily: CORMORANT,
+                                            fontSize: "1.6rem",
+                                            fontWeight: 300,
+                                            color: "#6b7c6d",
+                                            width: "6rem",
+                                            flexShrink: 0,
+                                            lineHeight: 1.1,
+                                        }}
+                                    >
+                                        {m.date}
+                                    </span>
+                                    <div>
+                                        <p
+                                            style={{
+                                                fontFamily: BASKERVILLE,
+                                                fontSize: "0.92rem",
+                                                color: "#1c1917",
+                                            }}
+                                        >
+                                            {m.title}
+                                        </p>
+                                        {m.description && (
+                                            <p
+                                                style={{
+                                                    fontFamily: BASKERVILLE,
+                                                    fontStyle: "italic",
+                                                    fontSize: "0.82rem",
+                                                    color: "#6b7c6d",
+                                                    marginTop: "0.2rem",
+                                                }}
+                                            >
+                                                {m.description}
+                                            </p>
+                                        )}
+                                    </div>
+                                </div>
+                            </RevealOnScroll>
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            {/* ── Career Notes ──────────────────────────────────────────────── */}
+            {artist.careerNotes && artist.careerNotes.length > 0 && (
+                <section className="py-16 md:py-20 border-t border-stone-200">
+                    <div className="max-w-5xl mx-auto px-6 md:px-12">
+                        <RevealOnScroll>
+                            <p
+                                className="mb-10"
+                                style={{
+                                    fontFamily: MONO,
+                                    fontSize: "0.6rem",
+                                    letterSpacing: "0.2em",
+                                    textTransform: "uppercase",
+                                    color: "#6b7c6d",
+                                }}
+                            >
+                                Career Notes
+                            </p>
+                        </RevealOnScroll>
+                        {sortByDateDesc(artist.careerNotes, (n) => n.date).map((n, i) => (
+                            <RevealOnScroll key={i} delay={i * 50}>
+                                <div className="flex gap-6 py-5 border-b border-stone-100">
+                                    <span
+                                        style={{
+                                            fontFamily: CORMORANT,
+                                            fontSize: "1.6rem",
+                                            fontWeight: 300,
+                                            color: "#6b7c6d",
+                                            width: "6rem",
+                                            flexShrink: 0,
+                                            lineHeight: 1.1,
+                                        }}
+                                    >
+                                        {n.date}
+                                    </span>
+                                    <div>
+                                        <p
+                                            style={{
+                                                fontFamily: BASKERVILLE,
+                                                fontSize: "0.92rem",
+                                                color: "#1c1917",
+                                            }}
+                                        >
+                                            {n.title}
+                                        </p>
+                                        {n.note && (
+                                            <p
+                                                style={{
+                                                    fontFamily: BASKERVILLE,
+                                                    fontStyle: "italic",
+                                                    fontSize: "0.82rem",
+                                                    color: "#6b7c6d",
+                                                    marginTop: "0.2rem",
+                                                }}
+                                            >
+                                                {n.note}
+                                            </p>
+                                        )}
+                                    </div>
+                                </div>
+                            </RevealOnScroll>
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            {/* ── Achievements ──────────────────────────────────────────────── */}
+            {artist.achievements && artist.achievements.length > 0 && (
+                <section className="py-16 md:py-20 border-t border-stone-200">
+                    <div className="max-w-5xl mx-auto px-6 md:px-12">
+                        <RevealOnScroll>
+                            <p
+                                className="mb-10"
+                                style={{
+                                    fontFamily: MONO,
+                                    fontSize: "0.6rem",
+                                    letterSpacing: "0.2em",
+                                    textTransform: "uppercase",
+                                    color: "#6b7c6d",
+                                }}
+                            >
+                                Achievements
+                            </p>
+                        </RevealOnScroll>
+                        {sortByDateDesc(artist.achievements, (a) => a.date).map((a, i) => (
+                            <RevealOnScroll key={i} delay={i * 50}>
+                                <div className="flex gap-6 py-5 border-b border-stone-100">
+                                    <span
+                                        style={{
+                                            fontFamily: CORMORANT,
+                                            fontSize: "1.6rem",
+                                            fontWeight: 300,
+                                            color: "#6b7c6d",
+                                            width: "6rem",
+                                            flexShrink: 0,
+                                            lineHeight: 1.1,
+                                        }}
+                                    >
+                                        {a.date}
+                                    </span>
+                                    <div>
+                                        <p
+                                            style={{
+                                                fontFamily: BASKERVILLE,
+                                                fontSize: "0.92rem",
+                                                color: "#1c1917",
+                                            }}
+                                        >
+                                            {a.title}
+                                        </p>
+                                        {a.organization && (
+                                            <p
+                                                style={{
+                                                    fontFamily: MONO,
+                                                    fontSize: "0.6rem",
+                                                    letterSpacing: "0.1em",
+                                                    textTransform: "uppercase",
+                                                    color: "#9ca3af",
+                                                    marginTop: "0.2rem",
+                                                }}
+                                            >
+                                                {a.organization}
+                                            </p>
+                                        )}
+                                        {a.description && (
+                                            <p
+                                                style={{
+                                                    fontFamily: BASKERVILLE,
+                                                    fontStyle: "italic",
+                                                    fontSize: "0.82rem",
+                                                    color: "#6b7c6d",
+                                                    marginTop: "0.2rem",
+                                                }}
+                                            >
+                                                {a.description}
+                                            </p>
+                                        )}
+                                    </div>
+                                </div>
+                            </RevealOnScroll>
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            {/* ── Training ──────────────────────────────────────────────────── */}
+            {artist.trainings && artist.trainings.length > 0 && (
+                <section className="py-16 md:py-20 border-t border-stone-200">
+                    <div className="max-w-5xl mx-auto px-6 md:px-12">
+                        <RevealOnScroll>
+                            <p
+                                className="mb-10"
+                                style={{
+                                    fontFamily: MONO,
+                                    fontSize: "0.6rem",
+                                    letterSpacing: "0.2em",
+                                    textTransform: "uppercase",
+                                    color: "#6b7c6d",
+                                }}
+                            >
+                                Training
+                            </p>
+                        </RevealOnScroll>
+                        {sortByDateDesc(artist.trainings, (t) => t.date).map((t, i) => (
+                            <RevealOnScroll key={i} delay={i * 50}>
+                                <div className="flex gap-6 py-5 border-b border-stone-100">
+                                    <span
+                                        style={{
+                                            fontFamily: CORMORANT,
+                                            fontSize: "1.6rem",
+                                            fontWeight: 300,
+                                            color: "#6b7c6d",
+                                            width: "6rem",
+                                            flexShrink: 0,
+                                            lineHeight: 1.1,
+                                        }}
+                                    >
+                                        {t.date}
+                                    </span>
+                                    <div>
+                                        <p
+                                            style={{
+                                                fontFamily: BASKERVILLE,
+                                                fontSize: "0.92rem",
+                                                color: "#1c1917",
+                                            }}
+                                        >
+                                            {t.title}
+                                        </p>
+                                        {t.institution && (
+                                            <p
+                                                style={{
+                                                    fontFamily: MONO,
+                                                    fontSize: "0.6rem",
+                                                    letterSpacing: "0.1em",
+                                                    textTransform: "uppercase",
+                                                    color: "#9ca3af",
+                                                    marginTop: "0.2rem",
+                                                }}
+                                            >
+                                                {t.institution}
+                                            </p>
+                                        )}
+                                        {t.description && (
+                                            <p
+                                                style={{
+                                                    fontFamily: BASKERVILLE,
+                                                    fontStyle: "italic",
+                                                    fontSize: "0.82rem",
+                                                    color: "#6b7c6d",
+                                                    marginTop: "0.2rem",
+                                                }}
+                                            >
+                                                {t.description}
+                                            </p>
+                                        )}
+                                    </div>
+                                </div>
+                            </RevealOnScroll>
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            {/* ── Misc ──────────────────────────────────────────────────────── */}
+            {artist.miscEvents && artist.miscEvents.length > 0 && (
+                <section className="py-16 md:py-20 border-t border-stone-200">
+                    <div className="max-w-5xl mx-auto px-6 md:px-12">
+                        <RevealOnScroll>
+                            <p
+                                className="mb-10"
+                                style={{
+                                    fontFamily: MONO,
+                                    fontSize: "0.6rem",
+                                    letterSpacing: "0.2em",
+                                    textTransform: "uppercase",
+                                    color: "#6b7c6d",
+                                }}
+                            >
+                                Misc
+                            </p>
+                        </RevealOnScroll>
+                        {sortByDateDesc(artist.miscEvents, (e) => e.date).map((e, i) => (
+                            <RevealOnScroll key={i} delay={i * 50}>
+                                <div className="flex gap-6 py-5 border-b border-stone-100">
+                                    <span
+                                        style={{
+                                            fontFamily: CORMORANT,
+                                            fontSize: "1.6rem",
+                                            fontWeight: 300,
+                                            color: "#6b7c6d",
+                                            width: "6rem",
+                                            flexShrink: 0,
+                                            lineHeight: 1.1,
+                                        }}
+                                    >
+                                        {e.date}
+                                    </span>
+                                    <div>
+                                        <p
+                                            style={{
+                                                fontFamily: BASKERVILLE,
+                                                fontSize: "0.92rem",
+                                                color: "#1c1917",
+                                            }}
+                                        >
+                                            {e.title}
+                                        </p>
+                                        {e.description && (
+                                            <p
+                                                style={{
+                                                    fontFamily: BASKERVILLE,
+                                                    fontStyle: "italic",
+                                                    fontSize: "0.82rem",
+                                                    color: "#6b7c6d",
+                                                    marginTop: "0.2rem",
+                                                }}
+                                            >
+                                                {e.description}
+                                            </p>
+                                        )}
+                                    </div>
+                                </div>
+                            </RevealOnScroll>
+                        ))}
+                    </div>
+                </section>
+            )}
+
             {/* ── Publications ──────────────────────────────────────────────── */}
             {artist.publications && artist.publications.length > 0 && (
                 <section className="py-16 md:py-20 border-t border-stone-200">

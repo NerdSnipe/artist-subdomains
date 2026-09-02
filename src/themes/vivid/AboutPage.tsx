@@ -175,6 +175,171 @@ export default function VividAboutPage({ artist, artworks }: ThemePageProps) {
                     </section>
                 )}
 
+                {artist.milestones && artist.milestones.length > 0 && (
+                    <section className="border-t border-white/10">
+                        <div className="max-w-[1400px] mx-auto px-5 md:px-10 py-16">
+                            <Reveal>
+                                <p className="text-xs font-bold tracking-[0.2em] uppercase mb-10" style={{ color: "var(--v-primary)" }}>
+                                    Milestones
+                                </p>
+                            </Reveal>
+                            <div>
+                                {sortByDateDesc(artist.milestones, (m) => m.date).map((m, i) => (
+                                    <Reveal key={i} delayMs={Math.min(i * 50, 300)}>
+                                        <div className="grid grid-cols-12 gap-4 py-6 border-b border-white/10">
+                                            <div className="col-span-3 md:col-span-2">
+                                                <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, color: "var(--v-primary)" }} className="text-2xl md:text-3xl leading-none">
+                                                    {m.date}
+                                                </span>
+                                            </div>
+                                            <div className="col-span-9 md:col-span-10 flex flex-col justify-center">
+                                                <p style={{ fontFamily: "var(--font-display)", fontWeight: 700, color: "var(--v-paper)" }} className="text-lg md:text-xl leading-tight">
+                                                    {m.title}
+                                                </p>
+                                                {m.description && <p className="text-sm mt-1" style={{ color: "rgba(246,244,239,0.5)" }}>{m.description}</p>}
+                                            </div>
+                                        </div>
+                                    </Reveal>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+                )}
+
+                {artist.careerNotes && artist.careerNotes.length > 0 && (
+                    <section className="border-t border-white/10">
+                        <div className="max-w-[1400px] mx-auto px-5 md:px-10 py-16">
+                            <Reveal>
+                                <p className="text-xs font-bold tracking-[0.2em] uppercase mb-10" style={{ color: "var(--v-primary)" }}>
+                                    Career Notes
+                                </p>
+                            </Reveal>
+                            <div>
+                                {sortByDateDesc(artist.careerNotes, (n) => n.date).map((n, i) => (
+                                    <Reveal key={i} delayMs={Math.min(i * 50, 300)}>
+                                        <div className="grid grid-cols-12 gap-4 py-6 border-b border-white/10">
+                                            <div className="col-span-3 md:col-span-2">
+                                                <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, color: "var(--v-primary)" }} className="text-2xl md:text-3xl leading-none">
+                                                    {n.date}
+                                                </span>
+                                            </div>
+                                            <div className="col-span-9 md:col-span-10 flex flex-col justify-center">
+                                                <p style={{ fontFamily: "var(--font-display)", fontWeight: 700, color: "var(--v-paper)" }} className="text-lg md:text-xl leading-tight">
+                                                    {n.title}
+                                                </p>
+                                                {n.note && <p className="text-sm mt-1" style={{ color: "rgba(246,244,239,0.5)" }}>{n.note}</p>}
+                                            </div>
+                                        </div>
+                                    </Reveal>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+                )}
+
+                {artist.achievements && artist.achievements.length > 0 && (
+                    <section className="border-t border-white/10">
+                        <div className="max-w-[1400px] mx-auto px-5 md:px-10 py-16">
+                            <Reveal>
+                                <p className="text-xs font-bold tracking-[0.2em] uppercase mb-10" style={{ color: "var(--v-primary)" }}>
+                                    Achievements
+                                </p>
+                            </Reveal>
+                            <div>
+                                {sortByDateDesc(artist.achievements, (a) => a.date).map((a, i) => (
+                                    <Reveal key={i} delayMs={Math.min(i * 50, 300)}>
+                                        <div className="grid grid-cols-12 gap-4 py-6 border-b border-white/10">
+                                            <div className="col-span-3 md:col-span-2">
+                                                <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, color: "var(--v-primary)" }} className="text-2xl md:text-3xl leading-none">
+                                                    {a.date}
+                                                </span>
+                                            </div>
+                                            <div className="col-span-9 md:col-span-10 flex flex-col justify-center">
+                                                <p style={{ fontFamily: "var(--font-display)", fontWeight: 700, color: "var(--v-paper)" }} className="text-lg md:text-xl leading-tight">
+                                                    {a.title}
+                                                </p>
+                                                {a.organization && (
+                                                    <p className="text-xs font-bold tracking-widest uppercase mt-1" style={{ color: "var(--v-secondary)" }}>
+                                                        {a.organization}
+                                                    </p>
+                                                )}
+                                                {a.description && <p className="text-sm mt-1" style={{ color: "rgba(246,244,239,0.5)" }}>{a.description}</p>}
+                                            </div>
+                                        </div>
+                                    </Reveal>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+                )}
+
+                {artist.trainings && artist.trainings.length > 0 && (
+                    <section className="border-t border-white/10">
+                        <div className="max-w-[1400px] mx-auto px-5 md:px-10 py-16">
+                            <Reveal>
+                                <p className="text-xs font-bold tracking-[0.2em] uppercase mb-10" style={{ color: "var(--v-primary)" }}>
+                                    Training
+                                </p>
+                            </Reveal>
+                            <div>
+                                {sortByDateDesc(artist.trainings, (t) => t.date).map((t, i) => (
+                                    <Reveal key={i} delayMs={Math.min(i * 50, 300)}>
+                                        <div className="grid grid-cols-12 gap-4 py-6 border-b border-white/10">
+                                            <div className="col-span-3 md:col-span-2">
+                                                <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, color: "var(--v-primary)" }} className="text-2xl md:text-3xl leading-none">
+                                                    {t.date}
+                                                </span>
+                                            </div>
+                                            <div className="col-span-9 md:col-span-10 flex flex-col justify-center">
+                                                <p style={{ fontFamily: "var(--font-display)", fontWeight: 700, color: "var(--v-paper)" }} className="text-lg md:text-xl leading-tight">
+                                                    {t.title}
+                                                </p>
+                                                {t.institution && (
+                                                    <p className="text-xs font-bold tracking-widest uppercase mt-1" style={{ color: "var(--v-secondary)" }}>
+                                                        {t.institution}
+                                                    </p>
+                                                )}
+                                                {t.description && <p className="text-sm mt-1" style={{ color: "rgba(246,244,239,0.5)" }}>{t.description}</p>}
+                                            </div>
+                                        </div>
+                                    </Reveal>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+                )}
+
+                {artist.miscEvents && artist.miscEvents.length > 0 && (
+                    <section className="border-t border-white/10">
+                        <div className="max-w-[1400px] mx-auto px-5 md:px-10 py-16">
+                            <Reveal>
+                                <p className="text-xs font-bold tracking-[0.2em] uppercase mb-10" style={{ color: "var(--v-primary)" }}>
+                                    Misc
+                                </p>
+                            </Reveal>
+                            <div>
+                                {sortByDateDesc(artist.miscEvents, (e) => e.date).map((e, i) => (
+                                    <Reveal key={i} delayMs={Math.min(i * 50, 300)}>
+                                        <div className="grid grid-cols-12 gap-4 py-6 border-b border-white/10">
+                                            <div className="col-span-3 md:col-span-2">
+                                                <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, color: "var(--v-primary)" }} className="text-2xl md:text-3xl leading-none">
+                                                    {e.date}
+                                                </span>
+                                            </div>
+                                            <div className="col-span-9 md:col-span-10 flex flex-col justify-center">
+                                                <p style={{ fontFamily: "var(--font-display)", fontWeight: 700, color: "var(--v-paper)" }} className="text-lg md:text-xl leading-tight">
+                                                    {e.title}
+                                                </p>
+                                                {e.description && <p className="text-sm mt-1" style={{ color: "rgba(246,244,239,0.5)" }}>{e.description}</p>}
+                                            </div>
+                                        </div>
+                                    </Reveal>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+                )}
+
                 {artist.studioImages && artist.studioImages.length > 0 && (
                     <section className="border-t border-white/10 py-16">
                         <div className="max-w-[1400px] mx-auto px-5 md:px-10 mb-8">

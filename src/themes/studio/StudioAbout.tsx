@@ -144,6 +144,121 @@ export default function StudioAbout({ artist }: ThemePageProps) {
                 </ScrollReveal>
             )}
 
+            {artist.milestones && artist.milestones.length > 0 && (
+                <ScrollReveal>
+                    <div className="mb-20 border-t border-neutral-800/60 pt-14">
+                        <p className="mb-8 font-[family-name:var(--font-studio-condensed)] text-xs uppercase tracking-[0.4em] text-neutral-700">
+                            Milestones
+                        </p>
+                        <div className="max-w-2xl space-y-4">
+                            {sortByDateDesc(artist.milestones, (m) => m.date).map((m, i) => (
+                                <div key={i} className="grid grid-cols-[70px_1fr] gap-6 border-b border-neutral-900 pb-4 text-sm">
+                                    <span className="font-[family-name:var(--font-studio-condensed)] tracking-widest text-neutral-700">{m.date}</span>
+                                    <span className="font-[family-name:var(--font-studio-body)] font-light text-neutral-400">
+                                        {m.title}
+                                        {m.description ? ` — ${m.description}` : ""}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </ScrollReveal>
+            )}
+
+            {artist.careerNotes && artist.careerNotes.length > 0 && (
+                <ScrollReveal>
+                    <div className="mb-20 border-t border-neutral-800/60 pt-14">
+                        <p className="mb-8 font-[family-name:var(--font-studio-condensed)] text-xs uppercase tracking-[0.4em] text-neutral-700">
+                            Career Notes
+                        </p>
+                        <div className="max-w-2xl space-y-4">
+                            {sortByDateDesc(artist.careerNotes, (n) => n.date).map((n, i) => (
+                                <div key={i} className="grid grid-cols-[70px_1fr] gap-6 border-b border-neutral-900 pb-4 text-sm">
+                                    <span className="font-[family-name:var(--font-studio-condensed)] tracking-widest text-neutral-700">{n.date}</span>
+                                    <span className="font-[family-name:var(--font-studio-body)] font-light text-neutral-400">
+                                        {n.title}
+                                        {n.note ? ` — ${n.note}` : ""}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </ScrollReveal>
+            )}
+
+            {artist.achievements && artist.achievements.length > 0 && (
+                <ScrollReveal>
+                    <div className="mb-20 border-t border-neutral-800/60 pt-14">
+                        <p className="mb-8 font-[family-name:var(--font-studio-condensed)] text-xs uppercase tracking-[0.4em] text-neutral-700">
+                            Achievements
+                        </p>
+                        <div className="max-w-2xl space-y-4">
+                            {sortByDateDesc(artist.achievements, (a) => a.date).map((a, i) => (
+                                <div key={i} className="grid grid-cols-[70px_1fr] gap-6 border-b border-neutral-900 pb-4 text-sm">
+                                    <span className="font-[family-name:var(--font-studio-condensed)] tracking-widest text-neutral-700">{a.date}</span>
+                                    <span className="font-[family-name:var(--font-studio-body)] font-light text-neutral-400">
+                                        {a.title}
+                                        {a.organization && (
+                                            <span className="ml-2 font-[family-name:var(--font-studio-condensed)] text-[10px] uppercase tracking-widest text-neutral-700">
+                                                {a.organization}
+                                            </span>
+                                        )}
+                                        {a.description ? ` — ${a.description}` : ""}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </ScrollReveal>
+            )}
+
+            {artist.trainings && artist.trainings.length > 0 && (
+                <ScrollReveal>
+                    <div className="mb-20 border-t border-neutral-800/60 pt-14">
+                        <p className="mb-8 font-[family-name:var(--font-studio-condensed)] text-xs uppercase tracking-[0.4em] text-neutral-700">
+                            Training
+                        </p>
+                        <div className="max-w-2xl space-y-4">
+                            {sortByDateDesc(artist.trainings, (t) => t.date).map((t, i) => (
+                                <div key={i} className="grid grid-cols-[70px_1fr] gap-6 border-b border-neutral-900 pb-4 text-sm">
+                                    <span className="font-[family-name:var(--font-studio-condensed)] tracking-widest text-neutral-700">{t.date}</span>
+                                    <span className="font-[family-name:var(--font-studio-body)] font-light text-neutral-400">
+                                        {t.title}
+                                        {t.institution && (
+                                            <span className="ml-2 font-[family-name:var(--font-studio-condensed)] text-[10px] uppercase tracking-widest text-neutral-700">
+                                                {t.institution}
+                                            </span>
+                                        )}
+                                        {t.description ? ` — ${t.description}` : ""}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </ScrollReveal>
+            )}
+
+            {artist.miscEvents && artist.miscEvents.length > 0 && (
+                <ScrollReveal>
+                    <div className="mb-20 border-t border-neutral-800/60 pt-14">
+                        <p className="mb-8 font-[family-name:var(--font-studio-condensed)] text-xs uppercase tracking-[0.4em] text-neutral-700">
+                            Misc
+                        </p>
+                        <div className="max-w-2xl space-y-4">
+                            {sortByDateDesc(artist.miscEvents, (e) => e.date).map((e, i) => (
+                                <div key={i} className="grid grid-cols-[70px_1fr] gap-6 border-b border-neutral-900 pb-4 text-sm">
+                                    <span className="font-[family-name:var(--font-studio-condensed)] tracking-widest text-neutral-700">{e.date}</span>
+                                    <span className="font-[family-name:var(--font-studio-body)] font-light text-neutral-400">
+                                        {e.title}
+                                        {e.description ? ` — ${e.description}` : ""}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </ScrollReveal>
+            )}
+
             {publications.length > 0 && (
                 <ScrollReveal>
                     <div className="mb-20 border-t border-neutral-800/60 pt-14">
