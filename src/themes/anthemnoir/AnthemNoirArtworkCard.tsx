@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { Product } from "@/types";
@@ -10,25 +13,33 @@ import { getEffectiveDimensions } from "@/lib/product-dimensions";
 // row so a browsing collector never has to click through just to check size or palette.
 export default function AnthemNoirArtworkCard({ art, priority = false }: { art: Product; priority?: boolean }) {
     const img = getProductImageUrl(art);
+    // Daniel's getEffectiveDimensions() is the authority on the artwork's real measurements, and
+    // they make a good first guess at the tile's shape. But the canvas and the photograph of it are
+    // rarely the same proportions — the photo includes a frame, or was shot a little wide — and
+    // sizing the tile from measurements alone is what left black bars around anything that didn't
+    // match. So: start from the measurements, then snap to the photo's own ratio once it loads.
     const effDims = getEffectiveDimensions(art);
-    const ratio = effDims ? `${effDims.width} / ${effDims.height}` : "1 / 1";
+    const [ratio, setRatio] = useState<number>(
+        effDims && effDims.height ? effDims.width / effDims.height : 1
+    );
     const dims = effDims
         ? `${effDims.height}" H × ${effDims.width}" W${effDims.depth ? ` × ${effDims.depth}" D` : ""}`
         : null;
 
     return (
         <Link href={`/artworks/${art.slug ?? art.id}`} className="group block">
-            {/* object-contain (not cover) — the container is sized to the artwork's real
-                proportions, but the source photo's own crop/framing can still differ slightly,
-                so contain is what actually guarantees the whole piece is always visible. */}
-            <div className="relative w-full overflow-hidden border-2 border-[#E9DFC9] bg-black" style={{ aspectRatio: ratio }}>
+            <div className="relative w-full overflow-hidden border-2 border-[#E9DFC9]" style={{ aspectRatio: ratio }}>
                 {img && (
                     <Image
                         src={img}
                         alt={art.title}
                         fill
                         sizes="(max-width: 768px) 50vw, 33vw"
-                        className="object-contain transition-transform duration-500 group-hover:scale-105"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        onLoad={(e) => {
+                            const el = e.currentTarget;
+                            if (el.naturalWidth && el.naturalHeight) setRatio(el.naturalWidth / el.naturalHeight);
+                        }}
                         priority={priority}
                     />
                 )}

@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Instagram, Facebook, Music2, Mail, Phone, MapPin, Check } from "lucide-react";
+import { Instagram, Facebook, Music2, Mail, Phone, MapPin, Check, User } from "lucide-react";
 import type { ThemePageProps } from "@/themes/types";
 import { getArtistName, marketplaceArtistUrl } from "@/lib/artist-api";
 import Reveal from "./Reveal";
@@ -221,6 +221,11 @@ function AnthemNoirContactInner({ artist }: ThemePageProps) {
                         {(artist.email || artist.phone || artist.city || artist.state) && (
                             <div className="border-t-2 border-[#E9DFC9]/15 mt-8 pt-6 space-y-3">
                                 <p className="text-xs font-bold uppercase tracking-widest text-[#E9DFC9]/50 mb-3">Direct Contact</p>
+                                {/* Name first: a collector who copies these details out needs to know
+                                    whose studio they belong to, not just an address and a number. */}
+                                <p className="flex items-center gap-3 text-sm font-bold text-[#E9DFC9]">
+                                    <User size={16} /> {getArtistName(artist)}
+                                </p>
                                 {artist.email && (
                                     <a href={`mailto:${artist.email}`} className="flex items-center gap-3 text-sm font-bold hover:text-[#FF6B7A]">
                                         <Mail size={16} className="text-[#FF6B7A]" /> {artist.email}
