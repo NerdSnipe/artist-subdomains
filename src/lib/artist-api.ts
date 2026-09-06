@@ -14,7 +14,11 @@ export const getDomainConfig = cache(async (domain: string): Promise<DomainConfi
     try {
         const res = await fetch(
             `${API_BASE}/artist-domain/${encodeURIComponent(domain)}`,
-            { cache: 'no-store' }
+            // Was `cache: 'no-store'` — this runs on every single page/layout/image
+            // render for every domain, so it never let the Neon compute go idle.
+            // Domain-to-artist mapping changes only when an artist claims/edits a
+            // custom domain, so a short revalidate window is safe.
+            { next: { revalidate: 300 } }
         );
         if (!res.ok) return null;
         const json = await res.json();
