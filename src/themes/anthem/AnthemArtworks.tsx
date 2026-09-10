@@ -102,7 +102,7 @@ export default function AnthemArtworks({ artworks }: ThemePageProps) {
                 physical proportions (not a forced square), so taller/wider pieces naturally
                 stagger like the marketplace grid instead of all lining up in even rows. */}
             {filtered.length > 0 && (
-                <div className="columns-2 md:columns-3 gap-6 [column-fill:_balance]">
+                <div className="columns-2 md:columns-4 gap-6 [column-fill:_balance]">
                     {filtered.map((art, i) => (
                         <Reveal key={art.id} delay={Math.min(i, 8) * 50} className="break-inside-avoid mb-6 block">
                             <AnthemArtworkCard art={art} priority={i < 3} />

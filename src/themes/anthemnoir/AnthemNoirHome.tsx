@@ -86,7 +86,7 @@ export default function AnthemNoirHome({ artist, artworks }: ThemePageProps) {
                     </Reveal>
                     {/* Masonry, same treatment as the artworks page: full image visible (no forced
                         crop), each card's aspect-ratio matched to its real physical proportions. */}
-                    <div className="columns-2 md:columns-3 gap-6 [column-fill:_balance]">
+                    <div className="columns-2 md:columns-4 gap-6 [column-fill:_balance]">
                         {featured.map((art, i) => (
                             <Reveal key={art.id} delay={Math.min(i, 6) * 60} className="break-inside-avoid mb-6 block">
                                 <AnthemNoirArtworkCard art={art} priority={i < 3} />

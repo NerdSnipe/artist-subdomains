@@ -17,9 +17,6 @@ export default function AnthemArtworkDetail({ artist, product, relatedProducts }
     const [activeImg, setActiveImg] = useState(0);
     const img = gallery[activeImg]?.imageUrl ?? getProductImageUrl(product);
     const effDims = getEffectiveDimensions(product);
-    // Real proportions (not a forced square) — matches the card treatment elsewhere, so a tall
-    // or wide piece is never cropped to fit a square box.
-    const ratio = effDims ? `${effDims.width} / ${effDims.height}` : "1 / 1";
 
     // Sells through the ArtDistrictUSA marketplace, same as the other theme families — no
     // separate checkout funnel here, this just routes the buyer to the real product page
@@ -51,8 +48,25 @@ export default function AnthemArtworkDetail({ artist, product, relatedProducts }
         <div>
             <div className="max-w-[1600px] mx-auto px-5 md:px-10 py-10 md:py-16 grid grid-cols-1 md:grid-cols-[1.3fr_1fr] gap-10 md:gap-16">
                 <Reveal>
-                    <div className="relative border-2 border-black overflow-hidden mb-3 bg-black" style={{ aspectRatio: ratio }}>
-                        {img && <Image src={img} alt={product.title} fill sizes="(max-width: 768px) 100vw, 60vw" className="object-contain" priority />}
+                    <div className="relative flex items-center justify-center mb-3">
+                        {img && (
+                            // Plain <img>, not next/image's `fill` mode — the box now sizes to the
+                            // photo's own proportions (capped by max-height) instead of a box forced
+                            // to the artwork's stated physical dimensions, which is what produced the
+                            // black letterboxing whenever a piece's photo crop didn't match its listed
+                            // inches (e.g. a sculpture shot at a 60x48 crop but sized 60x20). Matches
+                            // the marketplace's ArtworkDetail image treatment exactly. No border box
+                            // and no background of its own on this wrapper — it inherits the page
+                            // background directly so there's never a seam if the two drift apart (this
+                            // is what happened on the Noir theme's near-black page). Just a bottom/right
+                            // drop shadow for depth.
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img
+                                src={img}
+                                alt={product.title}
+                                className="max-w-full max-h-[45vh] sm:max-h-[55vh] md:max-h-[70vh] object-contain shadow-[10px_10px_28px_-6px_rgba(0,0,0,0.45)]"
+                            />
+                        )}
                         {product.gallerySource && product.gallerySource.length > 0 && (
                             <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
                                 {product.gallerySource.map((g) => (
