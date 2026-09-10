@@ -3,8 +3,10 @@
 import { useMemo, useState } from "react";
 import Image from "next/image";
 import { SlidersHorizontal } from "lucide-react";
+import type { Product } from "@/types";
 import type { ThemePageProps } from "@/themes/types";
 import { getProductImageUrl } from "@/lib/artist-api";
+import { getEffectiveDimensions } from "@/lib/product-dimensions";
 import Reveal from "./Reveal";
 import AnthemArtworkCard from "./AnthemArtworkCard";
 
@@ -16,11 +18,53 @@ const SERIES_ORDER = ["Popular", "Teddy Series", "Icons & Pop", "Large Scale", "
 // until that field exists in GHL. Ready to re-enable the moment per-piece data lands.
 type SortOption = "default" | "price-asc" | "price-desc";
 
+// A sold tile is its own component (not inlined in the map) so each one gets its own ratio
+// state — same trick AnthemArtworkCard uses: start from the measured dimensions, then snap to
+// the photo's own proportions once it loads, instead of forcing every sold piece into a square.
+function SoldTile({ art, onPreview }: { art: Product; onPreview: (src: string) => void }) {
+    const img = getProductImageUrl(art);
+    const effDims = getEffectiveDimensions(art);
+    const [ratio, setRatio] = useState<number>(effDims && effDims.height ? effDims.width / effDims.height : 1);
+    const dims = effDims
+        ? `${effDims.height}" H × ${effDims.width}" W${effDims.depth ? ` × ${effDims.depth}" D` : ""}`
+        : null;
+
+    return (
+        <button type="button" onClick={() => img && onPreview(img)} className="block w-full text-left opacity-70 hover:opacity-100 transition-opacity">
+            <div className="relative w-full overflow-hidden border-2 border-black cursor-zoom-in" style={{ aspectRatio: ratio }}>
+                {img && (
+                    <Image
+                        src={img}
+                        alt={art.title}
+                        fill
+                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                        className="object-cover"
+                        onLoad={(e) => {
+                            const el = e.currentTarget;
+                            if (el.naturalWidth && el.naturalHeight) setRatio(el.naturalWidth / el.naturalHeight);
+                        }}
+                    />
+                )}
+                <div className="absolute top-2 right-2 bg-black text-[#F7F4EC] text-[9px] font-bold uppercase tracking-wide px-2 py-1 border border-black">
+                    Sold
+                </div>
+            </div>
+            <div className="mt-2">
+                <p className="text-[11px] font-bold uppercase truncate">
+                    {art.title}
+                    {dims && <span className="normal-case font-medium text-black/50"> — {dims}</span>}
+                </p>
+            </div>
+        </button>
+    );
+}
+
 export default function AnthemArtworks({ artworks }: ThemePageProps) {
     const active = artworks.filter((a) => a.status === "active");
     const sold = artworks.filter((a) => a.status === "sold");
     const [filter, setFilter] = useState("All");
     const [sort, setSort] = useState<SortOption>("default");
+    const [soldPreview, setSoldPreview] = useState<string | null>(null);
 
     // Named series, in preferred display order.
     const namedSeries = useMemo(() => {
@@ -120,19 +164,37 @@ export default function AnthemArtworks({ artworks }: ThemePageProps) {
                     <h2 className="font-[family-name:var(--font-display)] uppercase text-3xl mb-8 border-b-4 border-black pb-4">
                         Previously Sold
                     </h2>
-                    <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
-                        {sold.map((art) => {
-                            const img = getProductImageUrl(art);
-                            return (
-                                <div key={art.id} className="opacity-60">
-                                    <div className="relative aspect-square border-2 border-black overflow-hidden mb-2">
-                                        {img && <Image src={img} alt={art.title} fill sizes="200px" className="object-cover" />}
-                                    </div>
-                                    <p className="text-[11px] font-bold uppercase truncate">{art.title}</p>
-                                </div>
-                            );
-                        })}
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+                        {sold.map((art) => (
+                            <SoldTile key={art.id} art={art} onPreview={setSoldPreview} />
+                        ))}
                     </div>
+                </div>
+            )}
+
+            {soldPreview && (
+                <div
+                    className="fixed inset-0 z-[100] bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 cursor-zoom-out"
+                    onClick={() => setSoldPreview(null)}
+                >
+                    <button
+                        type="button"
+                        aria-label="Close preview"
+                        className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setSoldPreview(null);
+                        }}
+                    >
+                        ✕
+                    </button>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                        src={soldPreview}
+                        alt="Sold artwork preview"
+                        className="max-w-[90vw] max-h-[85vh] object-contain shadow-2xl"
+                        onClick={(e) => e.stopPropagation()}
+                    />
                 </div>
             )}
         </div>

@@ -3,8 +3,10 @@
 import { useMemo, useState } from "react";
 import Image from "next/image";
 import { SlidersHorizontal } from "lucide-react";
+import type { Product } from "@/types";
 import type { ThemePageProps } from "@/themes/types";
 import { getProductImageUrl } from "@/lib/artist-api";
+import { getEffectiveDimensions } from "@/lib/product-dimensions";
 import Reveal from "./Reveal";
 import AnthemNoirArtworkCard from "./AnthemNoirArtworkCard";
 
@@ -14,6 +16,47 @@ const SERIES_ORDER = ["Popular", "Teddy Series", "Icons & Pop", "Large Scale", "
 // shown but disabled — fixed to "Artist Studio" (every piece defaults to that source today)
 // until that field exists in GHL. Ready to re-enable the moment per-piece data lands.
 type SortOption = "default" | "price-asc" | "price-desc";
+
+// A sold tile is its own component (not inlined in the map) so each one gets its own ratio
+// state — same trick AnthemNoirArtworkCard uses: start from the measured dimensions, then snap
+// to the photo's own proportions once it loads, instead of forcing every sold piece into a square.
+function SoldTile({ art, onPreview }: { art: Product; onPreview: (src: string) => void }) {
+    const img = getProductImageUrl(art);
+    const effDims = getEffectiveDimensions(art);
+    const [ratio, setRatio] = useState<number>(effDims && effDims.height ? effDims.width / effDims.height : 1);
+    const dims = effDims
+        ? `${effDims.height}" H × ${effDims.width}" W${effDims.depth ? ` × ${effDims.depth}" D` : ""}`
+        : null;
+
+    return (
+        <button type="button" onClick={() => img && onPreview(img)} className="block w-full text-left opacity-70 hover:opacity-100 transition-opacity">
+            <div className="relative w-full overflow-hidden border-2 border-[#E9DFC9] cursor-zoom-in" style={{ aspectRatio: ratio }}>
+                {img && (
+                    <Image
+                        src={img}
+                        alt={art.title}
+                        fill
+                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                        className="object-cover"
+                        onLoad={(e) => {
+                            const el = e.currentTarget;
+                            if (el.naturalWidth && el.naturalHeight) setRatio(el.naturalWidth / el.naturalHeight);
+                        }}
+                    />
+                )}
+                <div className="absolute top-2 right-2 bg-[#0C0B09] text-[#E9DFC9] text-[9px] font-bold uppercase tracking-wide px-2 py-1 border border-[#E9DFC9]">
+                    Sold
+                </div>
+            </div>
+            <div className="mt-2">
+                <p className="text-[11px] font-bold uppercase truncate">
+                    {art.title}
+                    {dims && <span className="normal-case font-medium text-[#E9DFC9]/50"> — {dims}</span>}
+                </p>
+            </div>
+        </button>
+    );
+}
 
 export default function AnthemNoirArtworks({ artworks }: ThemePageProps) {
     const active = artworks.filter((a) => a.status === "active");
